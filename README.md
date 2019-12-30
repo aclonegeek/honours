@@ -1,7 +1,7 @@
 # Honours Project
 
 # Requirements
-- Ruby 2.6.5
+- Boost 1.71.0
 
 # Setup
 - In a terminal, run:
