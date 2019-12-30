@@ -1,7 +1,7 @@
 # Honours Project
 
 # Requirements
-- Boost 1.71.0
+- CMake 3.16
 
 # Setup
 - In a terminal, run:
