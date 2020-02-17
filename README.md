@@ -3,6 +3,9 @@
 # Requirements
 - CMake 3.16
 
+# Dependencies
+- Asio 1.14.0
+
 # Setup
 - In a terminal, run:
 ``` shell
