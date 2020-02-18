@@ -11,8 +11,8 @@ Client::Client(asio::io_context& io_context,
 
 void Client::send(const Message& message) {
     asio::post(this->io_context, [this, message]() {
-        const bool can_write = this->message_queue.empty();
-        this->message_queue.push_back(message);
+        const bool can_write = this->write_messages.empty();
+        this->write_messages.push_back(message);
         if (can_write) {
             this->write();
         }
@@ -69,16 +69,16 @@ void Client::read_body() {
 void Client::write() {
     asio::async_write(
         this->socket,
-        asio::buffer(this->message_queue.front().data(),
-                     this->message_queue.front().length()),
+        asio::buffer(this->write_messages.front().data(),
+                     this->write_messages.front().length()),
         [this](std::error_code error_code, std::size_t /*length*/) {
             if (error_code) {
                 this->socket.close();
                 return;
             }
 
-            this->message_queue.pop_front();
-            if (!this->message_queue.empty()) {
+            this->write_messages.pop_front();
+            if (!this->write_messages.empty()) {
                 this->write();
             }
         });

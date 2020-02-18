@@ -23,6 +23,6 @@ private:
     asio::io_context& io_context;
     tcp::socket socket;
 
-    std::deque<Message> message_queue;
     Message read_message;
+    std::deque<Message> write_messages;
 };

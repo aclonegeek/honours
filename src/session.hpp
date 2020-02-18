@@ -22,5 +22,5 @@ private:
 
     tcp::socket socket;
     Message read_message;
-    std::deque<Message> message_queue;
+    std::deque<Message> write_messages;
 };
