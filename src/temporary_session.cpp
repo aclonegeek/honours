@@ -1,13 +1,13 @@
 #include <iostream>
 
-#include "message.hpp"
-#include "session.hpp"
+#include "temporary_session.hpp"
 
-Session::Session(tcp::socket socket) : socket(std::move(socket)) {}
+TemporarySession::TemporarySession(tcp::socket socket)
+    : socket(std::move(socket)) {}
 
-void Session::start() { this->read_header(); }
+void TemporarySession::start() { this->read_header(); }
 
-void Session::send(const Message& message) {
+void TemporarySession::send(const Message& message) {
     bool can_write = this->write_messages.empty();
     this->write_messages.push_back(message);
     if (can_write) {
@@ -15,7 +15,7 @@ void Session::send(const Message& message) {
     }
 }
 
-void Session::read_header() {
+void TemporarySession::read_header() {
     auto self(this->shared_from_this());
     asio::async_read(
         this->socket, asio::buffer(this->read_message.data(), HEADER_LENGTH),
@@ -28,7 +28,7 @@ void Session::read_header() {
         });
 }
 
-void Session::read_body() {
+void TemporarySession::read_body() {
     auto self(this->shared_from_this());
     asio::async_read(
         this->socket,
@@ -39,17 +39,22 @@ void Session::read_body() {
                 return;
             }
 
-            bool can_write = this->write_messages.empty();
+            bool can_handle = this->write_messages.empty();
             this->write_messages.push_back(this->read_message);
-            if (can_write) {
-                this->write();
+            if (can_handle) {
+                this->handle_input();
             }
 
             this->read_header();
         });
 }
 
-void Session::write() {
+void TemporarySession::handle_input() {
+    std::string input(this->write_messages.front().data());
+    this->write_messages.pop_front();
+}
+
+void TemporarySession::write() {
     auto self(this->shared_from_this());
     asio::async_write(
         this->socket,
@@ -59,9 +64,6 @@ void Session::write() {
             if (error_code) {
                 return;
             }
-
-            // TODO: Don't use cerr for this...
-            std::cerr << this->write_messages.front().data();
 
             this->write_messages.pop_front();
             if (!this->write_messages.empty()) {

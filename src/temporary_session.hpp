@@ -7,9 +7,9 @@
 
 using asio::ip::tcp;
 
-class Session : public std::enable_shared_from_this<Session> {
+class TemporarySession : public std::enable_shared_from_this<TemporarySession> {
 public:
-    Session(tcp::socket);
+    TemporarySession(tcp::socket);
 
     void start();
     void send(const Message&);
@@ -17,6 +17,8 @@ public:
 private:
     void read_header();
     void read_body();
+
+    void handle_input();
 
     void write();
 

@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "server.hpp"
-#include "session.hpp"
+#include "temporary_session.hpp"
 
 Server::Server(asio::io_context& io_context, const tcp::endpoint& endpoint)
     : acceptor(io_context, endpoint) {
@@ -14,15 +14,15 @@ void Server::accept() {
             if (!error_code) {
                 // TODO: Don't use cerr for this...
                 std::cerr << "Client connected.\n";
-                std::make_shared<Session>(std::move(socket))->start();
+                std::make_shared<TemporarySession>(std::move(socket))->start();
             }
 
             this->accept();
         });
 }
 
-// TODO: More error handling, probably extract args parsing out into a function
-// and return the port.
+// TODO: More error handling, probably extract args parsing out into a
+// function and return the port.
 int main(int argc, char* argv[]) {
     if (argc != 2) {
         std::cerr << "Usage: server <port>\n";

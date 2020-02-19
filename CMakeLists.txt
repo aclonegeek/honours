@@ -9,7 +9,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 add_executable(server
   src/server.cpp
   src/message.cpp
-  src/session.cpp)
+  src/temporary_session.cpp)
 
 add_executable(client
   src/client.cpp
