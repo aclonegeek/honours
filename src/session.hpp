@@ -7,7 +7,7 @@
 
 using asio::ip::tcp;
 
-class Session {
+class Session : public std::enable_shared_from_this<Session> {
 public:
     Session(tcp::socket socket) : socket(std::move(socket)) {}
 
@@ -24,11 +24,59 @@ public:
     virtual ~Session() {}
 
 protected:
-    // TODO: Find a way to actually implement these here, instead of having
-    // duplicate code for each session.
-    virtual void read_header()  = 0;
-    virtual void read_body()    = 0;
-    virtual void write()        = 0;
+    virtual void read_header() {
+        auto self(this->shared_from_this());
+        asio::async_read(
+            this->socket,
+            asio::buffer(this->read_message.data(), HEADER_LENGTH),
+            [this, self](std::error_code error_code, std::size_t /*length*/) {
+                if (error_code || !this->read_message.decode_header()) {
+                    return;
+                }
+
+                this->read_body();
+            });
+    };
+
+    virtual void read_body() {
+        auto self(this->shared_from_this());
+        asio::async_read(
+            this->socket,
+            asio::buffer(this->read_message.body(),
+                         this->read_message.body_length()),
+            [this, self](std::error_code error_code, std::size_t /*length*/) {
+                if (error_code) {
+                    return;
+                }
+
+                bool can_handle = this->write_messages.empty();
+                this->write_messages.push_back(this->read_message);
+                if (can_handle) {
+                    this->write();
+                }
+
+                this->read_header();
+            });
+    }
+
+    virtual void write() {
+        auto self(this->shared_from_this());
+        asio::async_write(
+            this->socket,
+            asio::buffer(this->write_messages.front().data(),
+                         this->write_messages.front().length()),
+            [this, self](std::error_code error_code, std::size_t /*length*/) {
+                if (error_code) {
+                    return;
+                }
+
+                this->write_messages.pop_front();
+                if (!this->write_messages.empty()) {
+                    this->write();
+                }
+            });
+    }
+
     virtual void handle_input() = 0;
 
     tcp::socket socket;
