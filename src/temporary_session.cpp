@@ -3,17 +3,7 @@
 #include "temporary_session.hpp"
 
 TemporarySession::TemporarySession(tcp::socket socket)
-    : socket(std::move(socket)) {}
-
-void TemporarySession::start() { this->read_header(); }
-
-void TemporarySession::send(const Message& message) {
-    bool can_write = this->write_messages.empty();
-    this->write_messages.push_back(message);
-    if (can_write) {
-        this->write();
-    }
-}
+    : Session(std::move(socket)) {}
 
 void TemporarySession::read_header() {
     auto self(this->shared_from_this());
@@ -42,7 +32,8 @@ void TemporarySession::read_body() {
             bool can_handle = this->write_messages.empty();
             this->write_messages.push_back(this->read_message);
             if (can_handle) {
-                this->handle_input();
+                // this->handle_input();
+                this->write();
             }
 
             this->read_header();
