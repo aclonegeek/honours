@@ -9,16 +9,17 @@ Server::Server(asio::io_context& io_context, const tcp::endpoint& endpoint)
 }
 
 void Server::accept() {
-    this->acceptor.async_accept(
-        [this](std::error_code error_code, tcp::socket socket) {
-            if (!error_code) {
-                // TODO: Don't use cerr for this...
-                std::cerr << "Client connected.\n";
-                std::make_shared<TemporarySession>(std::move(socket))->start();
-            }
+    this->acceptor.async_accept([this](std::error_code error_code,
+                                       tcp::socket socket) {
+        if (!error_code) {
+            // TODO: Don't use cerr for this...
+            std::cerr << "Client connected.\n";
+            std::make_shared<TemporarySession>(std::move(socket), university)
+                ->start();
+        }
 
-            this->accept();
-        });
+        this->accept();
+    });
 }
 
 // TODO: More error handling, probably extract args parsing out into a

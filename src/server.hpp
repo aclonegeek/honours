@@ -2,6 +2,8 @@
 
 #include <asio.hpp>
 
+#include "university.hpp"
+
 using asio::ip::tcp;
 
 class Server {
@@ -12,4 +14,6 @@ private:
     void accept();
 
     tcp::acceptor acceptor;
+
+    University university;
 };

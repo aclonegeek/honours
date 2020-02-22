@@ -4,8 +4,10 @@
 #include "clerk_session.hpp"
 #include "temporary_session.hpp"
 
-TemporarySession::TemporarySession(tcp::socket socket)
-    : Session(std::move(socket)), state(State::DETERMINING_SESSION_TYPE) {}
+TemporarySession::TemporarySession(tcp::socket socket, University& university)
+    : Session(std::move(socket)),
+      university(university),
+      state(State::DETERMINING_SESSION_TYPE) {}
 
 void TemporarySession::start() {
     this->greeting();

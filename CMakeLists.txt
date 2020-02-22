@@ -7,10 +7,15 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_executable(server
+  src/course.cpp
+  src/student.cpp
+  src/university.cpp
+
   src/server.cpp
   src/message.cpp
   src/clerk_session.cpp
   src/temporary_session.cpp)
+
 
 add_executable(client
   src/client.cpp

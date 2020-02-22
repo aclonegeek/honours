@@ -1,10 +1,11 @@
 #pragma once
 
 #include "session.hpp"
+#include "university.hpp"
 
 class TemporarySession : public Session {
 public:
-    TemporarySession(tcp::socket);
+    TemporarySession(tcp::socket, University&);
 
     virtual void start() override;
 
@@ -20,4 +21,5 @@ private:
     void greeting();
 
     State state;
+    University& university;
 };
