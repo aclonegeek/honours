@@ -4,6 +4,12 @@
 
 #include "message.hpp"
 
+Message::Message(const std::string& message) {
+    std::strncpy(_data + HEADER_LENGTH, message.data(), message.length());
+    _body_length = message.length();
+    this->encode_header();
+}
+
 void Message::encode_header() {
     char header[HEADER_LENGTH + 1] = "";
     std::sprintf(header, "%4d", _body_length);

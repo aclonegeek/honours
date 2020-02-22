@@ -103,11 +103,7 @@ int main(int argc, char* argv[]) {
 
         char line[MAX_BODY_LENGTH + 1];
         while (std::cin.getline(line, MAX_BODY_LENGTH + 1)) {
-            Message message;
-            // TODO: ctor this.
-            message.body_length(std::strlen(line));
-            std::memcpy(message.body(), line, message.body_length());
-            message.encode_header();
+            Message message(line);
             client.send(message);
         }
 

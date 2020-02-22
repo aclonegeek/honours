@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
 
 constexpr uint8_t HEADER_LENGTH    = 4;
 constexpr uint16_t MAX_BODY_LENGTH = 512;
@@ -8,6 +9,7 @@ constexpr uint16_t MAX_BODY_LENGTH = 512;
 class Message {
 public:
     Message() : _body_length(0) {}
+    Message(const std::string&);
 
     void encode_header();
     bool decode_header();
