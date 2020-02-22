@@ -2,6 +2,7 @@
 
 #include <asio.hpp>
 #include <deque>
+#include <iostream>
 
 #include "message.hpp"
 
@@ -49,10 +50,11 @@ protected:
                     return;
                 }
 
-                bool can_handle = this->write_messages.empty();
-                this->write_messages.push_back(this->read_message);
-                if (can_handle) {
-                    this->write();
+                // TODO: Remove this (log it instead?).
+                std::cerr << this->read_message.body() << "\n";
+
+                if (!this->handle_input()) {
+                    return;
                 }
 
                 this->read_header();
@@ -77,7 +79,7 @@ protected:
             });
     }
 
-    virtual void handle_input() = 0;
+    virtual bool handle_input() = 0;
 
     tcp::socket socket;
     Message read_message;
