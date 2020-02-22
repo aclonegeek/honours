@@ -2,18 +2,34 @@
 
 University::University() {}
 
-std::optional<Course> University::course(const std::uint8_t) { return {}; }
+std::optional<Course> University::course(const std::uint8_t id) const {
+    if (auto course = this->courses.find(id); course != this->courses.end()) {
+        return course->second;
+    }
 
-std::optional<Student> University::student(const std::uint8_t) { return {}; }
+    return {};
+}
 
-bool University::create_course() { return true; }
+std::optional<Student> University::student(const std::uint8_t id) const {
+    if (auto student = this->students.find(id);
+        student != this->students.end()) {
+        return student->second;
+    }
 
-bool University::register_student(const std::uint8_t id,
+    return {};
+}
+
+void University::create_course(Course course) {
+    this->courses.insert({course.id(), course});
+}
+
+void University::register_student(const std::uint8_t id,
                                   const std::string name) {
-    return true;
+    this->students.insert({id, Student(id, name)});
 }
 
 bool University::register_student_in_course(const std::uint8_t course_id,
                                             const std::uint8_t student_id) {
-    return true;
+    return this->courses.at(course_id).register_student(
+        this->students.at(student_id));
 }
