@@ -48,7 +48,9 @@ bool TemporarySession::handle_input() {
             break;
         }
 
-        std::make_shared<ClerkSession>(std::move(this->socket))->start();
+        std::make_shared<ClerkSession>(std::move(this->socket),
+                                       this->university)
+            ->start();
         return false;
     case State::STUDENT_LOGIN:
         break;
