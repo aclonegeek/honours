@@ -57,6 +57,9 @@ protected:
                     return;
                 }
 
+                std::memset(this->read_message.data(), 0,
+                            this->read_message.length());
+
                 this->read_header();
             });
     }
