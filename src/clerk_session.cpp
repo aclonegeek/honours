@@ -7,6 +7,10 @@
 #include "clerk_session.hpp"
 #include "util.hpp"
 
+const Message OPTIONS =
+    Message("Options: Create a Course (CAC), Create a Student (CAS), "
+            "Delete a Course (DAC), Delete a Student (DAS).");
+
 ClerkSession::ClerkSession(tcp::socket socket, University& university)
     : Session(std::move(socket)),
       state(State::WAITING_FOR_ACTION),
@@ -18,10 +22,8 @@ void ClerkSession::start() {
 }
 
 void ClerkSession::greeting() {
-    this->write_messages.push_back(
-        Message("Welcome Clerk!\n"
-                "Options: Create a Course (CAC), Create a Student (CAS), "
-                "Delete a Course (DAC), Delete a Student (DAS)."));
+    this->write_messages.push_back(Message("Welcome Clerk!"));
+    this->write_messages.push_back(OPTIONS);
     this->write();
 }
 
@@ -33,8 +35,6 @@ bool ClerkSession::handle_input() {
     switch (this->state) {
     case State::WAITING_FOR_ACTION:
         std::transform(input.begin(), input.end(), input.begin(), ::tolower);
-
-        std::cerr << input << "L\n";
 
         if (input == "cac") {
             this->state = State::CREATING_COURSE;
@@ -50,7 +50,11 @@ bool ClerkSession::handle_input() {
         } else if (input == "das") {
             this->state = State::DELETING_STUDENT;
             this->write_messages.push_back(Message("Enter Student ID:"));
+        } else {
+            this->write_messages.push_back(Message("Invalid command."));
+            this->write_messages.push_back(OPTIONS);
         }
+
         break;
     case State::CREATING_COURSE:
         if (!this->create_course(input)) {
@@ -59,6 +63,7 @@ bool ClerkSession::handle_input() {
 
         this->state = State::WAITING_FOR_ACTION;
         this->write_messages.push_back(Message("Course created."));
+        this->write_messages.push_back(OPTIONS);
 
         break;
     case State::DELETING_COURSE:
@@ -68,6 +73,7 @@ bool ClerkSession::handle_input() {
 
         this->state = State::WAITING_FOR_ACTION;
         this->write_messages.push_back(Message("Course deleted."));
+        this->write_messages.push_back(OPTIONS);
 
         break;
     case State::CREATING_STUDENT:
@@ -77,6 +83,7 @@ bool ClerkSession::handle_input() {
 
         this->state = State::WAITING_FOR_ACTION;
         this->write_messages.push_back(Message("Student created."));
+        this->write_messages.push_back(OPTIONS);
 
         break;
     case State::DELETING_STUDENT:
