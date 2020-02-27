@@ -116,6 +116,12 @@ bool ClerkSession::create_course(const std::string& input) {
 
 bool ClerkSession::delete_course(const std::string& input) {
     std::uint16_t id = std::stoi(input);
+
+    if (!this->university.course(id)) {
+        this->write_messages.push_back(Message("Course does not exist."));
+        return false;
+    }
+
     this->university.delete_course(id);
 
     return true;
@@ -152,6 +158,12 @@ bool ClerkSession::delete_student(const std::string& input) {
     }
 
     std::uint16_t id = std::stoi(input);
+
+    if (!this->university.student(id)) {
+        this->write_messages.push_back(Message("Student does not exist."));
+        return false;
+    }
+
     this->university.delete_student(id);
 
     return true;
