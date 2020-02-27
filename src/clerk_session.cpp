@@ -109,7 +109,7 @@ bool ClerkSession::create_course(const std::string& input) {
     std::string title    = tokens[1];
     std::uint8_t capsize = std::stoi(tokens[2]);
 
-    this->university.create_course(Course(id, title, capsize));
+    this->university.create_course(id, title, capsize);
 
     return true;
 }

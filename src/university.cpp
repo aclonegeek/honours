@@ -19,8 +19,9 @@ std::optional<Student> University::student(const std::uint8_t id) const {
     return {};
 }
 
-void University::create_course(Course course) {
-    this->courses.insert({course.id(), course});
+void University::create_course(const std::uint8_t id, const std::string& title,
+                               const std::uint8_t capsize) {
+    this->courses.insert({id, Course(id, title, capsize)});
 }
 
 void University::delete_course(const std::uint8_t id) {
