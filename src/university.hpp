@@ -12,6 +12,8 @@ public:
     std::optional<Student> student(const std::uint8_t) const;
 
     void create_course(Course course);
+    void delete_course(const std::uint8_t);
+
     void register_student(const std::uint8_t, const std::string);
 
     bool register_student_in_course(const std::uint8_t, const std::uint8_t);

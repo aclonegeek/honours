@@ -23,6 +23,10 @@ void University::create_course(Course course) {
     this->courses.insert({course.id(), course});
 }
 
+void University::delete_course(const std::uint8_t id) {
+    this->courses.erase(id);
+}
+
 void University::register_student(const std::uint8_t id,
                                   const std::string name) {
     this->students.insert({id, Student(id, name)});

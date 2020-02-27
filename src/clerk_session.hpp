@@ -23,6 +23,7 @@ private:
     void greeting();
 
     bool create_course(const std::string&);
+    bool delete_course(const std::string&);
 
     State state;
     University& university;

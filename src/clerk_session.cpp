@@ -54,8 +54,6 @@ bool ClerkSession::handle_input() {
         break;
     case State::CREATING_COURSE:
         if (!this->create_course(input)) {
-            this->write_messages.push_back(
-                Message("Failed to create the course. Try again."));
             break;
         }
 
@@ -64,6 +62,13 @@ bool ClerkSession::handle_input() {
 
         break;
     case State::DELETING_COURSE:
+        if (!this->delete_course(input)) {
+            break;
+        }
+
+        this->state = State::WAITING_FOR_ACTION;
+        this->write_messages.push_back(Message("Course deleted."));
+
         break;
     case State::CREATING_STUDENT:
         break;
@@ -80,6 +85,8 @@ bool ClerkSession::create_course(const std::string& input) {
     std::vector<std::string> tokens = split(input, ',');
 
     if (tokens.size() != 3) {
+        this->write_messages.push_front(Message(
+            "Invalid input. Expected course ID, course title, and capsize."));
         return false;
     }
 
@@ -89,6 +96,14 @@ bool ClerkSession::create_course(const std::string& input) {
     std::uint8_t capsize = std::stoi(tokens[2]);
 
     this->university.create_course(Course(id, title, capsize));
+
+    return true;
+}
+
+bool ClerkSession::delete_course(const std::string& input) {
+    std::uint16_t id = std::stoi(input);
+
+    this->university.delete_course(id);
 
     return true;
 }
