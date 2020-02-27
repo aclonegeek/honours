@@ -14,6 +14,7 @@ add_executable(server
   src/server.cpp
   src/message.cpp
   src/clerk_session.cpp
+  src/student_session.cpp
   src/temporary_session.cpp)
 
 add_executable(client
