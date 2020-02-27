@@ -144,7 +144,7 @@ bool ClerkSession::create_student(const std::string& input) {
         return false;
     }
 
-    std::uint16_t id = std::stoi(tokens[0]);
+    std::uint32_t id = std::stoi(tokens[0]);
     std::string name = tokens[1];
 
     this->university.register_student(id, name);
@@ -159,7 +159,7 @@ bool ClerkSession::delete_student(const std::string& input) {
         return false;
     }
 
-    std::uint16_t id = std::stoi(input);
+    std::uint32_t id = std::stoi(input);
 
     if (!this->university.student(id)) {
         this->write_messages.push_back(Message("Student does not exist."));

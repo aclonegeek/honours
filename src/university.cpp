@@ -2,7 +2,7 @@
 
 University::University() {}
 
-std::optional<Course> University::course(const std::uint8_t id) const {
+std::optional<Course> University::course(const std::uint32_t id) const {
     if (auto course = this->courses.find(id); course != this->courses.end()) {
         return course->second;
     }
@@ -10,7 +10,7 @@ std::optional<Course> University::course(const std::uint8_t id) const {
     return {};
 }
 
-std::optional<Student> University::student(const std::uint8_t id) const {
+std::optional<Student> University::student(const std::uint32_t id) const {
     if (auto student = this->students.find(id);
         student != this->students.end()) {
         return student->second;
@@ -19,26 +19,26 @@ std::optional<Student> University::student(const std::uint8_t id) const {
     return {};
 }
 
-void University::create_course(const std::uint8_t id, const std::string& title,
+void University::create_course(const std::uint16_t id, const std::string& title,
                                const std::uint8_t capsize) {
     this->courses.insert({id, Course(id, title, capsize)});
 }
 
-void University::delete_course(const std::uint8_t id) {
+void University::delete_course(const std::uint16_t id) {
     this->courses.erase(id);
 }
 
-void University::register_student(const std::uint8_t id,
+void University::register_student(const std::uint32_t id,
                                   const std::string name) {
     this->students.insert({id, Student(id, name)});
 }
 
-void University::delete_student(const std::uint8_t id) {
+void University::delete_student(const std::uint32_t id) {
     this->students.erase(id);
 }
 
-bool University::register_student_in_course(const std::uint8_t course_id,
-                                            const std::uint8_t student_id) {
+bool University::register_student_in_course(const std::uint16_t course_id,
+                                            const std::uint32_t student_id) {
     return this->courses.at(course_id).register_student(
         this->students.at(student_id));
 }

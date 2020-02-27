@@ -5,11 +5,11 @@
 
 class Student {
 public:
-    Student(const std::uint8_t, const std::string);
+    Student(const std::uint32_t, const std::string);
 
-    std::uint8_t id() const;
+    std::uint32_t id() const;
 
 private:
-    const std::uint8_t _id;
+    const std::uint32_t _id;
     const std::string _name;
 };
