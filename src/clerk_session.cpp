@@ -87,6 +87,14 @@ bool ClerkSession::handle_input() {
 
         break;
     case State::DELETING_STUDENT:
+        if (!this->delete_student(input)) {
+            break;
+        }
+
+        this->state = State::WAITING_FOR_ACTION;
+        this->write_messages.push_back(Message("Student deleted."));
+        this->write_messages.push_back(OPTIONS);
+
         break;
     }
 
