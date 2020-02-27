@@ -20,7 +20,9 @@ protected:
 
 private:
     virtual bool handle_input() override;
+
     void greeting();
+    void write_options();
 
     bool create_course(const std::string&);
     bool delete_course(const std::string&);

@@ -32,26 +32,24 @@ bool ClerkSession::handle_input() {
 
         if (input == "cac") {
             this->state = State::CREATING_COURSE;
-            this->write_messages.push_back(Message(
-                "Enter Course Information: ID (6 digits), Title, Capsize"));
         } else if (input == "cas") {
             this->state = State::CREATING_STUDENT;
-            this->write_messages.push_back(
-                Message("Enter Student Information: ID (9 digits), Name"));
         } else if (input == "dac") {
             this->state = State::DELETING_COURSE;
-            this->write_messages.push_back(Message("Enter Course ID:"));
         } else if (input == "das") {
             this->state = State::DELETING_STUDENT;
-            this->write_messages.push_back(Message("Enter Student ID:"));
         } else {
             this->write_messages.push_back(Message("Invalid command."));
             this->write_messages.push_back(OPTIONS);
+            break;
         }
+
+        this->write_options();
 
         break;
     case State::CREATING_COURSE:
         if (!this->create_course(input)) {
+            this->write_options();
             break;
         }
 
@@ -62,6 +60,7 @@ bool ClerkSession::handle_input() {
         break;
     case State::DELETING_COURSE:
         if (!this->delete_course(input)) {
+            this->write_options();
             break;
         }
 
@@ -72,6 +71,7 @@ bool ClerkSession::handle_input() {
         break;
     case State::CREATING_STUDENT:
         if (!this->create_student(input)) {
+            this->write_options();
             break;
         }
 
@@ -82,6 +82,7 @@ bool ClerkSession::handle_input() {
         break;
     case State::DELETING_STUDENT:
         if (!this->delete_student(input)) {
+            this->write_options();
             break;
         }
 
@@ -95,6 +96,27 @@ bool ClerkSession::handle_input() {
     this->write();
 
     return true;
+}
+
+void ClerkSession::write_options() {
+    switch (this->state) {
+    case State::WAITING_FOR_ACTION:
+        break;
+    case State::CREATING_COURSE:
+        this->write_messages.push_back(
+            Message("Enter Course Information: ID (6 digits), Title, Capsize"));
+        break;
+    case State::DELETING_COURSE:
+        this->write_messages.push_back(Message("Enter Course ID:"));
+        break;
+    case State::CREATING_STUDENT:
+        this->write_messages.push_back(
+            Message("Enter Student Information: ID (9 digits), Name"));
+        break;
+    case State::DELETING_STUDENT:
+        this->write_messages.push_back(Message("Enter Student ID:"));
+        break;
+    }
 }
 
 bool ClerkSession::create_course(const std::string& input) {
