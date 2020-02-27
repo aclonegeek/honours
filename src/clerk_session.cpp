@@ -109,7 +109,6 @@ bool ClerkSession::create_course(const std::string& input) {
 
 bool ClerkSession::delete_course(const std::string& input) {
     std::uint16_t id = std::stoi(input);
-
     this->university.delete_course(id);
 
     return true;
@@ -134,6 +133,19 @@ bool ClerkSession::create_student(const std::string& input) {
     std::string name = tokens[1];
 
     this->university.register_student(id, name);
+
+    return true;
+}
+
+bool ClerkSession::delete_student(const std::string& input) {
+    if (input.length() != 9) {
+        this->write_messages.push_back(
+            Message("Invalid student ID. It must be 9 digits."));
+        return false;
+    }
+
+    std::uint16_t id = std::stoi(input);
+    this->university.delete_student(id);
 
     return true;
 }

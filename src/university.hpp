@@ -15,6 +15,7 @@ public:
     void delete_course(const std::uint8_t);
 
     void register_student(const std::uint8_t, const std::string);
+    void delete_student(const std::uint8_t);
 
     bool register_student_in_course(const std::uint8_t, const std::uint8_t);
 

@@ -32,6 +32,10 @@ void University::register_student(const std::uint8_t id,
     this->students.insert({id, Student(id, name)});
 }
 
+void University::delete_student(const std::uint8_t id) {
+    this->students.erase(id);
+}
+
 bool University::register_student_in_course(const std::uint8_t course_id,
                                             const std::uint8_t student_id) {
     return this->courses.at(course_id).register_student(
