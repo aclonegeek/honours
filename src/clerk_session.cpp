@@ -71,6 +71,13 @@ bool ClerkSession::handle_input() {
 
         break;
     case State::CREATING_STUDENT:
+        if (!this->create_student(input)) {
+            break;
+        }
+
+        this->state = State::WAITING_FOR_ACTION;
+        this->write_messages.push_back(Message("Student created."));
+
         break;
     case State::DELETING_STUDENT:
         break;
@@ -82,10 +89,10 @@ bool ClerkSession::handle_input() {
 }
 
 bool ClerkSession::create_course(const std::string& input) {
-    std::vector<std::string> tokens = split(input, ',');
+    auto tokens = split(input, ',');
 
     if (tokens.size() != 3) {
-        this->write_messages.push_front(Message(
+        this->write_messages.push_back(Message(
             "Invalid input. Expected course ID, course title, and capsize."));
         return false;
     }
@@ -104,6 +111,29 @@ bool ClerkSession::delete_course(const std::string& input) {
     std::uint16_t id = std::stoi(input);
 
     this->university.delete_course(id);
+
+    return true;
+}
+
+bool ClerkSession::create_student(const std::string& input) {
+    auto tokens = split(input, ',');
+
+    if (tokens.size() != 2) {
+        this->write_messages.push_back(
+            Message("Invalid input. Expected student ID and name."));
+        return false;
+    }
+
+    if (tokens[0].length() != 9) {
+        this->write_messages.push_back(
+            Message("Invalid student ID. It must be 9 digits."));
+        return false;
+    }
+
+    std::uint16_t id = std::stoi(tokens[0]);
+    std::string name = tokens[1];
+
+    this->university.register_student(id, name);
 
     return true;
 }
