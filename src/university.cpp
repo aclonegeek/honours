@@ -1,6 +1,32 @@
+#include <chrono>
+#include <thread>
+
 #include "university.hpp"
 
-University::University() {}
+University::University() : state(State::REGISTRATION_NOT_STARTED) {
+    this->start_timers();
+}
+
+void University::start_timers() {
+    std::thread([&]() {
+        std::this_thread::sleep_for(
+            std::chrono::seconds(DAY_LENGTH * PREREGISTRATION_LENGTH));
+        this->state = State::REGISTRATION_STARTED;
+    }).detach();
+
+    std::thread([&]() {
+        std::this_thread::sleep_for(std::chrono::seconds(
+            DAY_LENGTH * (PREREGISTRATION_LENGTH + REGISTRATION_LENGTH)));
+        this->state = State::REGISTRATIONED_ENDED;
+    }).detach();
+
+    std::thread([&]() {
+        std::this_thread::sleep_for(std::chrono::seconds(
+            DAY_LENGTH *
+            (PREREGISTRATION_LENGTH + REGISTRATION_LENGTH + TERM_LENGTH)));
+        this->state = State::TERM_ENDED;
+    }).detach();
+}
 
 std::optional<Course> University::course(const std::uint32_t id) const {
     if (auto course = this->courses.find(id); course != this->courses.end()) {

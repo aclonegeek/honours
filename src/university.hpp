@@ -4,6 +4,11 @@
 
 #include "course.hpp"
 
+constexpr uint8_t DAY_LENGTH             = 5;   // seconds
+constexpr uint8_t PREREGISTRATION_LENGTH = 20;  // days
+constexpr uint8_t REGISTRATION_LENGTH    = 14;  // days
+constexpr uint8_t TERM_LENGTH            = 118; // days
+
 class University {
 public:
     University();
@@ -21,6 +26,17 @@ public:
     bool register_student_in_course(const std::uint16_t, const std::uint32_t);
 
 private:
+    void start_timers();
+
+    enum class State {
+        REGISTRATION_NOT_STARTED,
+        REGISTRATION_STARTED,
+        REGISTRATIONED_ENDED,
+        TERM_ENDED,
+    };
+
+    State state;
+
     std::unordered_map<std::uint16_t, Course> courses;
     std::unordered_map<std::uint32_t, Student> students;
 };
