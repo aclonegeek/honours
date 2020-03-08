@@ -3,7 +3,7 @@
 #include "session.hpp"
 #include "university.hpp"
 
-class ClerkSession : public Session {
+class ClerkSession final : public Session {
 public:
     ClerkSession(tcp::socket, University&);
 

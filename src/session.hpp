@@ -25,7 +25,7 @@ public:
     virtual ~Session() {}
 
 protected:
-    virtual void read_header() {
+    virtual void read_header() final {
         auto self(this->shared_from_this());
         asio::async_read(
             this->socket,
@@ -39,7 +39,7 @@ protected:
             });
     };
 
-    virtual void read_body() {
+    virtual void read_body() final {
         auto self(this->shared_from_this());
         asio::async_read(
             this->socket,
@@ -64,7 +64,7 @@ protected:
             });
     }
 
-    virtual void write() {
+    virtual void write() final {
         auto self(this->shared_from_this());
         asio::async_write(
             this->socket,
