@@ -2,7 +2,9 @@
 #include <memory>
 
 #include "clerk_session.hpp"
+#include "student_session.hpp"
 #include "temporary_session.hpp"
+#include "util.hpp"
 
 TemporarySession::TemporarySession(tcp::socket socket, University& university)
     : Session(std::move(socket)),
@@ -51,8 +53,29 @@ bool TemporarySession::handle_input() {
         std::make_shared<ClerkSession>(std::move(this->socket),
                                        this->university)
             ->start();
+
         return false;
     case State::STUDENT_LOGIN:
+        auto tokens = util::split(input, ',');
+
+        if (tokens.size() != 2) {
+            this->write_messages.push_back(Message("Invalid input. Expected student ID and name."));
+            break;
+        }
+
+        std::uint32_t id = std::stoi(tokens[0]);
+        std::string name = tokens[1];
+
+        if (!this->university.student(id)) {
+            this->write_messages.push_back(Message("Student does not exist."));
+            break;
+        }
+
+        std::make_shared<StudentSession>(std::move(this->socket),
+                                         this->university,
+                                         id)
+            ->start();
+
         break;
     }
 

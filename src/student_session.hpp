@@ -5,7 +5,7 @@
 
 class StudentSession final : public Session {
 public:
-    StudentSession(tcp::socket, University&);
+    StudentSession(tcp::socket, University&, const std::uint32_t);
 
     virtual void start() override;
 
@@ -27,4 +27,6 @@ private:
 
     State state;
     University& university;
+
+    const std::uint32_t id;
 };

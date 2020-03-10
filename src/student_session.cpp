@@ -4,10 +4,13 @@ const Message OPTIONS =
     Message("Options: Register for Course (RFC), Deregister from Course (DFC), "
             "Drop a Course (DAC).");
 
-StudentSession::StudentSession(tcp::socket socket, University& university)
+StudentSession::StudentSession(tcp::socket socket,
+                               University& university,
+                               const std::uint32_t id)
     : Session(std::move(socket)),
       state(State::WAITING_FOR_ACTION),
-      university(university) {}
+      university(university),
+      id(id) {}
 
 void StudentSession::start() {
     this->greeting();
