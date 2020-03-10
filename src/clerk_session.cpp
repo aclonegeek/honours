@@ -120,7 +120,7 @@ void ClerkSession::write_options() {
 }
 
 bool ClerkSession::create_course(const std::string& input) {
-    auto tokens = split(input, ',');
+    auto tokens = util::split(input, ',');
 
     if (tokens.size() != 3) {
         this->write_messages.push_back(Message(
@@ -152,7 +152,7 @@ bool ClerkSession::delete_course(const std::string& input) {
 }
 
 bool ClerkSession::create_student(const std::string& input) {
-    auto tokens = split(input, ',');
+    auto tokens = util::split(input, ',');
 
     if (tokens.size() != 2) {
         this->write_messages.push_back(
