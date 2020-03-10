@@ -63,8 +63,8 @@ void University::delete_student(const std::uint32_t id) {
     this->students.erase(id);
 }
 
-bool University::register_student_in_course(const std::uint16_t course_id,
-                                            const std::uint32_t student_id) {
+bool University::register_student_in_course(const std::uint32_t student_id,
+                                            const std::uint16_t course_id) {
     return this->courses.at(course_id).register_student(
         this->students.at(student_id));
 }
