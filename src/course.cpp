@@ -14,4 +14,14 @@ bool Course::register_student(Student& student) {
     return true;
 }
 
+bool Course::deregister_student(std::uint32_t id) {
+    if (this->students.find(id) == this->students.end()) {
+        return false;
+    }
+
+    this->students.erase(id);
+
+    return true;
+}
+
 std::uint16_t Course::id() const { return this->_id; }

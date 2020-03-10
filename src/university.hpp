@@ -24,6 +24,7 @@ public:
     void delete_student(const std::uint32_t);
 
     bool register_student_in_course(const std::uint32_t, const std::uint16_t);
+    bool deregister_student_from_course(const std::uint32_t, const std::uint16_t);
 
 private:
     void start_timers();

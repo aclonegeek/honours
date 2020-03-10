@@ -68,3 +68,8 @@ bool University::register_student_in_course(const std::uint32_t student_id,
     return this->courses.at(course_id).register_student(
         this->students.at(student_id));
 }
+
+bool University::deregister_student_from_course(const std::uint32_t student_id,
+                                                const std::uint16_t course_id) {
+    return this->courses.at(course_id).deregister_student(student_id);
+}

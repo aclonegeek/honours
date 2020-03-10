@@ -9,6 +9,7 @@ public:
     Course(const std::uint16_t, const std::string, const std::uint8_t capsize);
 
     bool register_student(Student&);
+    bool deregister_student(const std::uint32_t);
 
     std::uint16_t id() const;
 
