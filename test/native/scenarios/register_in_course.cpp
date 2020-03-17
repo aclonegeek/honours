@@ -11,14 +11,17 @@
 
 #include "server.hpp"
 
-asio::io_context io_context;
-tcp::endpoint endpoint(tcp::v4(), 5001);
-
 SCENARIO("A student selects and registers in a course of the current term "
          "after registration starts and before registration ends") {
-    GIVEN("The ATC is running") {
+    asio::io_context io_context;
+    tcp::endpoint endpoint(tcp::v4(), 5001);
+
+    GIVEN("The server is running") {
         University university;
-        std::thread server([] { Server server{io_context, endpoint}; });
+        std::thread server([&] {
+            Server server{io_context, endpoint};
+            io_context.run();
+        });
 
         std::this_thread::sleep_for(std::chrono::seconds(5));
         // WHEN("We let the threads run") {
