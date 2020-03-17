@@ -38,6 +38,7 @@ void Client::read_header() {
         [this](std::error_code error_code, std::size_t /*length*/) {
             if (error_code || !this->read_message.decode_header()) {
                 // TODO: Log this.
+                std::cout << "message: " << this->read_message.data() << "\n";
                 std::cout << "read header fail\n";
                 this->socket.close();
                 return;

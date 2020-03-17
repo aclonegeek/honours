@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "server.hpp"
-#include "temporary_session.hpp"
+#include "session/temporary_session.hpp"
 
 Server::Server(asio::io_context& io_context, const tcp::endpoint& endpoint)
     : acceptor(io_context, endpoint) {
