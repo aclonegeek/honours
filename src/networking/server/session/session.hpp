@@ -54,6 +54,8 @@ protected:
                 std::cerr << this->read_message.body() << "\n";
 
                 if (!this->handle_input()) {
+                    std::memset(this->read_message.data(), 0,
+                                this->read_message.length());
                     return;
                 }
 
