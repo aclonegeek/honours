@@ -13,7 +13,7 @@ class University {
 public:
     University();
 
-    std::optional<Course> course(const std::uint32_t) const;
+    std::optional<Course> course(const std::uint16_t) const;
     std::optional<Student> student(const std::uint32_t) const;
 
     void create_course(const std::uint16_t, const std::string&,

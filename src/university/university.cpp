@@ -28,7 +28,7 @@ void University::start_timers() {
     }).detach();
 }
 
-std::optional<Course> University::course(const std::uint32_t id) const {
+std::optional<Course> University::course(const std::uint16_t id) const {
     if (auto course = this->courses.find(id); course != this->courses.end()) {
         return course->second;
     }
