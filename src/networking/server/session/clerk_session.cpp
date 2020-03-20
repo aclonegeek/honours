@@ -120,7 +120,7 @@ void ClerkSession::write_options() {
 }
 
 bool ClerkSession::create_course(const std::string& input) {
-    auto tokens = util::split(input, ',');
+    const auto tokens = util::split(input, ',');
 
     if (tokens.size() != 3) {
         this->write_messages.push_back(Message(
@@ -129,9 +129,9 @@ bool ClerkSession::create_course(const std::string& input) {
     }
 
     // TODO: Error handling.
-    std::uint16_t id     = std::stoi(tokens[0]);
-    std::string title    = tokens[1];
-    std::uint8_t capsize = std::stoi(tokens[2]);
+    const std::uint16_t id     = std::stoi(tokens[0]);
+    const std::string title    = tokens[1];
+    const std::uint8_t capsize = std::stoi(tokens[2]);
 
     this->university.create_course(id, title, capsize);
 
@@ -139,7 +139,7 @@ bool ClerkSession::create_course(const std::string& input) {
 }
 
 bool ClerkSession::delete_course(const std::string& input) {
-    std::uint16_t id = std::stoi(input);
+    const std::uint16_t id = std::stoi(input);
 
     if (!this->university.course(id)) {
         this->write_messages.push_back(Message("Course does not exist."));
@@ -152,7 +152,7 @@ bool ClerkSession::delete_course(const std::string& input) {
 }
 
 bool ClerkSession::create_student(const std::string& input) {
-    auto tokens = util::split(input, ',');
+    const auto tokens = util::split(input, ',');
 
     if (tokens.size() != 2) {
         this->write_messages.push_back(
@@ -166,8 +166,8 @@ bool ClerkSession::create_student(const std::string& input) {
         return false;
     }
 
-    std::uint32_t id = std::stoi(tokens[0]);
-    std::string name = tokens[1];
+    const std::uint32_t id = std::stoi(tokens[0]);
+    const std::string name = tokens[1];
 
     this->university.register_student(id, name);
 
@@ -181,7 +181,7 @@ bool ClerkSession::delete_student(const std::string& input) {
         return false;
     }
 
-    std::uint32_t id = std::stoi(input);
+    const std::uint32_t id = std::stoi(input);
 
     if (!this->university.student(id)) {
         this->write_messages.push_back(Message("Student does not exist."));
