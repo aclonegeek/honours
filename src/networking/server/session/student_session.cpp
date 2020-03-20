@@ -85,7 +85,8 @@ bool StudentSession::handle_input() {
 }
 
 bool StudentSession::register_for_course(const std::string& input) {
-    return true;
+    const std::uint16_t course_id = std::stoi(input);
+    return this->university.register_student_in_course(this->id, course_id);
 }
 
 bool StudentSession::deregister_from_course(const std::string& input) {
