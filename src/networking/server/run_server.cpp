@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "server.hpp"
+#include "university.hpp"
 
 // TODO: More error handling, probably extract args parsing out into a
 // function and return the port.
@@ -11,9 +12,10 @@ int main(int argc, char* argv[]) {
     }
 
     try {
+        University university;
         asio::io_context io_context;
         tcp::endpoint endpoint(tcp::v4(), std::atoi(argv[1]));
-        Server server{io_context, endpoint};
+        Server server{io_context, endpoint, university};
 
         io_context.run();
     } catch (std::exception& e) {
