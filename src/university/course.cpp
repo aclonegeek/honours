@@ -14,7 +14,7 @@ bool Course::register_student(Student& student) {
     return true;
 }
 
-bool Course::deregister_student(std::uint32_t id) {
+bool Course::deregister_student(const std::uint32_t id) {
     if (this->students.find(id) == this->students.end()) {
         return false;
     }
@@ -24,7 +24,7 @@ bool Course::deregister_student(std::uint32_t id) {
     return true;
 }
 
-bool Course::has_student(std::uint32_t id) const {
+bool Course::has_student(const std::uint32_t id) const {
     return this->students.find(id) != this->students.end();
 }
 
