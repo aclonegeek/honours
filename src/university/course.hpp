@@ -11,6 +11,8 @@ public:
     bool register_student(Student&);
     bool deregister_student(const std::uint32_t);
 
+    bool has_student(const std::uint32_t) const;
+
     std::uint16_t id() const;
 
 private:

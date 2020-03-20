@@ -24,4 +24,8 @@ bool Course::deregister_student(std::uint32_t id) {
     return true;
 }
 
+bool Course::has_student(std::uint32_t id) const {
+    return this->students.find(id) != this->students.end();
+}
+
 std::uint16_t Course::id() const { return this->_id; }
