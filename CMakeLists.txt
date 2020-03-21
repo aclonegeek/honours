@@ -8,6 +8,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 find_package(Threads REQUIRED)
 
+add_subdirectory(third_party)
 add_subdirectory(src)
-add_subdirectory(third_party/doctest)
 add_subdirectory(test)
