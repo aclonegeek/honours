@@ -41,14 +41,10 @@ TEST_SUITE("Registering in a course") {
             student_thread = std::thread([&] { student_io_context.run(); });
         }
 
-        GIVEN("The clerk is logged in") {
-            clerk.send(Message("clerk"));
-            clerk.send(Message("admin"));
-        }
+        GIVEN("The clerk is logged in") { the_clerk_is_logged_in(clerk); }
 
         GIVEN("There is an existing course 12345, Witchcraft, 1") {
-            clerk.send(Message("cac"));
-            clerk.send(Message("12345, Witchcraft, 1"));
+            there_is_an_existing_course(clerk, "12345, Witchcraft, 1");
         }
 
         GIVEN("There is an existing student 123456789, joe") {
@@ -62,8 +58,7 @@ TEST_SUITE("Registering in a course") {
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
         GIVEN("The student has logged in as 123456789, joe") {
-            student.send(Message("student"));
-            student.send(Message("123456789, joe"));
+            the_student_has_logged_in_as(student, "123456789, joe");
         }
     }
 
