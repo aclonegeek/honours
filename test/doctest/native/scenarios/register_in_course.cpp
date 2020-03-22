@@ -3,19 +3,15 @@
 
 #include <chrono>
 #include <iostream>
-#include <string>
 #include <thread>
 
 #include "client.hpp"
 #include "server.hpp"
 
+#include "step_definitions.hpp"
+
 constexpr std::string_view host = "localhost";
 constexpr std::string_view port = "5001";
-
-void there_is_an_existing_student(Client& client, const std::string& message) {
-    client.send(Message("cas"));
-    client.send(Message(message));
-}
 
 TEST_SUITE("Registering in a course") {
     University university;
