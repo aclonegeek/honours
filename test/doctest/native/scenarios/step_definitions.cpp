@@ -1,5 +1,4 @@
 #include "client.hpp"
-#include "server.hpp"
 
 void the_clerk_is_logged_in(Client& clerk) {
     clerk.send(Message("clerk"));
@@ -8,7 +7,7 @@ void the_clerk_is_logged_in(Client& clerk) {
 
 void the_student_has_logged_in_as(Client& student, const std::string& message) {
     student.send(Message("student"));
-    student.send(Message("123456789, joe"));
+    student.send(Message(message));
 }
 
 void there_is_an_existing_course(Client& clerk, const std::string& message) {
