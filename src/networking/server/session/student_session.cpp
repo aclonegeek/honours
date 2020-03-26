@@ -34,21 +34,20 @@ bool StudentSession::handle_input() {
 
         if (input == "rfc") {
             this->state = State::REGISTER_FOR_COURSE;
-            this->write_messages.push_back(Message("Enter Course ID:"));
         } else if (input == "dfc") {
             this->state = State::DEREGISTER_FROM_COURSE;
-            this->write_messages.push_back(Message("Enter Course ID:"));
         } else if (input == "dac") {
             this->state = State::DROP_COURSE;
-            this->write_messages.push_back(Message("Enter Course ID:"));
         } else {
             this->write_messages.push_back(Message("Invalid command."));
-            this->write_messages.push_back(OPTIONS);
         }
+
+        this->write_options();
 
         break;
     case State::REGISTER_FOR_COURSE:
         if (!this->register_for_course(input)) {
+            this->write_options();
             break;
         }
 
@@ -59,6 +58,7 @@ bool StudentSession::handle_input() {
         break;
     case State::DEREGISTER_FROM_COURSE:
         if (!this->deregister_from_course(input)) {
+            this->write_options();
             break;
         }
 
@@ -69,6 +69,7 @@ bool StudentSession::handle_input() {
         break;
     case State::DROP_COURSE:
         if (!this->drop_course(input)) {
+            this->write_options();
             break;
         }
 
@@ -82,6 +83,21 @@ bool StudentSession::handle_input() {
     this->write();
 
     return true;
+}
+
+void StudentSession::write_options() {
+    switch (this->state) {
+    case State::WAITING_FOR_ACTION:
+        this->write_messages.push_back(OPTIONS);
+        break;
+    case State::REGISTER_FOR_COURSE:
+        [[fallthrough]];
+    case State::DEREGISTER_FROM_COURSE:
+        [[fallthrough]];
+    case State::DROP_COURSE:
+        this->write_messages.push_back(Message("Enter Course ID:"));
+        break;
+    }
 }
 
 bool StudentSession::register_for_course(const std::string& input) {
