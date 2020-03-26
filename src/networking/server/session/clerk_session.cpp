@@ -40,7 +40,6 @@ bool ClerkSession::handle_input() {
             this->state = State::DELETING_STUDENT;
         } else {
             this->write_messages.push_back(Message("Invalid command."));
-            this->write_messages.push_back(OPTIONS);
             break;
         }
 
@@ -101,6 +100,7 @@ bool ClerkSession::handle_input() {
 void ClerkSession::write_options() {
     switch (this->state) {
     case State::WAITING_FOR_ACTION:
+        this->write_messages.push_back(OPTIONS);
         break;
     case State::CREATING_COURSE:
         this->write_messages.push_back(
