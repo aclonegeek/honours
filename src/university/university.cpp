@@ -65,6 +65,10 @@ void University::delete_student(const std::uint32_t id) {
 
 bool University::register_student_in_course(const std::uint32_t student_id,
                                             const std::uint16_t course_id) {
+    if (this->courses.find(course_id) == this->courses.end()) {
+        return false;
+    }
+
     return this->courses.at(course_id).register_student(
         this->students.at(student_id));
 }
