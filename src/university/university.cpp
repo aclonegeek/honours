@@ -69,6 +69,10 @@ bool University::register_student_in_course(const std::uint32_t student_id,
         return false;
     }
 
+    if (this->state != State::REGISTRATION_STARTED) {
+        return false;
+    }
+
     return this->courses.at(course_id).register_student(
         this->students.at(student_id));
 }
