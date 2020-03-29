@@ -69,8 +69,8 @@ private:
     tcp::resolver student_resolver;
     tcp::endpoint server_endpoint;
 
-    tcp::resolver::results_type clerk_endpoints;
-    tcp::resolver::results_type student_endpoints;
+    const tcp::resolver::results_type clerk_endpoints;
+    const tcp::resolver::results_type student_endpoints;
 
     std::thread server_thread;
     std::thread clerk_thread;
@@ -87,7 +87,6 @@ TEST_SUITE_BEGIN("Registering in a course");
 
 // clang-format off
 SCENARIO("A student registers in a course after registration starts and before registration ends") {
-    std::cout << "\nA student registers in a course after registration starts and before registration ends\n";
     // clang-format on
     ScenarioContext ctx;
 
@@ -113,10 +112,7 @@ SCENARIO("A student registers in a course after registration starts and before r
     }
 }
 
-// clang-format off
 SCENARIO("A student registers in a course that doesn't exist") {
-    std::cout << "\nA student registers in a course that doesn't exist\n";
-    // clang-format on
     ScenarioContext ctx;
 
     GIVEN("We fastforward 10 days.") {
@@ -138,9 +134,7 @@ SCENARIO("A student registers in a course that doesn't exist") {
     }
 }
 
-// clang-format off
 SCENARIO("A student registers in a course before registration starts") {
-    // clang-format on
     ScenarioContext ctx;
 
     GIVEN("The student enters rfc") {
@@ -155,6 +149,54 @@ SCENARIO("A student registers in a course before registration starts") {
                 CHECK(false ==
                       ctx.university().course(12345).value().has_student(
                           123456789));
+            }
+        }
+    }
+}
+
+SCENARIO("A student registers in a course after registration ended") {
+    ScenarioContext ctx;
+
+    GIVEN("We fastforward 25 days.") {
+        std::this_thread::sleep_for(std::chrono::seconds(DAY_LENGTH * 25));
+
+        GIVEN("The student enters rfc") {
+            ctx.student().send(Message("rfc"));
+
+            WHEN("The student enters 12345") {
+                ctx.student().send(Message("12345"));
+
+                std::this_thread::sleep_for(std::chrono::milliseconds(10));
+
+                THEN("The student 123456789 is not registered in 12345") {
+                    CHECK(false ==
+                          ctx.university().course(12345).value().has_student(
+                              123456789));
+                }
+            }
+        }
+    }
+}
+
+SCENARIO("A student registers in a course after the term ended") {
+    ScenarioContext ctx;
+
+    GIVEN("We fastforward 115 days.") {
+        std::this_thread::sleep_for(std::chrono::seconds(DAY_LENGTH * 115));
+
+        GIVEN("The student enters rfc") {
+            ctx.student().send(Message("rfc"));
+
+            WHEN("The student enters 12345") {
+                ctx.student().send(Message("12345"));
+
+                std::this_thread::sleep_for(std::chrono::milliseconds(10));
+
+                THEN("The student 123456789 is not registered in 12345") {
+                    CHECK(false ==
+                          ctx.university().course(12345).value().has_student(
+                              123456789));
+                }
             }
         }
     }
