@@ -12,7 +12,7 @@ Message::Message(const std::string& message) {
 
 void Message::encode_header() {
     char header[HEADER_LENGTH + 1] = "";
-    std::sprintf(header, "%4d", _body_length);
+    std::sprintf(header, "%3d", _body_length);
     std::memcpy(_data, header, HEADER_LENGTH);
 }
 
