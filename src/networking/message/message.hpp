@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <string>
 
-constexpr uint8_t HEADER_LENGTH    = 4;
+constexpr uint8_t HEADER_LENGTH    = 3;
 constexpr uint16_t MAX_BODY_LENGTH = 512;
 
 class Message {
