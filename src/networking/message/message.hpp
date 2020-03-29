@@ -25,6 +25,6 @@ public:
     void body_length(const uint16_t);
 
 private:
-    char _data[HEADER_LENGTH + MAX_BODY_LENGTH];
+    char _data[HEADER_LENGTH + MAX_BODY_LENGTH] = {};
     uint16_t _body_length;
 };
