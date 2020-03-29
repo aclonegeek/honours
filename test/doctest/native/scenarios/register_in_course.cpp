@@ -26,8 +26,6 @@ public:
           student_endpoints(this->student_resolver.resolve(host, port)),
           clerk(Client(this->clerk_io_context, this->clerk_endpoints)),
           _student(Client(this->student_io_context, this->student_endpoints)) {
-        std::cout << "\nCTOR\n";
-
         this->server_thread =
             std::thread([&] { this->server_io_context.run(); });
         this->clerk_thread = std::thread([&] { this->clerk_io_context.run(); });
@@ -40,8 +38,6 @@ public:
     }
 
     ~ScenarioContext() {
-        std::cout << "\nDTOR\n";
-
         this->clerk_io_context.stop();
         this->student_io_context.stop();
         this->server_io_context.stop();
@@ -49,8 +45,6 @@ public:
         this->server_thread.join();
         this->clerk_thread.join();
         this->student_thread.join();
-
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
     void background() {
@@ -58,7 +52,7 @@ public:
         there_is_an_existing_course(this->clerk, "12345, Witchcraft, 1");
         there_is_an_existing_student(this->clerk, "123456789, joe");
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
         the_student_has_logged_in_as(this->_student, "123456789, joe");
     }
@@ -148,9 +142,6 @@ SCENARIO("A student registers in a course that doesn't exist") {
 SCENARIO("A student registers in a course before registration starts") {
     // clang-format on
     ScenarioContext ctx;
-    std::cout << "\nOI2: "
-              << ctx.university().course(12345).value().has_student(123456789)
-              << "\n";
 
     GIVEN("The student enters rfc") {
         ctx.student().send(Message("rfc"));
