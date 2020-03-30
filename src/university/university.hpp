@@ -13,9 +13,6 @@ class University {
 public:
     University();
 
-    const std::optional<Course> course(const std::uint16_t) const;
-    const std::optional<Student> student(const std::uint32_t) const;
-
     void create_course(const std::uint16_t, const std::string&,
                        const std::uint8_t);
     void delete_course(const std::uint16_t);
@@ -26,6 +23,11 @@ public:
     bool register_student_in_course(const std::uint32_t, const std::uint16_t);
     bool deregister_student_from_course(const std::uint32_t,
                                         const std::uint16_t);
+
+    const std::optional<Course> course(const std::uint16_t) const;
+    const std::optional<Student> student(const std::uint32_t) const;
+
+    const std::string get_state() const;
 
 private:
     void start_timers();
