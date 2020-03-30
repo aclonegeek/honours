@@ -12,6 +12,7 @@ public:
     bool deregister_student(const std::uint32_t);
 
     bool has_student(const std::uint32_t) const;
+    bool is_full() const;
 
     std::uint16_t id() const;
 
