@@ -10,6 +10,10 @@ void the_student_has_logged_in_as(Client& student, const std::string& message) {
     student.send(Message(message));
 }
 
+void send(Client& client, const std::string& message) {
+    client.send(Message(message));
+}
+
 void there_is_an_existing_course(Client& clerk, const std::string& message) {
     clerk.send(Message("cac"));
     clerk.send(Message(message));

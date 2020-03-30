@@ -1,4 +1,3 @@
-#include "university.hpp"
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest.h>
 
@@ -102,15 +101,16 @@ TEST_SUITE_BEGIN("Registering in a course");
 SCENARIO("A student registers in a course after registration starts and before registration ends") {
     // clang-format on
     ScenarioContext ctx;
+    Client& joe = ctx.joe();
 
     GIVEN("We fastforward 10 days.") {
         std::this_thread::sleep_for(std::chrono::seconds(DAY_LENGTH * 10));
 
         GIVEN("The student enters rfc") {
-            ctx.joe().send(Message("rfc"));
+            send(joe, "rfc");
 
             WHEN("The student enters 12345") {
-                ctx.joe().send(Message("12345"));
+                send(joe, "12345");
 
                 std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
@@ -127,15 +127,16 @@ SCENARIO("A student registers in a course after registration starts and before r
 
 SCENARIO("A student registers in a course that doesn't exist") {
     ScenarioContext ctx;
+    Client& joe = ctx.joe();
 
     GIVEN("We fastforward 10 days.") {
         std::this_thread::sleep_for(std::chrono::seconds(DAY_LENGTH * 10));
 
         GIVEN("The student enters rfc") {
-            ctx.joe().send(Message("rfc"));
+            send(joe, "rfc");
 
             WHEN("The student enters 2") {
-                ctx.joe().send(Message("2"));
+                send(joe, "2");
 
                 std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
@@ -149,12 +150,13 @@ SCENARIO("A student registers in a course that doesn't exist") {
 
 SCENARIO("A student registers in a course before registration starts") {
     ScenarioContext ctx;
+    Client& joe = ctx.joe();
 
     GIVEN("The student enters rfc") {
-        ctx.joe().send(Message("rfc"));
+        send(joe, "rfc");
 
         WHEN("The student enters 12345") {
-            ctx.joe().send(Message("12345"));
+            send(joe, "12345");
 
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
@@ -169,15 +171,16 @@ SCENARIO("A student registers in a course before registration starts") {
 
 SCENARIO("A student registers in a course after registration ended") {
     ScenarioContext ctx;
+    Client& joe = ctx.joe();
 
     GIVEN("We fastforward 25 days.") {
         std::this_thread::sleep_for(std::chrono::seconds(DAY_LENGTH * 25));
 
         GIVEN("The student enters rfc") {
-            ctx.joe().send(Message("rfc"));
+            send(joe, "rfc");
 
             WHEN("The student enters 12345") {
-                ctx.joe().send(Message("12345"));
+                send(joe, "12345");
 
                 std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
@@ -193,15 +196,16 @@ SCENARIO("A student registers in a course after registration ended") {
 
 SCENARIO("A student registers in a course after the term ended") {
     ScenarioContext ctx;
+    Client& joe = ctx.joe();
 
     GIVEN("We fastforward 115 days.") {
         std::this_thread::sleep_for(std::chrono::seconds(DAY_LENGTH * 115));
 
         GIVEN("The student enters rfc") {
-            ctx.joe().send(Message("rfc"));
+            send(joe, "rfc");
 
             WHEN("The student enters 12345") {
-                ctx.joe().send(Message("12345"));
+                send(joe, "12345");
 
                 std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
@@ -219,25 +223,27 @@ SCENARIO("A student registers in a course after the term ended") {
 SCENARIO("A student registers in a course that reached its capsize before registration ends") {
     // clang-format on
     ScenarioContext ctx;
+    Client& joe    = ctx.joe();
+    Client& murphy = ctx.murphy();
 
     GIVEN("We fastforward 10 days.") {
         std::this_thread::sleep_for(std::chrono::seconds(DAY_LENGTH * 10));
 
         GIVEN("The student enters rfc") {
-            ctx.joe().send(Message("rfc"));
+            send(joe, "rfc");
 
             GIVEN("The student enters 12345") {
-                ctx.joe().send(Message("12345"));
+                send(joe, "12345");
 
                 GIVEN("The student has logged in as 123456788, murphy") {
                     the_student_has_logged_in_as(ctx.murphy(),
                                                  "123456788, murphy");
 
                     GIVEN("The student enters rfc") {
-                        ctx.murphy().send(Message("rfc"));
+                        send(murphy, "rfc");
 
                         WHEN("The student enters 12345") {
-                            ctx.murphy().send(Message("12345"));
+                            send(murphy, "12345");
 
                             THEN("The student 123456788 is not registered in "
                                  "12345") {
