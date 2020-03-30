@@ -5,9 +5,9 @@
 #include "course.hpp"
 
 constexpr uint8_t DAY_LENGTH             = 1;  // seconds
-constexpr uint8_t PREREGISTRATION_LENGTH = 10; // days
-constexpr uint8_t REGISTRATION_LENGTH    = 14; // days
-constexpr uint8_t TERM_LENGTH            = 90; // days
+constexpr uint8_t PREREGISTRATION_LENGTH = 1;  // days
+constexpr uint8_t REGISTRATION_LENGTH    = 10; // days
+constexpr uint8_t TERM_LENGTH            = 10; // days
 
 class University {
 public:
