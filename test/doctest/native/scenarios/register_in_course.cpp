@@ -1,17 +1,12 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest.h>
 
-#include <chrono>
 #include <iostream>
-#include <thread>
 
 #include "client.hpp"
 #include "server.hpp"
 
 #include "step_definitions.hpp"
-
-constexpr std::string_view host = "localhost";
-constexpr std::string_view port = "5001";
 
 class ScenarioContext {
 public:
@@ -34,9 +29,6 @@ public:
         this->joe_thread   = std::thread([&] { this->joe_io_context.run(); });
         this->murphy_thread =
             std::thread([&] { this->murphy_io_context.run(); });
-
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
-
         this->background();
     }
 
@@ -58,7 +50,7 @@ public:
         there_is_an_existing_student(this->clerk, "123456789, joe");
         there_is_an_existing_student(this->clerk, "123456788, murphy");
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
         the_student_has_logged_in_as(this->_joe, "123456789, joe");
     }
@@ -103,8 +95,8 @@ SCENARIO("A student registers in a course after registration starts and before r
     ScenarioContext ctx;
     Client& joe = ctx.joe();
 
-    GIVEN("We fastforward 10 days.") {
-        std::this_thread::sleep_for(std::chrono::seconds(DAY_LENGTH * 10));
+    GIVEN("We wait until registration starts.") {
+        wait(WaitUntil::REGISTRATION_STARTS);
 
         GIVEN("The student enters rfc") {
             send(joe, "rfc");
@@ -112,7 +104,7 @@ SCENARIO("A student registers in a course after registration starts and before r
             WHEN("The student enters 12345") {
                 send(joe, "12345");
 
-                std::this_thread::sleep_for(std::chrono::milliseconds(10));
+                std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
                 THEN(
                     "The student 123456789 is registered in the course 12345") {
@@ -129,8 +121,8 @@ SCENARIO("A student registers in a course that doesn't exist") {
     ScenarioContext ctx;
     Client& joe = ctx.joe();
 
-    GIVEN("We fastforward 10 days.") {
-        std::this_thread::sleep_for(std::chrono::seconds(DAY_LENGTH * 10));
+    GIVEN("We wait until registration starts.") {
+        wait(WaitUntil::REGISTRATION_STARTS);
 
         GIVEN("The student enters rfc") {
             send(joe, "rfc");
@@ -138,7 +130,7 @@ SCENARIO("A student registers in a course that doesn't exist") {
             WHEN("The student enters 2") {
                 send(joe, "2");
 
-                std::this_thread::sleep_for(std::chrono::milliseconds(10));
+                std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
                 THEN("The course does not exist") {
                     CHECK(false == ctx.university().course(2).has_value());
@@ -158,7 +150,7 @@ SCENARIO("A student registers in a course before registration starts") {
         WHEN("The student enters 12345") {
             send(joe, "12345");
 
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+            std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
             THEN("The student 123456789 is not registered in 12345") {
                 CHECK(false ==
@@ -173,8 +165,8 @@ SCENARIO("A student registers in a course after registration ended") {
     ScenarioContext ctx;
     Client& joe = ctx.joe();
 
-    GIVEN("We fastforward 25 days.") {
-        std::this_thread::sleep_for(std::chrono::seconds(DAY_LENGTH * 25));
+    GIVEN("We wait until registration ends.") {
+        wait(WaitUntil::REGISTRATION_ENDS);
 
         GIVEN("The student enters rfc") {
             send(joe, "rfc");
@@ -182,7 +174,7 @@ SCENARIO("A student registers in a course after registration ended") {
             WHEN("The student enters 12345") {
                 send(joe, "12345");
 
-                std::this_thread::sleep_for(std::chrono::milliseconds(10));
+                std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
                 THEN("The student 123456789 is not registered in 12345") {
                     CHECK(false ==
@@ -198,8 +190,8 @@ SCENARIO("A student registers in a course after the term ended") {
     ScenarioContext ctx;
     Client& joe = ctx.joe();
 
-    GIVEN("We fastforward 115 days.") {
-        std::this_thread::sleep_for(std::chrono::seconds(DAY_LENGTH * 115));
+    GIVEN("We wait until the term ends.") {
+        wait(WaitUntil::TERM_ENDS);
 
         GIVEN("The student enters rfc") {
             send(joe, "rfc");
@@ -207,7 +199,7 @@ SCENARIO("A student registers in a course after the term ended") {
             WHEN("The student enters 12345") {
                 send(joe, "12345");
 
-                std::this_thread::sleep_for(std::chrono::milliseconds(10));
+                std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
                 THEN("The student 123456789 is not registered in 12345") {
                     CHECK(false ==
@@ -226,8 +218,8 @@ SCENARIO("A student registers in a course that reached its capsize before regist
     Client& joe    = ctx.joe();
     Client& murphy = ctx.murphy();
 
-    GIVEN("We fastforward 10 days.") {
-        std::this_thread::sleep_for(std::chrono::seconds(DAY_LENGTH * 10));
+    GIVEN("We wait until registration starts.") {
+        wait(WaitUntil::REGISTRATION_STARTS);
 
         GIVEN("The student enters rfc") {
             send(joe, "rfc");
@@ -248,7 +240,7 @@ SCENARIO("A student registers in a course that reached its capsize before regist
                             THEN("The student 123456788 is not registered in "
                                  "12345") {
                                 std::this_thread::sleep_for(
-                                    std::chrono::milliseconds(10));
+                                    std::chrono::milliseconds(5));
 
                                 THEN("The student 123456789 is not registered "
                                      "in 12345") {
