@@ -124,7 +124,32 @@ void StudentSession::deregister_from_course() {
 }
 
 void StudentSession::drop_course() {
-    this->write_messages.push_back(Message("Course dropped."));
+    const std::uint16_t course_id = std::stoi(this->read_message.body());
+
+    StudentResult result =
+        this->university.drop_student_from_course(this->id, course_id);
+
+    switch (result) {
+    case StudentResult::SUCCESS:
+        this->write_messages.push_back(Message("Dropped course."));
+        break;
+    case StudentResult::COURSE_DOES_NOT_EXIST:
+        this->write_messages.push_back(Message("Course does not exist."));
+        break;
+    case StudentResult::STUDENT_NOT_REGISTERED:
+        this->write_messages.push_back(
+            Message("Student is not registered in the course."));
+        break;
+    case StudentResult::REGISTRATION_NOT_STARTED:
+        [[fallthrough]];
+    case StudentResult::REGISTRATION_NOT_ENDED:
+        this->write_messages.push_back(
+            Message("Can only drop a course during the term."));
+        break;
+    default:
+        // TODO: Do something here.
+        break;
+    }
 }
 
 void StudentSession::set_state() {

@@ -26,6 +26,8 @@ public:
                                              const std::uint16_t);
     StudentResult deregister_student_from_course(const std::uint32_t,
                                                  const std::uint16_t);
+    StudentResult drop_student_from_course(const std::uint32_t,
+                                           const std::uint16_t);
 
     const std::optional<Course> course(const std::uint16_t) const;
     const std::optional<Student> student(const std::uint32_t) const;

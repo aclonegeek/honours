@@ -91,6 +91,25 @@ University::deregister_student_from_course(const std::uint32_t student_id,
     }
 }
 
+StudentResult
+University::drop_student_from_course(const std::uint32_t student_id,
+                                     const std::uint16_t course_id) {
+    if (this->courses.find(course_id) == this->courses.end()) {
+        return StudentResult::COURSE_DOES_NOT_EXIST;
+    }
+
+    switch (this->state) {
+    case State::PREREGISTRATION:
+        return StudentResult::REGISTRATION_NOT_STARTED;
+    case State::REGISTRATION:
+        return StudentResult::REGISTRATION_NOT_ENDED;
+    case State::TERM:
+        return this->courses.at(course_id).deregister_student(student_id);
+    case State::END:
+        return StudentResult::TERM_ENDED;
+    }
+}
+
 const std::optional<Course> University::course(const std::uint16_t id) const {
     if (auto course = this->courses.find(id); course != this->courses.end()) {
         return course->second;
