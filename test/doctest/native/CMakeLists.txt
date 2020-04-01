@@ -1,5 +1,7 @@
 add_executable(register_in_course scenarios/step_definitions.cpp scenarios/register_in_course.cpp)
 add_executable(deregister_from_course scenarios/step_definitions.cpp scenarios/deregister_from_course.cpp)
+add_executable(drop_course scenarios/step_definitions.cpp scenarios/drop_course.cpp)
 
 target_link_libraries(register_in_course PRIVATE client server doctest Threads::Threads)
 target_link_libraries(deregister_from_course PRIVATE client server doctest Threads::Threads)
+target_link_libraries(drop_course PRIVATE client server doctest Threads::Threads)
