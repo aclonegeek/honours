@@ -30,25 +30,22 @@ bool StudentSession::handle_input() {
     switch (this->state) {
     case State::WAITING_FOR_ACTION:
         this->set_state();
-        this->write_options();
         break;
     case State::REGISTER_FOR_COURSE:
         this->register_for_course();
         this->state = State::WAITING_FOR_ACTION;
-        this->write_options();
         break;
     case State::DEREGISTER_FROM_COURSE:
         this->deregister_from_course();
         this->state = State::WAITING_FOR_ACTION;
-        this->write_options();
         break;
     case State::DROP_COURSE:
         this->drop_course();
         this->state = State::WAITING_FOR_ACTION;
-        this->write_options();
         break;
     }
 
+    this->write_options();
     this->write();
 
     return true;

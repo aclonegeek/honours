@@ -59,7 +59,8 @@ bool TemporarySession::handle_input() {
         auto tokens = util::split(input, ',');
 
         if (tokens.size() != 2) {
-            this->write_messages.push_back(Message("Invalid input. Expected student ID and name."));
+            this->write_messages.push_back(
+                Message("Invalid input. Expected student ID and name."));
             break;
         }
 
@@ -72,8 +73,7 @@ bool TemporarySession::handle_input() {
         }
 
         std::make_shared<StudentSession>(std::move(this->socket),
-                                         this->university,
-                                         id)
+                                         this->university, id)
             ->start();
 
         break;

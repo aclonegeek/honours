@@ -145,10 +145,6 @@ void ClerkSession::delete_student() {
 
     const std::uint32_t id = std::stoi(this->read_message.body());
 
-    if (!this->university.student(id)) {
-        this->write_messages.push_back(Message("Student does not exist."));
-    }
-
     ClerkResult result = this->university.delete_student(id);
     if (result == ClerkResult::STUDENT_DOES_NOT_EXIST) {
         this->write_messages.push_back(Message("Student does not exist."));
