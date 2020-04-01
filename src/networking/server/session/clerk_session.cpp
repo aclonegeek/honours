@@ -88,9 +88,16 @@ void ClerkSession::create_course() {
     const std::uint8_t capsize = std::stoi(tokens[2]);
 
     ClerkResult result = this->university.create_course(id, title, capsize);
-    if (result == ClerkResult::COURSE_EXISTS) {
-        this->write_messages.push_back(Message("Course exists."));
+
+    switch (result) {
+    case ClerkResult::COURSE_EXISTS:
+        this->write_messages.push_back(Message("Course already exists."));
         return;
+    case ClerkResult::PREREGISTRATION_ENDED:
+        this->write_messages.push_back(Message("Preregistration has ended."));
+        return;
+    default:
+        break;
     }
 
     this->write_messages.push_back(Message("Course created."));

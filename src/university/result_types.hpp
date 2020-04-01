@@ -9,6 +9,8 @@ enum class ClerkResult {
 
     STUDENT_EXISTS,
     STUDENT_DOES_NOT_EXIST,
+
+    PREREGISTRATION_ENDED,
 };
 
 enum class StudentResult {

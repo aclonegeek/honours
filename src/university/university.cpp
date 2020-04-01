@@ -41,6 +41,10 @@ ClerkResult University::create_course(const std::uint16_t id,
         return ClerkResult::COURSE_EXISTS;
     }
 
+    if (this->state != State::PREREGISTRATION) {
+        return ClerkResult::PREREGISTRATION_ENDED;
+    }
+
     this->courses.insert({id, Course(id, title, capsize)});
     return ClerkResult::SUCCESS;
 }
