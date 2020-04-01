@@ -103,17 +103,19 @@ void StudentSession::deregister_from_course() {
 
     switch (result) {
     case StudentResult::SUCCESS:
-        this->write_messages.push_back(Message("Registered for course."));
+        this->write_messages.push_back(Message("Deregistered from course."));
         break;
     case StudentResult::COURSE_DOES_NOT_EXIST:
         this->write_messages.push_back(Message("Course does not exist."));
         break;
-    case StudentResult::REGISTRATION_NOT_ENDED:
-        this->write_messages.push_back(Message("Registration has ended."));
-        break;
     case StudentResult::STUDENT_NOT_REGISTERED:
         this->write_messages.push_back(
             Message("Student is not registered in course."));
+        break;
+    case StudentResult::REGISTRATION_NOT_STARTED:
+    case StudentResult::REGISTRATION_ENDED:
+        this->write_messages.push_back(
+            Message("Can only deregister from a course during registration."));
         break;
     default:
         // TODO: Do something here.
