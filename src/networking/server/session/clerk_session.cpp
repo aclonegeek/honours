@@ -155,7 +155,7 @@ void ClerkSession::delete_student() {
 }
 
 void ClerkSession::set_state() {
-    std::string_view input{this->read_message.body()};
+    const std::string_view input{this->read_message.body()};
 
     if (input == "cac" || input == "CAC") {
         this->state = State::CREATING_COURSE;

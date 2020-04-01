@@ -1,5 +1,5 @@
-#include <iostream>
 #include <memory>
+#include <string_view>
 
 #include "clerk_session.hpp"
 #include "student_session.hpp"
@@ -24,9 +24,7 @@ void TemporarySession::greeting() {
 }
 
 bool TemporarySession::handle_input() {
-    // TODO: We can do better here. Message itself can probably store a string
-    // or something.
-    std::string input(this->read_message.body());
+    const std::string_view input{this->read_message.body()};
 
     switch (this->state) {
     case State::DETERMINING_SESSION_TYPE:
@@ -34,15 +32,17 @@ bool TemporarySession::handle_input() {
             this->state = State::CLERK_LOGIN;
             // TODO: Add an attirbute to Message that specifies if we want a
             // newline printed or not for the corresponding Message.
-            this->write_messages.push_back(Message("Password: "));
+            this->write_messages.push_back(Message("Password:"));
         } else if (input == "student") {
             this->state = State::STUDENT_LOGIN;
-            this->write_messages.push_back(Message("Student ID: "));
+            this->write_messages.push_back(Message("Student ID, Name:"));
         } else {
             this->write_messages.push_back(
                 Message("Invalid input. Enter clerk or student."));
         }
-        break;
+
+        this->write();
+        return true;
     case State::CLERK_LOGIN:
         if (input != "admin") {
             this->write_messages.push_back(
@@ -53,10 +53,8 @@ bool TemporarySession::handle_input() {
         std::make_shared<ClerkSession>(std::move(this->socket),
                                        this->university)
             ->start();
-
-        return false;
     case State::STUDENT_LOGIN:
-        auto tokens = util::split(input, ',');
+        const auto tokens = util::split(this->read_message.body(), ',');
 
         if (tokens.size() != 2) {
             this->write_messages.push_back(
@@ -64,8 +62,8 @@ bool TemporarySession::handle_input() {
             break;
         }
 
-        std::uint32_t id = std::stoi(tokens[0]);
-        std::string name = tokens[1];
+        const std::uint32_t id = std::stoi(tokens[0]);
+        const std::string name = tokens[1];
 
         if (!this->university.student(id)) {
             this->write_messages.push_back(Message("Student does not exist."));
@@ -75,11 +73,7 @@ bool TemporarySession::handle_input() {
         std::make_shared<StudentSession>(std::move(this->socket),
                                          this->university, id)
             ->start();
-
-        break;
     }
 
-    this->write();
-
-    return true;
+    return false;
 }
