@@ -96,7 +96,29 @@ void StudentSession::register_for_course() {
 }
 
 void StudentSession::deregister_from_course() {
-    this->write_messages.push_back(Message("Deregistered from course."));
+    const std::uint16_t course_id = std::stoi(this->read_message.body());
+
+    StudentResult result =
+        this->university.deregister_student_from_course(this->id, course_id);
+
+    switch (result) {
+    case StudentResult::SUCCESS:
+        this->write_messages.push_back(Message("Registered for course."));
+        break;
+    case StudentResult::COURSE_DOES_NOT_EXIST:
+        this->write_messages.push_back(Message("Course does not exist."));
+        break;
+    case StudentResult::REGISTRATION_NOT_ENDED:
+        this->write_messages.push_back(Message("Registration has ended."));
+        break;
+    case StudentResult::STUDENT_NOT_REGISTERED:
+        this->write_messages.push_back(
+            Message("Student is not registered in course."));
+        break;
+    default:
+        // TODO: Do something here.
+        break;
+    }
 }
 
 void StudentSession::drop_course() {

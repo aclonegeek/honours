@@ -50,3 +50,8 @@ void there_is_an_existing_student(Client& client, const std::string& message) {
     client.send(Message("cas"));
     client.send(Message(message));
 }
+
+void the_student_has_registered_in(Client& client, const std::string& message) {
+    client.send(Message("rfc"));
+    client.send(Message(message));
+}
