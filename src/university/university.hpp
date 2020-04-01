@@ -36,10 +36,10 @@ private:
     void start_timers();
 
     enum class State {
-        REGISTRATION_NOT_STARTED,
-        REGISTRATION_STARTED,
-        REGISTRATIONED_ENDED,
-        TERM_ENDED,
+        PREREGISTRATION,
+        REGISTRATION,
+        TERM,
+        END,
     };
 
     State state;

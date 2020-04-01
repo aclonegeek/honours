@@ -17,7 +17,7 @@ StudentResult Course::register_student(Student& student) {
 
 StudentResult Course::deregister_student(const std::uint32_t id) {
     if (this->students.find(id) == this->students.end()) {
-        return StudentResult::STUDENT_DOES_NOT_EXIST;
+        return StudentResult::STUDENT_NOT_REGISTERED;
     }
 
     this->students.erase(id);
