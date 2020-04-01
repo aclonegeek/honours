@@ -23,12 +23,13 @@ private:
 
     void greeting();
     void write_options();
+    void set_state();
 
-    bool create_course(const std::string&);
-    bool delete_course(const std::string&);
+    void create_course();
+    void delete_course();
 
-    bool create_student(const std::string&);
-    bool delete_student(const std::string&);
+    void create_student();
+    void delete_student();
 
     State state;
     University& university;

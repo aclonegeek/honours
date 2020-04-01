@@ -34,22 +34,43 @@ void University::start_timers() {
     }).detach();
 }
 
-void University::create_course(const std::uint16_t id, const std::string& title,
-                               const std::uint8_t capsize) {
+ClerkResult University::create_course(const std::uint16_t id,
+                                      const std::string& title,
+                                      const std::uint8_t capsize) {
+    if (this->courses.find(id) != this->courses.end()) {
+        return ClerkResult::COURSE_EXISTS;
+    }
+
     this->courses.insert({id, Course(id, title, capsize)});
+    return ClerkResult::SUCCESS;
 }
 
-void University::delete_course(const std::uint16_t id) {
+ClerkResult University::delete_course(const std::uint16_t id) {
+    if (this->courses.find(id) == this->courses.end()) {
+        return ClerkResult::COURSE_DOES_NOT_EXIST;
+    }
+
     this->courses.erase(id);
+    return ClerkResult::SUCCESS;
 }
 
-void University::register_student(const std::uint32_t id,
-                                  const std::string name) {
+ClerkResult University::register_student(const std::uint32_t id,
+                                         const std::string name) {
+    if (this->students.find(id) != this->students.end()) {
+        return ClerkResult::STUDENT_EXISTS;
+    }
+
     this->students.insert({id, Student(id, name)});
+    return ClerkResult::SUCCESS;
 }
 
-void University::delete_student(const std::uint32_t id) {
+ClerkResult University::delete_student(const std::uint32_t id) {
+    if (this->students.find(id) == this->students.end()) {
+        return ClerkResult::STUDENT_DOES_NOT_EXIST;
+    }
+
     this->students.erase(id);
+    return ClerkResult::SUCCESS;
 }
 
 StudentResult

@@ -1,5 +1,16 @@
 #pragma once
 
+enum class ClerkResult {
+    SUCCESS,
+
+    // Errors.
+    COURSE_EXISTS,
+    COURSE_DOES_NOT_EXIST,
+
+    STUDENT_EXISTS,
+    STUDENT_DOES_NOT_EXIST,
+};
+
 enum class StudentResult {
     SUCCESS,
 

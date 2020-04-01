@@ -1,7 +1,8 @@
 #include "clerk_session.hpp"
+#include "result_types.hpp"
 #include "util.hpp"
 
-const Message OPTIONS =
+static const Message OPTIONS =
     Message("Options: Create a Course (CAC), Create a Student (CAS), "
             "Delete a Course (DAC), Delete a Student (DAS).");
 
@@ -22,76 +23,29 @@ void ClerkSession::greeting() {
 }
 
 bool ClerkSession::handle_input() {
-    // TODO: We can do better here. Message itself can probably store a string
-    // or something.
-    std::string input(this->read_message.body());
-
     switch (this->state) {
     case State::WAITING_FOR_ACTION:
-        std::transform(input.begin(), input.end(), input.begin(), ::tolower);
-
-        if (input == "cac") {
-            this->state = State::CREATING_COURSE;
-        } else if (input == "cas") {
-            this->state = State::CREATING_STUDENT;
-        } else if (input == "dac") {
-            this->state = State::DELETING_COURSE;
-        } else if (input == "das") {
-            this->state = State::DELETING_STUDENT;
-        } else {
-            this->write_messages.push_back(Message("Invalid command."));
-            break;
-        }
-
-        this->write_options();
-
+        this->set_state();
         break;
     case State::CREATING_COURSE:
-        if (!this->create_course(input)) {
-            this->write_options();
-            break;
-        }
-
+        this->create_course();
         this->state = State::WAITING_FOR_ACTION;
-        this->write_messages.push_back(Message("Course created."));
-        this->write_messages.push_back(OPTIONS);
-
         break;
     case State::DELETING_COURSE:
-        if (!this->delete_course(input)) {
-            this->write_options();
-            break;
-        }
-
+        this->delete_course();
         this->state = State::WAITING_FOR_ACTION;
-        this->write_messages.push_back(Message("Course deleted."));
-        this->write_messages.push_back(OPTIONS);
-
         break;
     case State::CREATING_STUDENT:
-        if (!this->create_student(input)) {
-            this->write_options();
-            break;
-        }
-
+        this->create_student();
         this->state = State::WAITING_FOR_ACTION;
-        this->write_messages.push_back(Message("Student created."));
-        this->write_messages.push_back(OPTIONS);
-
         break;
     case State::DELETING_STUDENT:
-        if (!this->delete_student(input)) {
-            this->write_options();
-            break;
-        }
-
+        this->delete_student();
         this->state = State::WAITING_FOR_ACTION;
-        this->write_messages.push_back(Message("Student deleted."));
-        this->write_messages.push_back(OPTIONS);
-
         break;
     }
 
+    this->write_options();
     this->write();
 
     return true;
@@ -119,13 +73,13 @@ void ClerkSession::write_options() {
     }
 }
 
-bool ClerkSession::create_course(const std::string& input) {
-    const auto tokens = util::split(input, ',');
+void ClerkSession::create_course() {
+    const auto tokens = util::split(this->read_message.body(), ',');
 
     if (tokens.size() != 3) {
         this->write_messages.push_back(Message(
             "Invalid input. Expected course ID, course title, and capsize."));
-        return false;
+        return;
     }
 
     // TODO: Error handling.
@@ -133,62 +87,89 @@ bool ClerkSession::create_course(const std::string& input) {
     const std::string title    = tokens[1];
     const std::uint8_t capsize = std::stoi(tokens[2]);
 
-    this->university.create_course(id, title, capsize);
+    ClerkResult result = this->university.create_course(id, title, capsize);
+    if (result == ClerkResult::COURSE_EXISTS) {
+        this->write_messages.push_back(Message("Course exists."));
+        return;
+    }
 
-    return true;
+    this->write_messages.push_back(Message("Course created."));
 }
 
-bool ClerkSession::delete_course(const std::string& input) {
-    const std::uint16_t id = std::stoi(input);
+void ClerkSession::delete_course() {
+    const std::uint16_t id = std::stoi(this->read_message.body());
 
     if (!this->university.course(id)) {
         this->write_messages.push_back(Message("Course does not exist."));
-        return false;
     }
 
-    this->university.delete_course(id);
+    ClerkResult result = this->university.delete_course(id);
+    if (result == ClerkResult::COURSE_DOES_NOT_EXIST) {
+        this->write_messages.push_back(Message("Course does not exist."));
+        return;
+    }
 
-    return true;
+    this->write_messages.push_back(Message("Course deleted."));
 }
 
-bool ClerkSession::create_student(const std::string& input) {
-    const auto tokens = util::split(input, ',');
+void ClerkSession::create_student() {
+    const auto tokens = util::split(this->read_message.body(), ',');
 
     if (tokens.size() != 2) {
         this->write_messages.push_back(
             Message("Invalid input. Expected student ID and name."));
-        return false;
     }
 
     if (tokens[0].length() != 9) {
         this->write_messages.push_back(
             Message("Invalid student ID. It must be 9 digits."));
-        return false;
     }
 
     const std::uint32_t id = std::stoi(tokens[0]);
     const std::string name = tokens[1];
 
-    this->university.register_student(id, name);
-
-    return true;
-}
-
-bool ClerkSession::delete_student(const std::string& input) {
-    if (input.length() != 9) {
-        this->write_messages.push_back(
-            Message("Invalid student ID. It must be 9 digits."));
-        return false;
+    ClerkResult result = this->university.register_student(id, name);
+    if (result == ClerkResult::STUDENT_EXISTS) {
+        this->write_messages.push_back(Message("Student exists."));
+        return;
     }
 
-    const std::uint32_t id = std::stoi(input);
+    this->write_messages.push_back(Message("Student created."));
+}
+
+void ClerkSession::delete_student() {
+    if (this->read_message.length() != 9) {
+        this->write_messages.push_back(
+            Message("Invalid student ID. It must be 9 digits."));
+    }
+
+    const std::uint32_t id = std::stoi(this->read_message.body());
 
     if (!this->university.student(id)) {
         this->write_messages.push_back(Message("Student does not exist."));
-        return false;
     }
 
-    this->university.delete_student(id);
+    ClerkResult result = this->university.delete_student(id);
+    if (result == ClerkResult::STUDENT_DOES_NOT_EXIST) {
+        this->write_messages.push_back(Message("Student does not exist."));
+        return;
+    }
 
-    return true;
+    this->write_messages.push_back(Message("Student deleted."));
+}
+
+void ClerkSession::set_state() {
+    std::string_view input{this->read_message.body()};
+
+    if (input == "cac" || input == "CAC") {
+        this->state = State::CREATING_COURSE;
+    } else if (input == "cas" || input == "CAS") {
+        this->state = State::CREATING_STUDENT;
+    } else if (input == "dac" || input == "DAC") {
+        this->state = State::DELETING_COURSE;
+    } else if (input == "das" || input == "DAS") {
+        this->state = State::DELETING_STUDENT;
+    } else {
+        this->write_messages.push_back(Message("Invalid command."));
+    }
 }

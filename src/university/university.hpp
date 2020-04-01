@@ -4,6 +4,7 @@
 
 #include "course.hpp"
 
+enum class ClerkResult;
 enum class StudentResult;
 
 constexpr uint8_t DAY_LENGTH             = 1;  // seconds
@@ -15,12 +16,11 @@ class University {
 public:
     University();
 
-    void create_course(const std::uint16_t, const std::string&,
-                       const std::uint8_t);
-    void delete_course(const std::uint16_t);
-
-    void register_student(const std::uint32_t, const std::string);
-    void delete_student(const std::uint32_t);
+    ClerkResult create_course(const std::uint16_t, const std::string&,
+                              const std::uint8_t);
+    ClerkResult delete_course(const std::uint16_t);
+    ClerkResult register_student(const std::uint32_t, const std::string);
+    ClerkResult delete_student(const std::uint32_t);
 
     StudentResult register_student_in_course(const std::uint32_t,
                                              const std::uint16_t);
