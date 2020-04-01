@@ -1,6 +1,7 @@
 #include <chrono>
 #include <thread>
 
+#include "result_types.hpp"
 #include "university.hpp"
 
 University::University() : state(State::REGISTRATION_NOT_STARTED) {
@@ -51,22 +52,24 @@ void University::delete_student(const std::uint32_t id) {
     this->students.erase(id);
 }
 
-bool University::register_student_in_course(const std::uint32_t student_id,
-                                            const std::uint16_t course_id) {
+StudentResult
+University::register_student_in_course(const std::uint32_t student_id,
+                                       const std::uint16_t course_id) {
     if (this->courses.find(course_id) == this->courses.end()) {
-        return false;
+        return StudentResult::COURSE_DOES_NOT_EXIST;
     }
 
     if (this->state != State::REGISTRATION_STARTED) {
-        return false;
+        return StudentResult::REGISTRATION_NOT_STARTED;
     }
 
     return this->courses.at(course_id).register_student(
         this->students.at(student_id));
 }
 
-bool University::deregister_student_from_course(const std::uint32_t student_id,
-                                                const std::uint16_t course_id) {
+StudentResult
+University::deregister_student_from_course(const std::uint32_t student_id,
+                                           const std::uint16_t course_id) {
     return this->courses.at(course_id).deregister_student(student_id);
 }
 

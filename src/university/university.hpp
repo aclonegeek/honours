@@ -4,6 +4,8 @@
 
 #include "course.hpp"
 
+enum class StudentResult;
+
 constexpr uint8_t DAY_LENGTH             = 1;  // seconds
 constexpr uint8_t PREREGISTRATION_LENGTH = 1;  // days
 constexpr uint8_t REGISTRATION_LENGTH    = 10; // days
@@ -20,9 +22,10 @@ public:
     void register_student(const std::uint32_t, const std::string);
     void delete_student(const std::uint32_t);
 
-    bool register_student_in_course(const std::uint32_t, const std::uint16_t);
-    bool deregister_student_from_course(const std::uint32_t,
-                                        const std::uint16_t);
+    StudentResult register_student_in_course(const std::uint32_t,
+                                             const std::uint16_t);
+    StudentResult deregister_student_from_course(const std::uint32_t,
+                                                 const std::uint16_t);
 
     const std::optional<Course> course(const std::uint16_t) const;
     const std::optional<Student> student(const std::uint32_t) const;
