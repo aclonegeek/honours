@@ -68,7 +68,7 @@ University::register_student_in_course(const std::uint32_t student_id,
     case State::TERM:
         [[fallthrough]];
     case State::END:
-        return StudentResult::REGISTRATION_ENDED;
+        return StudentResult::TERM_ENDED;
     }
 }
 
@@ -87,7 +87,7 @@ University::deregister_student_from_course(const std::uint32_t student_id,
     case State::TERM:
         [[fallthrough]];
     case State::END:
-        return StudentResult::REGISTRATION_ENDED;
+        return StudentResult::TERM_ENDED;
     }
 }
 
