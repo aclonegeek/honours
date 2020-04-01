@@ -21,11 +21,12 @@ private:
     virtual bool handle_input() override;
 
     void greeting();
+    void set_state();
     void write_options();
 
-    bool register_for_course(const std::string&);
-    bool deregister_from_course(const std::string&);
-    bool drop_course(const std::string&);
+    void register_for_course();
+    void deregister_from_course();
+    void drop_course();
 
     State state;
     University& university;

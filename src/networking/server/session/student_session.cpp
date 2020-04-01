@@ -1,11 +1,14 @@
+#include <string_view>
+
+#include "result_types.hpp"
 #include "student_session.hpp"
+#include "university.hpp"
 
 const Message OPTIONS =
     Message("Options: Register for Course (RFC), Deregister from Course (DFC), "
             "Drop a Course (DAC).");
 
-StudentSession::StudentSession(tcp::socket socket,
-                               University& university,
+StudentSession::StudentSession(tcp::socket socket, University& university,
                                const std::uint32_t id)
     : Session(std::move(socket)),
       state(State::WAITING_FOR_ACTION),
@@ -24,59 +27,25 @@ void StudentSession::greeting() {
 }
 
 bool StudentSession::handle_input() {
-    // TODO: We can do better here. Message itself can probably store a string
-    // or something.
-    std::string input(this->read_message.body());
-
     switch (this->state) {
     case State::WAITING_FOR_ACTION:
-        std::transform(input.begin(), input.end(), input.begin(), ::tolower);
-
-        if (input == "rfc") {
-            this->state = State::REGISTER_FOR_COURSE;
-        } else if (input == "dfc") {
-            this->state = State::DEREGISTER_FROM_COURSE;
-        } else if (input == "dac") {
-            this->state = State::DROP_COURSE;
-        } else {
-            this->write_messages.push_back(Message("Invalid command."));
-        }
-
+        this->set_state();
         this->write_options();
-
         break;
     case State::REGISTER_FOR_COURSE:
-        if (!this->register_for_course(input)) {
-            this->write_options();
-            break;
-        }
-
+        this->register_for_course();
         this->state = State::WAITING_FOR_ACTION;
-        this->write_messages.push_back(Message("Registered for course."));
-        this->write_messages.push_back(OPTIONS);
-
+        this->write_options();
         break;
     case State::DEREGISTER_FROM_COURSE:
-        if (!this->deregister_from_course(input)) {
-            this->write_options();
-            break;
-        }
-
+        this->deregister_from_course();
         this->state = State::WAITING_FOR_ACTION;
-        this->write_messages.push_back(Message("Deregistered from course."));
-        this->write_messages.push_back(OPTIONS);
-
+        this->write_options();
         break;
     case State::DROP_COURSE:
-        if (!this->drop_course(input)) {
-            this->write_options();
-            break;
-        }
-
+        this->drop_course();
         this->state = State::WAITING_FOR_ACTION;
-        this->write_messages.push_back(Message("Course dropped."));
-        this->write_messages.push_back(OPTIONS);
-
+        this->write_options();
         break;
     }
 
@@ -100,13 +69,50 @@ void StudentSession::write_options() {
     }
 }
 
-bool StudentSession::register_for_course(const std::string& input) {
-    const std::uint16_t course_id = std::stoi(input);
-    return this->university.register_student_in_course(this->id, course_id);
+void StudentSession::register_for_course() {
+    const std::uint16_t course_id = std::stoi(this->read_message.body());
+
+    StudentResult result =
+        this->university.register_student_in_course(this->id, course_id);
+
+    switch (result) {
+    case StudentResult::SUCCESS:
+        this->write_messages.push_back(Message("Registered for course."));
+        break;
+    case StudentResult::COURSE_DOES_NOT_EXIST:
+        this->write_messages.push_back(Message("Course does not exist."));
+        break;
+    case StudentResult::REGISTRATION_NOT_STARTED:
+        this->write_messages.push_back(
+            Message("Registration has not started."));
+        break;
+    case StudentResult::COURSE_FULL:
+        this->write_messages.push_back(Message("Course is full."));
+        break;
+    default:
+        // TODO: Do something here.
+        break;
+    }
 }
 
-bool StudentSession::deregister_from_course(const std::string& input) {
-    return true;
+void StudentSession::deregister_from_course() {
+    this->write_messages.push_back(Message("Deregistered from course."));
 }
 
-bool StudentSession::drop_course(const std::string& input) { return true; }
+void StudentSession::drop_course() {
+    this->write_messages.push_back(Message("Course dropped."));
+}
+
+void StudentSession::set_state() {
+    std::string_view input{this->read_message.body()};
+
+    if (input == "rfc" || input == "RFC") {
+        this->state = State::REGISTER_FOR_COURSE;
+    } else if (input == "dfc" || input == "DFC") {
+        this->state = State::DEREGISTER_FROM_COURSE;
+    } else if (input == "dac" || input == "DAC") {
+        this->state = State::DROP_COURSE;
+    } else {
+        this->write_messages.push_back(Message("Invalid command."));
+    }
+}
