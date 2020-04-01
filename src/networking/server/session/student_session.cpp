@@ -4,7 +4,7 @@
 #include "student_session.hpp"
 #include "university.hpp"
 
-const Message OPTIONS =
+static const Message OPTIONS =
     Message("Options: Register for Course (RFC), Deregister from Course (DFC), "
             "Drop a Course (DAC).");
 
