@@ -1,37 +1,31 @@
-#include "university.hpp"
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest.h>
 
 #include "client.hpp"
 #include "server.hpp"
 
+#include "scenario_context.hpp"
 #include "step_definitions.hpp"
 
-class ScenarioContext {
+class DeregisterFromCourseScenarioContext final : public ScenarioContext {
 public:
-    ScenarioContext()
-        : server_endpoint(tcp::endpoint(tcp::v4(), 5001)),
-          server(Server(this->server_io_context, this->server_endpoint,
-                        this->_university)),
-          clerk_resolver(tcp::resolver(this->clerk_io_context)),
+    DeregisterFromCourseScenarioContext()
+        : clerk_resolver(tcp::resolver(this->clerk_io_context)),
           joe_resolver(tcp::resolver(this->joe_io_context)),
           clerk_endpoints(this->clerk_resolver.resolve(host, port)),
           joe_endpoints(this->joe_resolver.resolve(host, port)),
           clerk(Client(this->clerk_io_context, this->clerk_endpoints)),
           _joe(Client(this->joe_io_context, this->joe_endpoints)) {
-        this->server_thread =
-            std::thread([&] { this->server_io_context.run(); });
         this->clerk_thread = std::thread([&] { this->clerk_io_context.run(); });
         this->joe_thread   = std::thread([&] { this->joe_io_context.run(); });
+
         this->background();
     }
 
-    ~ScenarioContext() {
+    ~DeregisterFromCourseScenarioContext() {
         this->clerk_io_context.stop();
         this->joe_io_context.stop();
-        this->server_io_context.stop();
 
-        this->server_thread.join();
         this->clerk_thread.join();
         this->joe_thread.join();
     }
@@ -46,36 +40,29 @@ public:
         the_student_has_logged_in_as(this->_joe, "123456789, joe");
     }
 
-    const University& university() const { return this->_university; }
     Client& joe() { return this->_joe; }
 
 private:
-    asio::io_context server_io_context;
     asio::io_context clerk_io_context;
     asio::io_context joe_io_context;
 
-    tcp::endpoint server_endpoint;
     tcp::resolver clerk_resolver;
     tcp::resolver joe_resolver;
 
     const tcp::resolver::results_type clerk_endpoints;
     const tcp::resolver::results_type joe_endpoints;
 
-    std::thread server_thread;
     std::thread clerk_thread;
     std::thread joe_thread;
 
-    University _university;
-
     Client clerk;
     Client _joe;
-    Server server;
 };
 
 TEST_SUITE_BEGIN("Deregistering from a course");
 
 SCENARIO("A student deregisters from a course during the registration period") {
-    ScenarioContext ctx;
+    DeregisterFromCourseScenarioContext ctx;
     Client& joe = ctx.joe();
 
     GIVEN("We wait until registration starts.") {
@@ -112,7 +99,7 @@ SCENARIO("A student deregisters from a course during the registration period") {
 }
 
 SCENARIO("A student deregisters from a course that doesn't exist") {
-    ScenarioContext ctx;
+    DeregisterFromCourseScenarioContext ctx;
     Client& joe = ctx.joe();
 
     GIVEN("We wait until registration starts.") {
@@ -135,7 +122,7 @@ SCENARIO("A student deregisters from a course that doesn't exist") {
 }
 
 SCENARIO("A student deregisters from a course they aren't registered in") {
-    ScenarioContext ctx;
+    DeregisterFromCourseScenarioContext ctx;
     Client& joe = ctx.joe();
 
     GIVEN("We wait until registration starts.") {
@@ -161,7 +148,7 @@ SCENARIO("A student deregisters from a course they aren't registered in") {
 }
 
 SCENARIO("A student deregisters from a course before registration starts") {
-    ScenarioContext ctx;
+    DeregisterFromCourseScenarioContext ctx;
     Client& joe = ctx.joe();
 
     GIVEN("The student enters dfc") {
@@ -183,7 +170,7 @@ SCENARIO("A student deregisters from a course before registration starts") {
 }
 
 SCENARIO("A student deregisters from a course after registration ends") {
-    ScenarioContext ctx;
+    DeregisterFromCourseScenarioContext ctx;
     Client& joe = ctx.joe();
 
     GIVEN("We wait until registration starts") {
@@ -225,7 +212,7 @@ SCENARIO("A student deregisters from a course after registration ends") {
 }
 
 SCENARIO("A student deregisters from a course after the term ends") {
-    ScenarioContext ctx;
+    DeregisterFromCourseScenarioContext ctx;
     Client& joe = ctx.joe();
 
     GIVEN("We wait until registration starts") {

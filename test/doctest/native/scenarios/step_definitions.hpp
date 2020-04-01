@@ -2,9 +2,6 @@
 
 class Client;
 
-constexpr std::string_view host = "localhost";
-constexpr std::string_view port = "5001";
-
 enum class WaitUntil {
     REGISTRATION_STARTS,
     REGISTRATION_ENDS,
