@@ -91,6 +91,6 @@ void Client::write() {
         });
 }
 
-const char* const Client::previous_message() const {
+const char* Client::previous_message() const {
     return this->previous_read_message.body();
 }

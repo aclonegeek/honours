@@ -14,8 +14,8 @@ public:
     void encode_header();
     bool decode_header();
 
-    const char* const data() const;
-    const char* const body() const;
+    const char* data() const;
+    const char* body() const;
 
     char* data();
     char* body();

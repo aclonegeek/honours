@@ -29,9 +29,9 @@ bool Message::decode_header() {
     return true;
 }
 
-const char* const Message::data() const { return _data; }
+const char* Message::data() const { return _data; }
 
-const char* const Message::body() const { return _data + HEADER_LENGTH; }
+const char* Message::body() const { return _data + HEADER_LENGTH; }
 
 char* Message::data() { return _data; }
 
