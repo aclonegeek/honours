@@ -43,7 +43,7 @@ private:
     Client _clerk;
 };
 
-TEST_SUITE_BEGIN("Creating a course");
+TEST_SUITE_BEGIN("Deleting a course");
 
 SCENARIO("A clerk deletes a course before registration starts") {
     DeleteCourseScenarioContext ctx;
