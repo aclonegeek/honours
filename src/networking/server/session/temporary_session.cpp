@@ -41,30 +41,28 @@ bool TemporarySession::handle_input() {
                 Message("Invalid input. Enter clerk or student."));
         }
 
-        this->write();
-        return true;
+        break;
     case State::CLERK_LOGIN:
         if (input != "admin") {
             this->write_messages.push_back(
                 Message("Invalid password. Try again."));
             this->write_messages.push_back(Message("Password:"));
-            this->write();
-            return true;
+            break;
         }
 
         std::make_shared<ClerkSession>(std::move(this->socket),
                                        this->university)
             ->start();
 
-        break;
+        return false;
     case State::STUDENT_LOGIN:
         const auto tokens = util::split(this->read_message.body(), ',');
 
         if (tokens.size() != 2) {
             this->write_messages.push_back(
                 Message("Invalid input. Expected student ID and name."));
-            this->write();
-            return true;
+            this->write_messages.push_back(Message("Student ID, Name:"));
+            break;
         }
 
         const std::uint32_t id = std::stoi(tokens[0]);
@@ -72,6 +70,7 @@ bool TemporarySession::handle_input() {
 
         if (!this->university.student(id)) {
             this->write_messages.push_back(Message("Student does not exist."));
+            this->write_messages.push_back(Message("Student ID, Name:"));
             break;
         }
 
@@ -79,8 +78,9 @@ bool TemporarySession::handle_input() {
                                          this->university, id)
             ->start();
 
-        break;
+        return false;
     }
 
-    return false;
+    this->write();
+    return true;
 }
