@@ -128,20 +128,29 @@ void ClerkSession::create_student() {
     if (tokens.size() != 2) {
         this->write_messages.push_back(
             Message("Invalid input. Expected student ID and name."));
+        return;
     }
 
     if (tokens[0].length() != 9) {
         this->write_messages.push_back(
             Message("Invalid student ID. It must be 9 digits."));
+        return;
     }
 
     const std::uint32_t id = std::stoi(tokens[0]);
     const std::string name = tokens[1];
 
     ClerkResult result = this->university.register_student(id, name);
-    if (result == ClerkResult::STUDENT_EXISTS) {
-        this->write_messages.push_back(Message("Student exists."));
+
+    switch (result) {
+    case ClerkResult::STUDENT_EXISTS:
+        this->write_messages.push_back(Message("Student already exists."));
         return;
+    case ClerkResult::PREREGISTRATION_ENDED:
+        this->write_messages.push_back(Message("Preregistration has ended."));
+        return;
+    default:
+        break;
     }
 
     this->write_messages.push_back(Message("Student created."));

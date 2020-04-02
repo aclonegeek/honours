@@ -68,6 +68,10 @@ ClerkResult University::register_student(const std::uint32_t id,
         return ClerkResult::STUDENT_EXISTS;
     }
 
+    if (this->state != State::PREREGISTRATION) {
+        return ClerkResult::PREREGISTRATION_ENDED;
+    }
+
     this->students.insert({id, Student(id, name)});
     return ClerkResult::SUCCESS;
 }
