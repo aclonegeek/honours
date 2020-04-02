@@ -51,8 +51,13 @@ SCENARIO("A clerk creates a course before registration starts") {
 
             std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
-            THEN("The course 12345 exists") {
-                CHECK(true == ctx.university().course(12345).has_value());
+            THEN("Course created. is printed") {
+                CHECK("Course created." ==
+                      std::string_view(clerk.previous_message()));
+
+                AND_THEN("The course 12345 exists") {
+                    CHECK(true == ctx.university().course(12345).has_value());
+                }
             }
         }
     }
@@ -73,8 +78,14 @@ SCENARIO("A clerk creates a duplicate course before registration starts") {
 
                 std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
-                THEN("The course 12345 exists") {
-                    CHECK(true == ctx.university().course(12345).has_value());
+                THEN("Course already exists. is printed") {
+                    CHECK("Course already exists." ==
+                          std::string_view(clerk.previous_message()));
+
+                    AND_THEN("The course 12345 exists") {
+                        CHECK(true ==
+                              ctx.university().course(12345).has_value());
+                    }
                 }
             }
         }
@@ -96,8 +107,14 @@ SCENARIO("A clerk creates a course after registration starts") {
 
                 std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
-                THEN("The course 12345 does not exist") {
-                    CHECK(false == ctx.university().course(12345).has_value());
+                THEN("Pregistration has ended. is printed") {
+                    CHECK("Preregistration has ended." ==
+                          std::string_view(clerk.previous_message()));
+
+                    AND_THEN("The course 12345 does not exist") {
+                        CHECK(false ==
+                              ctx.university().course(12345).has_value());
+                    }
                 }
             }
         }
@@ -119,8 +136,14 @@ SCENARIO("A clerk creates a course after the term ends") {
 
                 std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
-                THEN("The course 12345 does not exist") {
-                    CHECK(false == ctx.university().course(12345).has_value());
+                THEN("Pregistration has ended. is printed") {
+                    CHECK("Preregistration has ended." ==
+                          std::string_view(clerk.previous_message()));
+
+                    AND_THEN("The course 12345 does not exist") {
+                        CHECK(false ==
+                              ctx.university().course(12345).has_value());
+                    }
                 }
             }
         }
