@@ -77,6 +77,10 @@ ClerkResult University::register_student(const std::uint32_t id,
 }
 
 ClerkResult University::delete_student(const std::uint32_t id) {
+    if (this->state != State::PREREGISTRATION) {
+        return ClerkResult::PREREGISTRATION_ENDED;
+    }
+
     if (this->students.find(id) == this->students.end()) {
         return ClerkResult::STUDENT_DOES_NOT_EXIST;
     }

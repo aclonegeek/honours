@@ -157,17 +157,25 @@ void ClerkSession::create_student() {
 }
 
 void ClerkSession::delete_student() {
-    if (this->read_message.length() != 9) {
+    if (this->read_message.body_length() != 9) {
         this->write_messages.push_back(
             Message("Invalid student ID. It must be 9 digits."));
+        return;
     }
 
     const std::uint32_t id = std::stoi(this->read_message.body());
 
     ClerkResult result = this->university.delete_student(id);
-    if (result == ClerkResult::STUDENT_DOES_NOT_EXIST) {
+
+    switch (result) {
+    case ClerkResult::STUDENT_DOES_NOT_EXIST:
         this->write_messages.push_back(Message("Student does not exist."));
         return;
+    case ClerkResult::PREREGISTRATION_ENDED:
+        this->write_messages.push_back(Message("Preregistration has ended."));
+        return;
+    default:
+        break;
     }
 
     this->write_messages.push_back(Message("Student deleted."));
