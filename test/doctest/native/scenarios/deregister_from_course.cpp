@@ -1,9 +1,6 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest.h>
 
-#include "client.hpp"
-#include "server.hpp"
-
 #include "scenario_context.hpp"
 #include "step_definitions.hpp"
 
