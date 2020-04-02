@@ -107,9 +107,16 @@ void ClerkSession::delete_course() {
     const std::uint16_t id = std::stoi(this->read_message.body());
 
     ClerkResult result = this->university.delete_course(id);
-    if (result == ClerkResult::COURSE_DOES_NOT_EXIST) {
+
+    switch (result) {
+    case ClerkResult::COURSE_DOES_NOT_EXIST:
         this->write_messages.push_back(Message("Course does not exist."));
         return;
+    case ClerkResult::PREREGISTRATION_ENDED:
+        this->write_messages.push_back(Message("Preregistration has ended."));
+        return;
+    default:
+        break;
     }
 
     this->write_messages.push_back(Message("Course deleted."));

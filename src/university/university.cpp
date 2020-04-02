@@ -54,6 +54,10 @@ ClerkResult University::delete_course(const std::uint16_t id) {
         return ClerkResult::COURSE_DOES_NOT_EXIST;
     }
 
+    if (this->state != State::PREREGISTRATION) {
+        return ClerkResult::PREREGISTRATION_ENDED;
+    }
+
     this->courses.erase(id);
     return ClerkResult::SUCCESS;
 }
