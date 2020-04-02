@@ -1,4 +1,3 @@
-#include <cstring>
 #include <iostream>
 
 #include "client.hpp"
@@ -63,6 +62,8 @@ void Client::read_body() {
                             this->read_message.body_length());
             std::cout << "\n";
 
+            this->previous_read_message = this->read_message;
+
             this->read_header();
         });
 }
@@ -83,4 +84,8 @@ void Client::write() {
                 this->write();
             }
         });
+}
+
+const Message Client::previous_message() const {
+    return this->previous_read_message;
 }

@@ -14,6 +14,8 @@ public:
     void send(const Message&);
     void close();
 
+    const Message previous_message() const;
+
 private:
     void connect(const tcp::resolver::results_type&);
     void read_header();
@@ -24,5 +26,6 @@ private:
     tcp::socket socket;
 
     Message read_message;
+    Message previous_read_message;
     std::deque<Message> write_messages;
 };
