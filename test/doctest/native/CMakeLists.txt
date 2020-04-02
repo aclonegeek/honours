@@ -1,3 +1,5 @@
+add_executable(login_logout scenarios/step_definitions.cpp scenarios/login_logout.cpp)
+
 add_executable(create_course scenarios/step_definitions.cpp scenarios/create_course.cpp)
 add_executable(delete_course scenarios/step_definitions.cpp scenarios/delete_course.cpp)
 add_executable(create_student scenarios/step_definitions.cpp scenarios/create_student.cpp)
@@ -6,6 +8,8 @@ add_executable(delete_student scenarios/step_definitions.cpp scenarios/delete_st
 add_executable(register_in_course scenarios/step_definitions.cpp scenarios/register_in_course.cpp)
 add_executable(deregister_from_course scenarios/step_definitions.cpp scenarios/deregister_from_course.cpp)
 add_executable(drop_course scenarios/step_definitions.cpp scenarios/drop_course.cpp)
+
+target_link_libraries(login_logout PRIVATE client server doctest Threads::Threads)
 
 target_link_libraries(create_course PRIVATE client server doctest Threads::Threads)
 target_link_libraries(delete_course PRIVATE client server doctest Threads::Threads)
