@@ -14,7 +14,7 @@ public:
     void send(const Message&);
     void close();
 
-    const Message previous_message() const;
+    const char* const previous_message() const;
 
 private:
     void connect(const tcp::resolver::results_type&);
