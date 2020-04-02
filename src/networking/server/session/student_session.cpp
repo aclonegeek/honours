@@ -142,6 +142,8 @@ void StudentSession::drop_course() {
         break;
     case StudentResult::REGISTRATION_NOT_STARTED:
         [[fallthrough]];
+    case StudentResult::TERM_ENDED:
+        [[fallthrough]];
     case StudentResult::REGISTRATION_NOT_ENDED:
         this->write_messages.push_back(
             Message("Can only drop a course during the term."));
