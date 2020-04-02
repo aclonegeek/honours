@@ -8,8 +8,8 @@
 
 TemporarySession::TemporarySession(tcp::socket socket, University& university)
     : Session(std::move(socket)),
-      university(university),
-      state(State::DETERMINING_SESSION_TYPE) {}
+      state(State::DETERMINING_SESSION_TYPE),
+      university(university) {}
 
 void TemporarySession::start() {
     this->greeting();
