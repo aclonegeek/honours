@@ -89,11 +89,17 @@ SCENARIO("A student registers in a course after registration starts and before r
 
                 std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
-                THEN(
-                    "The student 123456789 is registered in the course 12345") {
-                    CHECK(true ==
-                          ctx.university().course(12345).value().has_student(
-                              123456789));
+                THEN("Registered for course. is printed") {
+                    CHECK("Registered for course." ==
+                          std::string_view(joe.previous_message()));
+
+                    AND_THEN("The student 123456789 is registered in the "
+                             "course 12345") {
+                        CHECK(
+                            true ==
+                            ctx.university().course(12345).value().has_student(
+                                123456789));
+                    }
                 }
             }
         }
@@ -115,8 +121,13 @@ SCENARIO("A student registers in a course that doesn't exist") {
 
                 std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
-                THEN("The course does not exist") {
-                    CHECK(false == ctx.university().course(2).has_value());
+                THEN("Course does not exist. is printed") {
+                    CHECK("Course does not exist." ==
+                          std::string_view(joe.previous_message()));
+
+                    AND_THEN("The course does not exist") {
+                        CHECK(false == ctx.university().course(2).has_value());
+                    }
                 }
             }
         }
@@ -135,10 +146,15 @@ SCENARIO("A student registers in a course before registration starts") {
 
             std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
-            THEN("The student 123456789 is not registered in 12345") {
-                CHECK(false ==
-                      ctx.university().course(12345).value().has_student(
-                          123456789));
+            THEN("Registration has not started. is printed") {
+                CHECK("Registration has not started." ==
+                      std::string_view(joe.previous_message()));
+
+                AND_THEN("The student 123456789 is not registered in 12345") {
+                    CHECK(false ==
+                          ctx.university().course(12345).value().has_student(
+                              123456789));
+                }
             }
         }
     }
@@ -159,10 +175,17 @@ SCENARIO("A student registers in a course after registration ended") {
 
                 std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
-                THEN("The student 123456789 is not registered in 12345") {
-                    CHECK(false ==
-                          ctx.university().course(12345).value().has_student(
-                              123456789));
+                THEN("Registration has ended. is printed") {
+                    CHECK("Registration has ended." ==
+                          std::string_view(joe.previous_message()));
+
+                    AND_THEN(
+                        "The student 123456789 is not registered in 12345") {
+                        CHECK(
+                            false ==
+                            ctx.university().course(12345).value().has_student(
+                                123456789));
+                    }
                 }
             }
         }
@@ -184,10 +207,17 @@ SCENARIO("A student registers in a course after the term ended") {
 
                 std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
-                THEN("The student 123456789 is not registered in 12345") {
-                    CHECK(false ==
-                          ctx.university().course(12345).value().has_student(
-                              123456789));
+                THEN("Registration has ended. is printed") {
+                    CHECK("Registration has ended." ==
+                          std::string_view(joe.previous_message()));
+
+                    AND_THEN(
+                        "The student 123456789 is not registered in 12345") {
+                        CHECK(
+                            false ==
+                            ctx.university().course(12345).value().has_student(
+                                123456789));
+                    }
                 }
             }
         }
@@ -220,23 +250,36 @@ SCENARIO("A student registers in a course that reached its capsize before regist
                         WHEN("The student enters 12345") {
                             send(murphy, "12345");
 
-                            THEN("The student 123456788 is not registered in "
-                                 "12345") {
-                                std::this_thread::sleep_for(
-                                    std::chrono::milliseconds(5));
+                            std::this_thread::sleep_for(
+                                std::chrono::milliseconds(5));
 
-                                THEN("The student 123456789 is not registered "
-                                     "in 12345") {
+                            THEN("Course is full. is printed") {
+                                CHECK("Course is full." ==
+                                      std::string_view(
+                                          murphy.previous_message()));
+
+                                AND_THEN("The student 123456788 is not "
+                                         "registered in "
+                                         "12345") {
                                     CHECK(false == ctx.university()
                                                        .course(12345)
                                                        .value()
                                                        .has_student(123456788));
 
-                                    AND_THEN("The course 12345 is full") {
-                                        CHECK(true == ctx.university()
-                                                          .course(12345)
-                                                          .value()
-                                                          .is_full());
+                                    AND_THEN("The student 123456789 is "
+                                             "registered in 12345") {
+                                        CHECK(true ==
+                                              ctx.university()
+                                                  .course(12345)
+                                                  .value()
+                                                  .has_student(123456789));
+
+                                        AND_THEN("The course 12345 is full") {
+                                            CHECK(true == ctx.university()
+                                                              .course(12345)
+                                                              .value()
+                                                              .is_full());
+                                        }
                                     }
                                 }
                             }
