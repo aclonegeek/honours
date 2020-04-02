@@ -85,13 +85,17 @@ SCENARIO("A student drops a course during the term") {
                         std::this_thread::sleep_for(
                             std::chrono::milliseconds(5));
 
-                        THEN("The student 123456789 is not registered in the "
-                             "course "
-                             "12345") {
-                            CHECK(false == ctx.university()
-                                               .course(12345)
-                                               .value()
-                                               .has_student(123456789));
+                        THEN("Dropped course. is printed") {
+                            CHECK("Dropped course." ==
+                                  std::string_view(joe.previous_message()));
+
+                            AND_THEN("The student 123456789 is not registered "
+                                     "in the course 12345") {
+                                CHECK(false == ctx.university()
+                                                   .course(12345)
+                                                   .value()
+                                                   .has_student(123456789));
+                            }
                         }
                     }
                 }
@@ -115,8 +119,13 @@ SCENARIO("A student drops from a course that doesn't exist") {
 
                 std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
-                THEN("The course 2 does not exist") {
-                    CHECK(false == ctx.university().course(2).has_value());
+                THEN("Course does not exist. is printed") {
+                    CHECK("Course does not exist." ==
+                          std::string_view(joe.previous_message()));
+
+                    AND_THEN("The course 2 does not exist") {
+                        CHECK(false == ctx.university().course(2).has_value());
+                    }
                 }
             }
         }
@@ -146,12 +155,18 @@ SCENARIO("A student drops a course during registration") {
 
                     std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
-                    THEN("The student 123456789 is registered in the course "
-                         "12345") {
-                        CHECK(
-                            true ==
-                            ctx.university().course(12345).value().has_student(
-                                123456789));
+                    THEN("Can only drop a course during the term. is printed") {
+                        CHECK("Can only drop a course during the term." ==
+                              std::string_view(joe.previous_message()));
+
+                        AND_THEN(
+                            "The student 123456789 is registered in the course "
+                            "12345") {
+                            CHECK(true == ctx.university()
+                                              .course(12345)
+                                              .value()
+                                              .has_student(123456789));
+                        }
                     }
                 }
             }
@@ -171,11 +186,17 @@ SCENARIO("A student drops a course before registration has started") {
 
             std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
-            THEN("The student 123456789 is not registered in the course "
-                 "12345") {
-                CHECK(false ==
-                      ctx.university().course(12345).value().has_student(
-                          123456789));
+            THEN("Can only drop a course during the term. is printed") {
+                CHECK("Can only drop a course during the term." ==
+                      std::string_view(joe.previous_message()));
+
+                AND_THEN(
+                    "The student 123456789 is not registered in the course "
+                    "12345") {
+                    CHECK(false ==
+                          ctx.university().course(12345).value().has_student(
+                              123456789));
+                }
             }
         }
     }
@@ -208,12 +229,19 @@ SCENARIO("A student drops a course after the term ends") {
                         std::this_thread::sleep_for(
                             std::chrono::milliseconds(5));
 
-                        THEN("The student 123456789 is registered in the "
-                             "course 12345") {
-                            CHECK(true == ctx.university()
-                                              .course(12345)
-                                              .value()
-                                              .has_student(123456789));
+                        THEN("Can only drop a course during the term. is "
+                             "printed") {
+                            CHECK("Can only drop a course during the term." ==
+                                  std::string_view(joe.previous_message()));
+
+                            AND_THEN(
+                                "The student 123456789 is registered in the "
+                                "course 12345") {
+                                CHECK(true == ctx.university()
+                                                  .course(12345)
+                                                  .value()
+                                                  .has_student(123456789));
+                            }
                         }
                     }
                 }
