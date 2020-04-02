@@ -37,12 +37,12 @@ void University::start_timers() {
 ClerkResult University::create_course(const std::uint16_t id,
                                       const std::string& title,
                                       const std::uint8_t capsize) {
-    if (this->courses.find(id) != this->courses.end()) {
-        return ClerkResult::COURSE_EXISTS;
-    }
-
     if (this->state != State::PREREGISTRATION) {
         return ClerkResult::PREREGISTRATION_ENDED;
+    }
+
+    if (this->courses.find(id) != this->courses.end()) {
+        return ClerkResult::COURSE_EXISTS;
     }
 
     this->courses.insert({id, Course(id, title, capsize)});
@@ -50,12 +50,12 @@ ClerkResult University::create_course(const std::uint16_t id,
 }
 
 ClerkResult University::delete_course(const std::uint16_t id) {
-    if (this->courses.find(id) == this->courses.end()) {
-        return ClerkResult::COURSE_DOES_NOT_EXIST;
-    }
-
     if (this->state != State::PREREGISTRATION) {
         return ClerkResult::PREREGISTRATION_ENDED;
+    }
+
+    if (this->courses.find(id) == this->courses.end()) {
+        return ClerkResult::COURSE_DOES_NOT_EXIST;
     }
 
     this->courses.erase(id);
@@ -64,12 +64,12 @@ ClerkResult University::delete_course(const std::uint16_t id) {
 
 ClerkResult University::register_student(const std::uint32_t id,
                                          const std::string name) {
-    if (this->students.find(id) != this->students.end()) {
-        return ClerkResult::STUDENT_EXISTS;
-    }
-
     if (this->state != State::PREREGISTRATION) {
         return ClerkResult::PREREGISTRATION_ENDED;
+    }
+
+    if (this->students.find(id) != this->students.end()) {
+        return ClerkResult::STUDENT_EXISTS;
     }
 
     this->students.insert({id, Student(id, name)});
