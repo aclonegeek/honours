@@ -19,3 +19,4 @@ void there_is_an_existing_course(Client&, const std::string&);
 void there_is_an_existing_student(Client&, const std::string&);
 
 void the_student_has_registered_in(Client&, const std::string&);
+void the_student_has_deregistered_from(Client&, const std::string&);

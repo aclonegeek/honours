@@ -55,3 +55,9 @@ void the_student_has_registered_in(Client& client, const std::string& message) {
     client.send(Message("rfc"));
     client.send(Message(message));
 }
+
+void the_student_has_deregistered_from(Client& client,
+                                       const std::string& message) {
+    client.send(Message("dfc"));
+    client.send(Message(message));
+}

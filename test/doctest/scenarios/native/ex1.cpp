@@ -1,8 +1,8 @@
 #include <doctest.h>
 #include <iostream>
 
-#include "scenario_context.hpp"
-#include "step_definitions.hpp"
+#include "../scenario_context.hpp"
+#include "../step_definitions.hpp"
 
 class Ex1ScenarioContext final : public ScenarioContext {
 public:
@@ -47,7 +47,7 @@ public:
 
     void background() {
         the_clerk_is_logged_in(this->clerk);
-        there_is_an_existing_course(this->clerk, "12345, Witchcraft, 2");
+        there_is_an_existing_course(this->clerk, "12345, C1, 2");
         there_is_an_existing_student(this->clerk, "111111111, S1");
         there_is_an_existing_student(this->clerk, "222222222, S2");
         there_is_an_existing_student(this->clerk, "333333333, S3");
@@ -101,8 +101,6 @@ private:
     Client _s3;
     Client _s4;
 };
-
-TEST_SUITE_BEGIN("Ex1");
 
 // clang-format off
 SCENARIO("Ex1 - Three students attempt to simultaneously register in a course with 1 spot left") {
@@ -171,5 +169,3 @@ SCENARIO("Ex1 - Three students attempt to simultaneously register in a course wi
         }
     }
 }
-
-TEST_SUITE_END();
