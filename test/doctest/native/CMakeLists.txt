@@ -11,7 +11,9 @@ set(SOURCE_FILES
 
   scenarios/register_in_course.cpp
   scenarios/deregister_from_course.cpp
-  scenarios/drop_course.cpp)
+  scenarios/drop_course.cpp
+
+  scenarios/ex1.cpp)
 
 add_executable(test_suite ${SOURCE_FILES})
 target_link_libraries(test_suite PRIVATE client server doctest Threads::Threads)

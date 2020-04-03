@@ -9,8 +9,8 @@ University::University() : state(State::PREREGISTRATION) {
 
     // For testing purposes.
     this->courses.insert({11111, Course(11111, "Quack", 1)});
-    this->students.insert({111111111, Student(111111111, "joe")});
-    this->students.insert({222222222, Student(222222222, "murphy")});
+    this->students.insert({112233445, Student(112233445, "joe")});
+    this->students.insert({111222334, Student(111222334, "murphy")});
 }
 
 void University::start_timers() {

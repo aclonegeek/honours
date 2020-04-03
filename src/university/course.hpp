@@ -1,6 +1,7 @@
 #pragma once
 
 #include <unordered_map>
+#include <vector>
 
 #include "student.hpp"
 
@@ -16,6 +17,8 @@ public:
     bool has_student(const std::uint32_t) const;
     bool is_full() const;
 
+    const std::vector<std::uint32_t> student_ids() const;
+
     std::uint16_t id() const;
 
 private:
@@ -23,5 +26,5 @@ private:
     const std::string title;
     const std::uint8_t capsize;
 
-    std::unordered_map<std::uint32_t, Student&> students;
+    std::unordered_map<std::uint32_t, Student&> _students;
 };
