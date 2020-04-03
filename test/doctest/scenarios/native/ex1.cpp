@@ -110,59 +110,43 @@ SCENARIO("Ex1 - Three students attempt to simultaneously register in a course wi
     Client& s3 = ctx.s3();
     Client& s4 = ctx.s4();
 
-    GIVEN("S2 enters rfc") {
-        send(s2, "rfc");
+    GIVEN("S2 registers in 12345") {
+        the_student_has_registered_in(s2, "12345");
 
-        GIVEN("S2 enters 12345") {
-            send(s2, "12345");
+        GIVEN("S3 registers in 12345") {
+            the_student_has_registered_in(s3, "12345");
 
-            GIVEN("S3 enters rfc") {
-                send(s3, "rfc");
+            GIVEN("S4 registers in 12345") {
+                the_student_has_registered_in(s4, "12345");
 
-                GIVEN("S3 enters 12345") {
-                    send(s3, "12345");
+                WHEN("We wait for 1 day") {
+                    wait(WaitUntil::CUSTOM, 1);
 
-                    GIVEN("S4 enters rfc") {
-                        send(s4, "rfc");
+                    THEN("S1 and one of the other students has registered in "
+                         "12345") {
+                        CHECK(
+                            true ==
+                            ctx.university().course(12345).value().has_student(
+                                111111111));
 
-                        GIVEN("S4 enters 12345") {
-                            send(s4, "12345");
+                        CHECK((
+                            (true ==
+                             ctx.university().course(12345).value().has_student(
+                                 222222222)) ||
+                            (true ==
+                             ctx.university().course(12345).value().has_student(
+                                 333333333)) ||
+                            (true ==
+                             ctx.university().course(12345).value().has_student(
+                                 444444444))));
 
-                            WHEN("We wait for 1 day") {
-                                wait(WaitUntil::CUSTOM, 1);
+                        auto students = ctx.university()
+                                            .course(12345)
+                                            .value()
+                                            .student_ids();
 
-                                THEN("S1 and one of the other students has "
-                                     "registered in 12345") {
-                                    CHECK(true == ctx.university()
-                                                      .course(12345)
-                                                      .value()
-                                                      .has_student(111111111));
-
-                                    CHECK((
-                                        (true == ctx.university()
-                                                     .course(12345)
-                                                     .value()
-                                                     .has_student(222222222)) ||
-                                        (true == ctx.university()
-                                                     .course(12345)
-                                                     .value()
-                                                     .has_student(333333333)) ||
-                                        (true == ctx.university()
-                                                     .course(12345)
-                                                     .value()
-                                                     .has_student(444444444))));
-
-                                    auto students = ctx.university()
-                                                        .course(12345)
-                                                        .value()
-                                                        .student_ids();
-
-                                    std::cout << "\nStudents in 12345: "
-                                              << students[0] << ", "
-                                              << students[1] << "\n";
-                                }
-                            }
-                        }
+                        std::cout << "\nStudents in 12345: " << students[0]
+                                  << ", " << students[1] << "\n";
                     }
                 }
             }
