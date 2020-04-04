@@ -69,4 +69,6 @@ test_suite --tc=<filters>
 Run `test/test_suite --tc=*EX?N*` where ? is 1 or 2 depending on the native test that you want to run.
 
 ### Running Parallel Tests
-Run `ctest -R ex?.* -j6 --verbose` where ? is 1 or 2 depending on the parallel test that you want to run. The `verbose` flag is optional.
+For ex1, run `ctest -R ex1.* -j6 --verbose`.
+
+For ex2, run `ctest -R ex2.* -j7 --verbose`.
