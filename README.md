@@ -40,7 +40,9 @@ To the run server: `run_server <port>`(e.g. `run_server 5001`)
 To run the client: `run_client <host> <port>` (e.g. `run_client localhost 5001`)
 
 ## Running Tests
-After building, the tests can be located inside the `build/test` directory.
+After building, the test suite can be located inside the `build/test` directory.
+
+All commands for running the test suite assume you are present within the `build` directory.
 
 ### Running The Test Suite
 To run the test suite, simply run the `test_suite` executable. This will run the entire test suite.
@@ -63,7 +65,8 @@ test_suite --ltc
 test_suite --tc=<filters>
 ```
 
-### Running Native Examples
-TODO.
-### Running Parallel Examples
-TODO.
+### Running Native Tests
+Run `test/test_suite --tc=*EX?N*` where ? is 1 or 2 depending on the native test that you want to run.
+
+### Running Parallel Tests
+Run `ctest -R ex?.* -j6 --verbose` where ? is 1 or 2 depending on the parallel test that you want to run. The `verbose` flag is optional.
