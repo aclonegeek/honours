@@ -103,7 +103,7 @@ private:
 };
 
 // clang-format off
-SCENARIO("Ex1 - Three students attempt to simultaneously register in a course with 1 spot left") {
+SCENARIO("EX1N - Three students attempt to simultaneously register in a course with 1 spot left") {
     // clang-format on
     Ex1ScenarioContext ctx;
     Client& s2 = ctx.s2();

@@ -106,7 +106,7 @@ private:
 };
 
 // clang-format off
-SCENARIO("Ex2 - Two students attempt to simultaneously register in a course with 2 spots left after a student deregisters") {
+SCENARIO("EX2N - Two students attempt to simultaneously register in a course with 2 spots left after a student deregisters") {
     // clang-format on
     Ex2ScenarioContext ctx;
     Client& s2 = ctx.s2();

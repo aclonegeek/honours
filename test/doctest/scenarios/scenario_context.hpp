@@ -27,7 +27,7 @@ public:
         this->server_thread.join();
     }
 
-    virtual void background() = 0;
+    virtual void background() {}
 
     const University& university() const { return this->_university; }
 
