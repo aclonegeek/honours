@@ -10,8 +10,8 @@
     - [Running](#running)
     - [Running Tests](#running-tests)
         - [Running The Test Suite](#running-the-test-suite)
-        - [Running Native Examples](#running-native-examples)
-        - [Running Parallel Examples](#running-parallel-examples)
+        - [Running Native Tests](#running-native-tests)
+        - [Running Parallel Tests](#running-parallel-tests)
 
 # Requirements
 - C++17 compiler (GCC >= 7, Clang >= 4)
