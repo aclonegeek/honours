@@ -9,7 +9,7 @@ SCENARIO("EX1P1.0 - The server is initialized") {
     ScenarioContext ctx;
 
     GIVEN("We wait 3 days after registration starts") {
-        wait(WaitUntil::CUSTOM, PREREGISTRATION_LENGTH + 10);
+        wait(WaitUntil::CUSTOM, PREREGISTRATION_LENGTH + 3);
 
         THEN("S1 is registered in the course 12345") {
             CHECK(true == ctx.university().course(12345).value().has_student(
@@ -89,7 +89,7 @@ SCENARIO("EX1P1.2 - S1 registers in C1") {
     std::thread t([&io_context]() { io_context.run(); });
 
     // Give it some time to start up...
-    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    std::this_thread::sleep_for(std::chrono::milliseconds(25));
 
     GIVEN("S1 connects") {
         the_student_has_logged_in_as(client, "111111111, S1");
@@ -118,7 +118,7 @@ SCENARIO("EX1P1.3 - S2 registers in C1") {
     std::thread t([&io_context]() { io_context.run(); });
 
     // Give it some time to start up...
-    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    std::this_thread::sleep_for(std::chrono::milliseconds(25));
 
     GIVEN("S2 connects") {
         the_student_has_logged_in_as(client, "222222222, S2");
@@ -147,7 +147,7 @@ SCENARIO("EX1P1.4 - S3 registers in C1") {
     std::thread t([&io_context]() { io_context.run(); });
 
     // Give it some time to start up...
-    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    std::this_thread::sleep_for(std::chrono::milliseconds(25));
 
     GIVEN("S3 connects") {
         the_student_has_logged_in_as(client, "333333333, S3");
@@ -176,7 +176,7 @@ SCENARIO("EX1P1.5 - S4 registers in C1") {
     std::thread t([&io_context]() { io_context.run(); });
 
     // Give it some time to start up...
-    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    std::this_thread::sleep_for(std::chrono::milliseconds(25));
 
     GIVEN("S4 connects") {
         the_student_has_logged_in_as(client, "444444444, S4");
