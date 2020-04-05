@@ -29,7 +29,7 @@ git clone --recurse-submodules https://github.com/aclonegeek/honours.git
 cd honours
 cmake -E make_directory build
 cmake -E chdir build cmake ..
-# TODO make command.
+make
 ```
 
 ## Running
@@ -45,7 +45,7 @@ After building, the test suite can be located inside the `build/test` directory.
 All commands for running the test suite assume you are present within the `build` directory.
 
 ### Running The Test Suite
-To run the test suite, simply run the `test_suite` executable. This will run the entire test suite.
+To run the test suite, simply run `test/test_suite --tce=*EX1*,*EX2*`. This will run the entire test suite, minus the native and parallel tests pertaining to ex1 and ex2.
 
 To run a specific test suite or test suites, you can do the following:
 ``` shell
