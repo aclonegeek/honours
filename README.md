@@ -32,6 +32,8 @@ cmake -E chdir build cmake ..
 cmake --build build
 ```
 
+*Note*: If building with MSVC, it will place executables one directory deeper in a Debug directory.
+
 ## Running
 After building, the client and server executables can be located inside the `build` directory.
 
