@@ -29,7 +29,7 @@ git clone --recurse-submodules https://github.com/aclonegeek/honours.git
 cd honours
 cmake -E make_directory build
 cmake -E chdir build cmake ..
-make
+cmake --build build
 ```
 
 ## Running
