@@ -8,8 +8,6 @@
 SCENARIO("EX2P1.0 - The server is initialized") {
     ScenarioContext ctx;
 
-    std::cout << "\n\n" << ctx.university().get_state() << "\n\n";
-
     GIVEN("We wait 3 days after registration starts") {
         wait(WaitUntil::CUSTOM, PREREGISTRATION_LENGTH + 3);
 
