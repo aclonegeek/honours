@@ -5,6 +5,7 @@
 
 #include "client.hpp"
 #include "server.hpp"
+#include "university.hpp"
 
 static constexpr std::string_view host = "localhost";
 static constexpr std::string_view port = "5001";

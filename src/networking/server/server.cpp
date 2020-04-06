@@ -2,12 +2,8 @@
 
 #include "server.hpp"
 #include "session/temporary_session.hpp"
-#include "university.hpp"
 
-// Server::Server(asio::io_context& io_context, const tcp::endpoint& endpoint)
-//     : acceptor(io_context, endpoint) {
-//     this->accept();
-// }
+class University;
 
 Server::Server(asio::io_context& io_context, const tcp::endpoint& endpoint,
                University& university)

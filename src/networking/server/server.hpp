@@ -2,7 +2,7 @@
 
 #include <asio.hpp>
 
-#include "university.hpp"
+class University;
 
 using asio::ip::tcp;
 
