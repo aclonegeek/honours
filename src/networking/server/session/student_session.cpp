@@ -1,7 +1,5 @@
-#include <string_view>
-
-#include "result_types.hpp"
 #include "student_session.hpp"
+#include "result_types.hpp"
 #include "university.hpp"
 
 static const Message OPTIONS =

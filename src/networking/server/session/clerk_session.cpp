@@ -1,5 +1,6 @@
 #include "clerk_session.hpp"
 #include "result_types.hpp"
+#include "university.hpp"
 #include "util.hpp"
 
 static const Message OPTIONS =

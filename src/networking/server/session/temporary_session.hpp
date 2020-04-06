@@ -1,7 +1,8 @@
 #pragma once
 
 #include "session.hpp"
-#include "university.hpp"
+
+class University;
 
 class TemporarySession final : public Session {
 public:

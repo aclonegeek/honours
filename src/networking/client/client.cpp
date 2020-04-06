@@ -1,7 +1,6 @@
 #include <iostream>
 
 #include "client.hpp"
-#include "message.hpp"
 
 Client::Client(asio::io_context& io_context,
                const tcp::resolver::results_type& endpoints)
