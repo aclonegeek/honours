@@ -89,8 +89,7 @@ SCENARIO("A student registers in a course after registration starts and before r
                 std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
                 THEN("Registered for course. is printed") {
-                    CHECK("Registered for course." ==
-                          std::string_view(joe.previous_message()));
+                    CHECK("Registered for course." == joe.previous_message());
 
                     AND_THEN("The student 123456789 is registered in the "
                              "course 12345") {
@@ -121,8 +120,7 @@ SCENARIO("A student registers in a course that doesn't exist") {
                 std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
                 THEN("Course does not exist. is printed") {
-                    CHECK("Course does not exist." ==
-                          std::string_view(joe.previous_message()));
+                    CHECK("Course does not exist." == joe.previous_message());
 
                     AND_THEN("The course does not exist") {
                         CHECK(false == ctx.university().course(2).has_value());
@@ -147,7 +145,7 @@ SCENARIO("A student registers in a course before registration starts") {
 
             THEN("Registration has not started. is printed") {
                 CHECK("Registration has not started." ==
-                      std::string_view(joe.previous_message()));
+                      joe.previous_message());
 
                 AND_THEN("The student 123456789 is not registered in 12345") {
                     CHECK(false ==
@@ -175,8 +173,7 @@ SCENARIO("A student registers in a course after registration ended") {
                 std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
                 THEN("Registration has ended. is printed") {
-                    CHECK("Registration has ended." ==
-                          std::string_view(joe.previous_message()));
+                    CHECK("Registration has ended." == joe.previous_message());
 
                     AND_THEN(
                         "The student 123456789 is not registered in 12345") {
@@ -208,7 +205,7 @@ SCENARIO("A student registers in a course after the term ended") {
 
                 THEN("Registration has ended. is printed") {
                     CHECK("Registration has ended." ==
-                          std::string_view(joe.previous_message()));
+                          joe.previous_message());
 
                     AND_THEN(
                         "The student 123456789 is not registered in 12345") {
@@ -254,8 +251,7 @@ SCENARIO("A student registers in a course that reached its capsize before regist
 
                             THEN("Course is full. is printed") {
                                 CHECK("Course is full." ==
-                                      std::string_view(
-                                          murphy.previous_message()));
+                                      murphy.previous_message());
 
                                 AND_THEN("The student 123456788 is not "
                                          "registered in "

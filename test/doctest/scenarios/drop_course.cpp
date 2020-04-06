@@ -85,8 +85,7 @@ SCENARIO("A student drops a course during the term") {
                             std::chrono::milliseconds(5));
 
                         THEN("Dropped course. is printed") {
-                            CHECK("Dropped course." ==
-                                  std::string_view(joe.previous_message()));
+                            CHECK("Dropped course." == joe.previous_message());
 
                             AND_THEN("The student 123456789 is not registered "
                                      "in the course 12345") {
@@ -119,8 +118,7 @@ SCENARIO("A student drops from a course that doesn't exist") {
                 std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
                 THEN("Course does not exist. is printed") {
-                    CHECK("Course does not exist." ==
-                          std::string_view(joe.previous_message()));
+                    CHECK("Course does not exist." == joe.previous_message());
 
                     AND_THEN("The course 2 does not exist") {
                         CHECK(false == ctx.university().course(2).has_value());
@@ -156,7 +154,7 @@ SCENARIO("A student drops a course during registration") {
 
                     THEN("Can only drop a course during the term. is printed") {
                         CHECK("Can only drop a course during the term." ==
-                              std::string_view(joe.previous_message()));
+                              joe.previous_message());
 
                         AND_THEN(
                             "The student 123456789 is registered in the course "
@@ -187,7 +185,7 @@ SCENARIO("A student drops a course before registration has started") {
 
             THEN("Can only drop a course during the term. is printed") {
                 CHECK("Can only drop a course during the term." ==
-                      std::string_view(joe.previous_message()));
+                      joe.previous_message());
 
                 AND_THEN(
                     "The student 123456789 is not registered in the course "
@@ -231,7 +229,7 @@ SCENARIO("A student drops a course after the term ends") {
                         THEN("Can only drop a course during the term. is "
                              "printed") {
                             CHECK("Can only drop a course during the term." ==
-                                  std::string_view(joe.previous_message()));
+                                  joe.previous_message());
 
                             AND_THEN(
                                 "The student 123456789 is registered in the "

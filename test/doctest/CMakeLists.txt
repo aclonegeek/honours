@@ -22,6 +22,7 @@ set(SOURCE_FILES
   scenarios/parallel/ex2.cpp)
 
 add_executable(test_suite ${SOURCE_FILES})
+target_compile_definitions(test_suite PRIVATE "DOCTEST_CONFIG_TREAT_CHAR_STAR_AS_STRING")
 target_link_libraries(test_suite PRIVATE client server doctest Threads::Threads)
 
 add_test(NAME ex1.0 COMMAND test_suite --tc=*EX1P1.0*)

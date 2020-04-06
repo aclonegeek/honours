@@ -62,8 +62,7 @@ SCENARIO("A clerk logs in with a valid password") {
             std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
             THEN("Welcome Clerk! is printed") {
-                CHECK("Welcome Clerk!" ==
-                      std::string_view(clerk.previous_message()));
+                CHECK("Welcome Clerk!" == clerk.previous_message());
             }
         }
     }
@@ -83,7 +82,7 @@ SCENARIO("A clerk logs in with an invalid password") {
 
             THEN("Invalid password. Try again. is printed") {
                 CHECK("Invalid password. Try again." ==
-                      std::string_view(clerk.previous_message()));
+                      clerk.previous_message());
             }
         }
     }
@@ -109,8 +108,7 @@ SCENARIO("A student logs in with valid information") {
                 std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
                 THEN("Welcome Student! is printed") {
-                    CHECK("Welcome Student!" ==
-                          std::string_view(joe.previous_message()));
+                    CHECK("Welcome Student!" == joe.previous_message());
                 }
             }
         }
@@ -137,8 +135,7 @@ SCENARIO("A student logs in with invalid information") {
                 std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
                 THEN("Student does not exist. is printed") {
-                    CHECK("Student does not exist." ==
-                          std::string_view(joe.previous_message()));
+                    CHECK("Student does not exist." == joe.previous_message());
                 }
             }
         }

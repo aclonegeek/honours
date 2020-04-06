@@ -51,8 +51,7 @@ SCENARIO("A clerk creates a student before registration starts") {
             std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
             THEN("Then Student created. is printed") {
-                CHECK("Student created." ==
-                      std::string_view(clerk.previous_message()));
+                CHECK("Student created." == clerk.previous_message());
 
                 AND_THEN("The student 123456789 exists") {
                     CHECK(true ==
@@ -80,7 +79,7 @@ SCENARIO("A clerk creates a duplicate student before registration starts") {
 
                 THEN("Then Student already exists. is printed") {
                     CHECK("Student already exists." ==
-                          std::string_view(clerk.previous_message()));
+                          clerk.previous_message());
                 }
             }
         }
@@ -104,7 +103,7 @@ SCENARIO("A clerk creates a student after registration starts") {
 
                 THEN("Then Preregistration has ended. is printed") {
                     CHECK("Preregistration has ended." ==
-                          std::string_view(clerk.previous_message()));
+                          clerk.previous_message());
                 }
             }
         }
