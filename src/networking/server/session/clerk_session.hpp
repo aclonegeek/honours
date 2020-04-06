@@ -9,7 +9,7 @@ public:
 
     virtual void start() override;
 
-protected:
+private:
     enum class State {
         WAITING_FOR_ACTION,
         CREATING_COURSE,
@@ -18,7 +18,6 @@ protected:
         DELETING_STUDENT,
     };
 
-private:
     virtual bool handle_input() override;
 
     void greeting();
