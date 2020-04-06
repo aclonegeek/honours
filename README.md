@@ -34,6 +34,7 @@ cmake --build build
 ```
 
 *Note*: Downloading the repository as a zip will not pull in the third_party submodules.
+
 *Note*: If building with MSVC, it will place executables one directory deeper from where they usually end up in a Debug directory. `run_server` and `run_client` end up in `build/Debug` and `test_suite` ends up in `build/test/Debug/test_suite`.
 
 ## Running
