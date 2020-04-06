@@ -15,7 +15,7 @@
 
 # Requirements
 - C++17 compiler (GCC >= 7, Clang >= 4, MSVC >= 19.22 (I think?))
-- CMake 3.16 (make sure it's on the PATH)
+- CMake >= 3.16 (make sure it's on the PATH, also a lower version CMake is probably OK but I cannot verify)
 - git
 
 # Dependencies
