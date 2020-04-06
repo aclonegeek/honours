@@ -14,8 +14,9 @@
         - [Running Parallel Tests](#running-parallel-tests)
 
 # Requirements
-- C++17 compiler (GCC >= 7, Clang >= 4)
-- CMake 3.16
+- C++17 compiler (GCC >= 7, Clang >= 4, MSVC >= 19.22 (I think?))
+- CMake 3.16 (make sure it's on the PATH)
+- git
 
 # Dependencies
 - Asio 1.14.0 (included)
@@ -32,22 +33,23 @@ cmake -E chdir build cmake ..
 cmake --build build
 ```
 
-*Note*: If building with MSVC, it will place executables one directory deeper in a Debug directory.
+*Note*: Downloading the repository as a zip will not pull in the third_party submodules.
+*Note*: If building with MSVC, it will place executables one directory deeper from where they usually end up in a Debug directory. `run_server` and `run_client` end up in `build/Debug` and `test_suite` ends up in `build/test/Debug/test_suite`.
 
 ## Running
-After building, the client and server executables can be located inside the `build` directory.
+The client and server executables can be located inside the `build` directory.
 
 To the run server: `run_server <port>`(e.g. `run_server 5001`)
 
 To run the client: `run_client <host> <port>` (e.g. `run_client localhost 5001`)
 
 ## Running Tests
-After building, the test suite can be located inside the `build/test` directory.
-
-All commands for running the test suite assume you are present within the `build` directory.
+The test suite can be located inside the `build/test` directory.
 
 ### Running The Test Suite
-To run the test suite, simply run `test/test_suite --tce=*EX1*,*EX2*`. This will run the entire test suite, minus the native and parallel tests pertaining to ex1 and ex2.
+The code for the test suite is located in `test/doctest/scenarios/`.
+
+To run the test suite, simply run `test_suite --tce=*EX1*,*EX2*`. This will run the entire test suite except the native and parallel tests for ex1 and ex2.
 
 To run a specific test suite or test suites, you can do the following:
 ``` shell
@@ -68,9 +70,13 @@ test_suite --tc=<filters>
 ```
 
 ### Running Native Tests
+The code for the native tests is located in `test/doctest/scenarios/native/`.
+
 Run `test/test_suite --tc=*EX?N*` where ? is 1 or 2 depending on the native test that you want to run.
 
 ### Running Parallel Tests
+The code for the native tests is located in `test/doctest/scenarios/parallel/`.
+
 For ex1, run `ctest -R ex1.* -j6 --verbose`.
 
 For ex2, run `ctest -R ex2.* -j7 --verbose`.
