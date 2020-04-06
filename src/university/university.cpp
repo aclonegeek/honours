@@ -4,6 +4,12 @@
 #include "result_types.hpp"
 #include "university.hpp"
 
+#if defined(__clang__) || defined(__GNUC__) || defined(__GNUG__)
+    #define unreachable() __builtin_unreachable()
+#elif defined(_MSC_VER)
+    #define unreachable() __assume(0)
+#endif
+
 University::University() : state(State::PREREGISTRATION) {
     this->start_timers();
 
@@ -107,6 +113,8 @@ University::register_student_in_course(const std::uint32_t student_id,
     case State::END:
         return StudentResult::REGISTRATION_ENDED;
     }
+
+    unreachable();
 }
 
 StudentResult
@@ -126,6 +134,8 @@ University::deregister_student_from_course(const std::uint32_t student_id,
     case State::END:
         return StudentResult::REGISTRATION_ENDED;
     }
+
+    unreachable();
 }
 
 StudentResult
@@ -145,6 +155,8 @@ University::drop_student_from_course(const std::uint32_t student_id,
     case State::END:
         return StudentResult::TERM_ENDED;
     }
+
+    unreachable();
 }
 
 const std::optional<Course> University::course(const std::uint16_t id) const {
@@ -175,4 +187,6 @@ const std::string University::get_state() const {
     case State::END:
         return "END";
     }
+
+    unreachable();
 }
