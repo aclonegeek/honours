@@ -15,7 +15,7 @@
 
 # Requirements
 - C++17 compiler (GCC >= 7, Clang >= 4, MSVC >= 19.25)
-- CMake >= 3.16 (make sure it's on the PATH, also a lower version CMake is probably OK but I cannot verify)
+- CMake >= 3.16 (make sure it's on the PATH)
 - git
 
 # Dependencies
@@ -33,9 +33,9 @@ cmake -E chdir build cmake ..
 cmake --build build
 ```
 
-*Note*: Downloading the repository as a zip will not pull in the third_party submodules.
+**Note**: Downloading the repository as a zip will not pull in the third_party submodules.
 
-*Note*: If building with MSVC, it will place executables one directory deeper inside a Debug directory. `run_server` and `run_client` end up in `build/Debug` and `test_suite` ends up in `build/test/Debug/test_suite` (the directory will be Release if built in Release mode).
+**Note**: If building with MSVC, it will place executables one directory deeper inside a Debug directory. `run_server` and `run_client` end up in `build/Debug` and `test_suite` ends up in `build/test/Debug/test_suite` (the directory will be Release if built in Release mode).
 
 ## Running
 The client and server executables can be located inside the `build` directory.
@@ -78,7 +78,7 @@ Run `test_suite --tc=*EX?N*` where ? is 1 or 2 depending on the native test that
 ### Running Parallel Tests
 The code for the native tests is located in `test/doctest/scenarios/parallel/`.
 
-*Note*: If on Windows, append `-C Debug` to the following commands, right after `--verbose`.
+**Note**: If on Windows, append `-C Debug` to the following commands, right after `--verbose`.
 
 For ex1, run `ctest -R ex1.* -j6 --verbose`.
 For ex2, run `ctest -R ex2.* -j7 --verbose`.
