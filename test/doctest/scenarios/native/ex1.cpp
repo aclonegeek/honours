@@ -28,6 +28,8 @@ public:
         this->s3_thread    = std::thread([&] { this->s3_io_context.run(); });
         this->s4_thread    = std::thread([&] { this->s4_io_context.run(); });
 
+        wait_for_clients_to_load();
+
         this->background();
     }
 

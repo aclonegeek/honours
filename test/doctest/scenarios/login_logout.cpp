@@ -15,8 +15,7 @@ public:
         this->clerk_thread = std::thread([&] { this->clerk_io_context.run(); });
         this->joe_thread   = std::thread([&] { this->joe_io_context.run(); });
 
-        // Give everything some time to start up.
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        wait_for_clients_to_load();
     }
 
     ~LoginLogoutScenarioContext() {

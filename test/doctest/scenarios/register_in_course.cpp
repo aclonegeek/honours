@@ -20,6 +20,8 @@ public:
         this->murphy_thread =
             std::thread([&] { this->murphy_io_context.run(); });
 
+        wait_for_clients_to_load();
+
         this->background();
     }
 

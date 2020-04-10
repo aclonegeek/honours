@@ -11,8 +11,7 @@ public:
           _clerk(Client(this->clerk_io_context, this->clerk_endpoints)) {
         this->clerk_thread = std::thread([&] { this->clerk_io_context.run(); });
 
-        // Give everything some time to start up.
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        wait_for_clients_to_load();
 
         this->background();
     }

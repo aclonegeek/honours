@@ -3,14 +3,22 @@
 #include <optional>
 
 #include "course.hpp"
+#include "state_change_timer_task.hpp"
 
 enum class ClerkResult;
 enum class StudentResult;
 
 constexpr uint8_t DAY_LENGTH             = 1;  // seconds
-constexpr uint8_t PREREGISTRATION_LENGTH = 1;  // days
+constexpr uint8_t PREREGISTRATION_LENGTH = 5;  // days
 constexpr uint8_t REGISTRATION_LENGTH    = 10; // days
 constexpr uint8_t TERM_LENGTH            = 10; // days
+
+enum class State {
+    PREREGISTRATION,
+    REGISTRATION,
+    TERM,
+    END,
+};
 
 class University {
 public:
@@ -35,14 +43,9 @@ public:
     const std::string get_state() const;
 
 private:
-    void start_timers();
-
-    enum class State {
-        PREREGISTRATION,
-        REGISTRATION,
-        TERM,
-        END,
-    };
+    StateChangeTimerTask registration_timer;
+    StateChangeTimerTask term_timer;
+    StateChangeTimerTask end_timer;
 
     State state;
 

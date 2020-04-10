@@ -1,8 +1,5 @@
-#include <chrono>
-#include <thread>
-
-#include "result_types.hpp"
 #include "university.hpp"
+#include "result_types.hpp"
 
 #if defined(__clang__) || defined(__GNUC__) || defined(__GNUG__)
     #define unreachable() __builtin_unreachable()
@@ -10,34 +7,22 @@
     #define unreachable() __assume(0)
 #endif
 
-University::University() : state(State::PREREGISTRATION) {
-    this->start_timers();
-
+University::University()
+    : registration_timer(
+          this->state, State::REGISTRATION,
+          std::chrono::seconds(DAY_LENGTH * PREREGISTRATION_LENGTH)),
+      term_timer(this->state, State::TERM,
+                 std::chrono::seconds(DAY_LENGTH * (PREREGISTRATION_LENGTH +
+                                                    REGISTRATION_LENGTH))),
+      end_timer(this->state, State::END,
+                std::chrono::seconds(DAY_LENGTH *
+                                     (PREREGISTRATION_LENGTH +
+                                      REGISTRATION_LENGTH + TERM_LENGTH))),
+      state(State::PREREGISTRATION) {
     // For testing purposes.
     this->courses.insert({11111, Course(11111, "Quack", 1)});
     this->students.insert({112233445, Student(112233445, "joe")});
     this->students.insert({111222334, Student(111222334, "murphy")});
-}
-
-void University::start_timers() {
-    std::thread([&]() {
-        std::this_thread::sleep_for(
-            std::chrono::seconds(DAY_LENGTH * PREREGISTRATION_LENGTH));
-        this->state = State::REGISTRATION;
-    }).detach();
-
-    std::thread([&]() {
-        std::this_thread::sleep_for(std::chrono::seconds(
-            DAY_LENGTH * (PREREGISTRATION_LENGTH + REGISTRATION_LENGTH)));
-        this->state = State::TERM;
-    }).detach();
-
-    std::thread([&]() {
-        std::this_thread::sleep_for(std::chrono::seconds(
-            DAY_LENGTH *
-            (PREREGISTRATION_LENGTH + REGISTRATION_LENGTH + TERM_LENGTH)));
-        this->state = State::END;
-    }).detach();
 }
 
 ClerkResult University::create_course(const std::uint16_t id,

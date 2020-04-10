@@ -15,6 +15,8 @@ public:
         this->clerk_thread = std::thread([&] { this->clerk_io_context.run(); });
         this->joe_thread   = std::thread([&] { this->joe_io_context.run(); });
 
+        wait_for_clients_to_load();
+
         this->background();
     }
 
