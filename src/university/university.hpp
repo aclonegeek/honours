@@ -40,8 +40,6 @@ public:
     const std::optional<Course> course(const std::uint16_t) const;
     const std::optional<Student> student(const std::uint32_t) const;
 
-    const std::string get_state() const;
-
 private:
     StateChangeTimerTask registration_timer;
     StateChangeTimerTask term_timer;

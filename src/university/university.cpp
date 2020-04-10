@@ -160,18 +160,3 @@ const std::optional<Student> University::student(const std::uint32_t id) const {
 
     return {};
 }
-
-const std::string University::get_state() const {
-    switch (this->state) {
-    case State::PREREGISTRATION:
-        return "PREREGISTRATION";
-    case State::REGISTRATION:
-        return "REGISTRATION";
-    case State::TERM:
-        return "TERM";
-    case State::END:
-        return "END";
-    }
-
-    unreachable();
-}
