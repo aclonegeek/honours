@@ -19,7 +19,7 @@
 - git
 
 # Dependencies
-- Asio 1.14.0 (included)
+- Asio 1.16.0 (included)
 - Doctest 2.3.7 (included)
 
 # Setup, Building, & Running
