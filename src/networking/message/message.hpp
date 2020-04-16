@@ -3,8 +3,8 @@
 #include <cstdint>
 #include <string>
 
-constexpr uint8_t HEADER_LENGTH    = 3;
-constexpr uint16_t MAX_BODY_LENGTH = 512;
+constexpr std::uint8_t HEADER_LENGTH    = 3;
+constexpr std::uint16_t MAX_BODY_LENGTH = 512;
 
 class Message {
 public:
@@ -20,11 +20,11 @@ public:
     char* data();
     char* body();
 
-    uint16_t length() const;
-    uint16_t body_length() const;
-    void body_length(const uint16_t);
+    std::uint16_t length() const;
+    std::uint16_t body_length() const;
+    void body_length(const std::uint16_t);
 
 private:
     char _data[HEADER_LENGTH + MAX_BODY_LENGTH] = {};
-    uint16_t _body_length;
+    std::uint16_t _body_length;
 };

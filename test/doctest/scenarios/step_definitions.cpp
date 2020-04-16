@@ -9,7 +9,7 @@ void send(Client& client, const std::string& message) {
     client.send(Message(message));
 }
 
-void wait(const WaitUntil wait, const uint8_t days_to_wait) {
+void wait(const WaitUntil wait, const std::uint8_t days_to_wait) {
     switch (wait) {
     case WaitUntil::REGISTRATION_STARTS:
         std::this_thread::sleep_for(

@@ -37,11 +37,11 @@ char* Message::data() { return _data; }
 
 char* Message::body() { return _data + HEADER_LENGTH; }
 
-uint16_t Message::length() const { return HEADER_LENGTH + _body_length; }
+std::uint16_t Message::length() const { return HEADER_LENGTH + _body_length; }
 
-uint16_t Message::body_length() const { return _body_length; }
+std::uint16_t Message::body_length() const { return _body_length; }
 
-void Message::body_length(const uint16_t length) {
+void Message::body_length(const std::uint16_t length) {
     _body_length = length;
     if (_body_length > MAX_BODY_LENGTH) {
         _body_length = MAX_BODY_LENGTH;

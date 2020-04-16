@@ -11,7 +11,7 @@ enum class WaitUntil {
 
 void send(Client&, const std::string&);
 
-void wait(const WaitUntil, const uint8_t = 0);
+void wait(const WaitUntil, const std::uint8_t = 0);
 void wait_for_action_to_finish();
 
 void the_clerk_is_logged_in(Client&);
