@@ -1,3 +1,5 @@
+#include <stdexcept>
+
 #include "clerk_session.hpp"
 #include "result_types.hpp"
 #include "university.hpp"
@@ -105,7 +107,14 @@ void ClerkSession::create_course() {
 }
 
 void ClerkSession::delete_course() {
-    const std::uint16_t id = std::stoi(this->read_message.body());
+    std::uint16_t id;
+
+    try {
+        id = std::stoi(this->read_message.body());
+    } catch (const std::invalid_argument& ia) {
+        this->write_messages.push_back(Message("Course ID must be a number."));
+        return;
+    }
 
     ClerkResult result = this->university.delete_course(id);
 
