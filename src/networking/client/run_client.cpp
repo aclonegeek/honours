@@ -2,9 +2,7 @@
 
 #include "client.hpp"
 
-// TODO : More error handling, probably extract args parsing out into a function
-// and return the port.
-int main(int argc, char* argv[]) {
+int main(const int argc, const char* argv[]) {
     if (argc != 3) {
         std::cerr << "Usage: client <host> <port>\n";
         return 1;
@@ -27,8 +25,8 @@ int main(int argc, char* argv[]) {
 
         client.close();
         t.join();
-    } catch (std::exception& e) {
-        std::cerr << "Exception: " << e.what() << "\n";
+    } catch (const std::exception& e) {
+        std::cerr << "ERROR - Exception: " << e.what() << "\n";
     }
 
     return 0;
