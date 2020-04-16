@@ -8,10 +8,10 @@
 enum class ClerkResult;
 enum class StudentResult;
 
-constexpr uint8_t DAY_LENGTH             = 1;  // seconds
-constexpr uint8_t PREREGISTRATION_LENGTH = 5;  // days
-constexpr uint8_t REGISTRATION_LENGTH    = 10; // days
-constexpr uint8_t TERM_LENGTH            = 10; // days
+constexpr std::uint8_t DAY_LENGTH             = 1;  // seconds
+constexpr std::uint8_t PREREGISTRATION_LENGTH = 5;  // days
+constexpr std::uint8_t REGISTRATION_LENGTH    = 10; // days
+constexpr std::uint8_t TERM_LENGTH            = 10; // days
 
 enum class State {
     PREREGISTRATION,
@@ -24,20 +24,20 @@ class University {
 public:
     University();
 
-    ClerkResult create_course(const std::uint16_t, const std::string&,
+    ClerkResult create_course(const std::uint32_t, const std::string&,
                               const std::uint8_t);
-    ClerkResult delete_course(const std::uint16_t);
+    ClerkResult delete_course(const std::uint32_t);
     ClerkResult register_student(const std::uint32_t, const std::string);
     ClerkResult delete_student(const std::uint32_t);
 
     StudentResult register_student_in_course(const std::uint32_t,
-                                             const std::uint16_t);
+                                             const std::uint32_t);
     StudentResult deregister_student_from_course(const std::uint32_t,
-                                                 const std::uint16_t);
+                                                 const std::uint32_t);
     StudentResult drop_student_from_course(const std::uint32_t,
-                                           const std::uint16_t);
+                                           const std::uint32_t);
 
-    const std::optional<Course> course(const std::uint16_t) const;
+    const std::optional<Course> course(const std::uint32_t) const;
     const std::optional<Student> student(const std::uint32_t) const;
 
 private:
@@ -47,6 +47,6 @@ private:
 
     State state;
 
-    std::unordered_map<std::uint16_t, Course> courses;
+    std::unordered_map<std::uint32_t, Course> courses;
     std::unordered_map<std::uint32_t, Student> students;
 };

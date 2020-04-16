@@ -25,7 +25,7 @@ University::University()
     this->students.insert({111222334, Student(111222334, "murphy")});
 }
 
-ClerkResult University::create_course(const std::uint16_t id,
+ClerkResult University::create_course(const std::uint32_t id,
                                       const std::string& title,
                                       const std::uint8_t capsize) {
     if (this->state != State::PREREGISTRATION) {
@@ -40,7 +40,7 @@ ClerkResult University::create_course(const std::uint16_t id,
     return ClerkResult::SUCCESS;
 }
 
-ClerkResult University::delete_course(const std::uint16_t id) {
+ClerkResult University::delete_course(const std::uint32_t id) {
     if (this->state != State::PREREGISTRATION) {
         return ClerkResult::PREREGISTRATION_ENDED;
     }
@@ -82,7 +82,7 @@ ClerkResult University::delete_student(const std::uint32_t id) {
 
 StudentResult
 University::register_student_in_course(const std::uint32_t student_id,
-                                       const std::uint16_t course_id) {
+                                       const std::uint32_t course_id) {
     if (this->courses.find(course_id) == this->courses.end()) {
         return StudentResult::COURSE_DOES_NOT_EXIST;
     }
@@ -104,7 +104,7 @@ University::register_student_in_course(const std::uint32_t student_id,
 
 StudentResult
 University::deregister_student_from_course(const std::uint32_t student_id,
-                                           const std::uint16_t course_id) {
+                                           const std::uint32_t course_id) {
     if (this->courses.find(course_id) == this->courses.end()) {
         return StudentResult::COURSE_DOES_NOT_EXIST;
     }
@@ -125,7 +125,7 @@ University::deregister_student_from_course(const std::uint32_t student_id,
 
 StudentResult
 University::drop_student_from_course(const std::uint32_t student_id,
-                                     const std::uint16_t course_id) {
+                                     const std::uint32_t course_id) {
     if (this->courses.find(course_id) == this->courses.end()) {
         return StudentResult::COURSE_DOES_NOT_EXIST;
     }
@@ -144,7 +144,7 @@ University::drop_student_from_course(const std::uint32_t student_id,
     unreachable();
 }
 
-const std::optional<Course> University::course(const std::uint16_t id) const {
+const std::optional<Course> University::course(const std::uint32_t id) const {
     if (auto course = this->courses.find(id); course != this->courses.end()) {
         return course->second;
     }

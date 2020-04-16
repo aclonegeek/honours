@@ -9,7 +9,7 @@ enum class StudentResult;
 
 class Course {
 public:
-    Course(const std::uint16_t, const std::string, const std::uint8_t capsize);
+    Course(const std::uint32_t, const std::string, const std::uint8_t capsize);
 
     StudentResult register_student(Student&);
     StudentResult deregister_student(const std::uint32_t);
@@ -19,10 +19,10 @@ public:
 
     const std::vector<std::uint32_t> student_ids() const;
 
-    std::uint16_t id() const;
+    std::uint32_t id() const;
 
 private:
-    const std::uint16_t _id;
+    const std::uint32_t _id;
     const std::string title;
     const std::uint8_t capsize;
 

@@ -1,7 +1,7 @@
 #include "course.hpp"
 #include "result_types.hpp"
 
-Course::Course(const std::uint16_t id, const std::string title,
+Course::Course(const std::uint32_t id, const std::string title,
                const std::uint8_t capsize)
     : _id(id), title(title), capsize(capsize) {}
 
@@ -42,4 +42,4 @@ const std::vector<std::uint32_t> Course::student_ids() const {
     return student_ids;
 }
 
-std::uint16_t Course::id() const { return this->_id; }
+std::uint32_t Course::id() const { return this->_id; }
