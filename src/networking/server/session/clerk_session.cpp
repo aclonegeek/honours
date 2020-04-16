@@ -90,7 +90,8 @@ void ClerkSession::create_course() {
     const std::string title    = tokens[1];
     const std::uint8_t capsize = std::stoi(tokens[2]);
 
-    ClerkResult result = this->university.create_course(id, title, capsize);
+    const ClerkResult result =
+        this->university.create_course(id, title, capsize);
 
     switch (result) {
     case ClerkResult::COURSE_EXISTS:
@@ -157,7 +158,7 @@ void ClerkSession::create_student() {
     const std::uint32_t id = std::stoi(tokens[0]);
     const std::string name = tokens[1];
 
-    ClerkResult result = this->university.register_student(id, name);
+    const ClerkResult result = this->university.register_student(id, name);
 
     switch (result) {
     case ClerkResult::STUDENT_EXISTS:
@@ -182,7 +183,7 @@ void ClerkSession::delete_student() {
 
     const std::uint32_t id = std::stoi(this->read_message.body());
 
-    ClerkResult result = this->university.delete_student(id);
+    const ClerkResult result = this->university.delete_student(id);
 
     switch (result) {
     case ClerkResult::STUDENT_DOES_NOT_EXIST:

@@ -67,7 +67,7 @@ void StudentSession::write_options() {
 void StudentSession::register_for_course() {
     const std::uint16_t course_id = std::stoi(this->read_message.body());
 
-    StudentResult result =
+    const StudentResult result =
         this->university.register_student_in_course(this->id, course_id);
 
     switch (result) {
@@ -95,7 +95,7 @@ void StudentSession::register_for_course() {
 void StudentSession::deregister_from_course() {
     const std::uint16_t course_id = std::stoi(this->read_message.body());
 
-    StudentResult result =
+    const StudentResult result =
         this->university.deregister_student_from_course(this->id, course_id);
 
     switch (result) {
@@ -123,7 +123,7 @@ void StudentSession::deregister_from_course() {
 void StudentSession::drop_course() {
     const std::uint16_t course_id = std::stoi(this->read_message.body());
 
-    StudentResult result =
+    const StudentResult result =
         this->university.drop_student_from_course(this->id, course_id);
 
     switch (result) {
@@ -152,7 +152,7 @@ void StudentSession::drop_course() {
 }
 
 void StudentSession::set_state() {
-    std::string_view input{this->read_message.body()};
+    const std::string_view input{this->read_message.body()};
 
     if (input == "rfc" || input == "RFC") {
         this->state = State::REGISTER_FOR_COURSE;
