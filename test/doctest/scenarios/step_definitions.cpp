@@ -40,7 +40,7 @@ void the_clerk_is_logged_in(Client& clerk) {
     clerk.send(Message("admin"));
 }
 
-void the_student_has_logged_in_as(Client& student, const std::string& message) {
+void the_student_is_logged_in_as(Client& student, const std::string& message) {
     student.send(Message("student"));
     student.send(Message(message));
 }

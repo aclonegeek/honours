@@ -43,7 +43,7 @@ public:
 
         std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
-        the_student_has_logged_in_as(this->_joe, "123456789, joe");
+        the_student_is_logged_in_as(this->_joe, "123456789, joe");
     }
 
     Client& joe() { return this->_joe; }
@@ -239,8 +239,8 @@ SCENARIO("A student registers in a course that reached its capsize before regist
                 send(joe, "12345");
 
                 GIVEN("The student has logged in as 123456788, murphy") {
-                    the_student_has_logged_in_as(ctx.murphy(),
-                                                 "123456788, murphy");
+                    the_student_is_logged_in_as(ctx.murphy(),
+                                                "123456788, murphy");
 
                     GIVEN("The student enters rfc") {
                         send(murphy, "rfc");

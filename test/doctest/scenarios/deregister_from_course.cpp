@@ -35,7 +35,7 @@ public:
 
         std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
-        the_student_has_logged_in_as(this->_joe, "123456789, joe");
+        the_student_is_logged_in_as(this->_joe, "123456789, joe");
     }
 
     Client& joe() { return this->_joe; }
