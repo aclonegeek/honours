@@ -57,10 +57,10 @@ public:
 
         std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
-        the_student_has_logged_in_as(this->_s1, "111111111, S1");
-        the_student_has_logged_in_as(this->_s2, "222222222, S2");
-        the_student_has_logged_in_as(this->_s3, "333333333, S3");
-        the_student_has_logged_in_as(this->_s4, "444444444, S4");
+        the_student_is_logged_in_as(this->_s1, "111111111, S1");
+        the_student_is_logged_in_as(this->_s2, "222222222, S2");
+        the_student_is_logged_in_as(this->_s3, "333333333, S3");
+        the_student_is_logged_in_as(this->_s4, "444444444, S4");
 
         wait(WaitUntil::REGISTRATION_STARTS);
 
