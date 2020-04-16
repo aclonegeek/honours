@@ -31,6 +31,10 @@ void wait(const WaitUntil wait, const uint8_t days_to_wait) {
     }
 }
 
+void wait_for_action_to_finish() {
+    std::this_thread::sleep_for(std::chrono::milliseconds(5));
+}
+
 void the_clerk_is_logged_in(Client& clerk) {
     clerk.send(Message("clerk"));
     clerk.send(Message("admin"));
