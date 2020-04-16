@@ -78,11 +78,10 @@ void StudentSession::register_for_course() {
         this->write_messages.push_back(Message("Course does not exist."));
         break;
     case StudentResult::REGISTRATION_NOT_STARTED:
-        this->write_messages.push_back(
-            Message("Registration has not started."));
-        break;
+        [[fallthrough]];
     case StudentResult::REGISTRATION_ENDED:
-        this->write_messages.push_back(Message("Registration has ended."));
+        this->write_messages.push_back(
+            Message("Can only register for a course during registration."));
         break;
     case StudentResult::COURSE_FULL:
         this->write_messages.push_back(Message("Course is full."));
