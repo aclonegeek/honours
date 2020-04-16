@@ -50,7 +50,7 @@ SCENARIO("A clerk deletes a student before registration starts") {
             WHEN("The clerk enters 123456789") {
                 send(clerk, "123456789");
 
-                std::this_thread::sleep_for(std::chrono::milliseconds(5));
+                wait_for_action_to_finish();
 
                 THEN("Student deleted. is printed") {
                     CHECK("Student deleted." == clerk.previous_message());
@@ -75,7 +75,7 @@ SCENARIO("A clerk deletes a non-existant student before registration starts") {
         WHEN("The clerk enters 123456789") {
             send(clerk, "123456789");
 
-            std::this_thread::sleep_for(std::chrono::milliseconds(5));
+            wait_for_action_to_finish();
 
             THEN("ERROR - Student does not exist. is printed") {
                 CHECK("ERROR - Student does not exist." ==
@@ -98,7 +98,7 @@ SCENARIO("A clerk deletes a student after registration starts") {
             WHEN("The clerk enters 123456789") {
                 send(clerk, "123456789");
 
-                std::this_thread::sleep_for(std::chrono::milliseconds(5));
+                wait_for_action_to_finish();
 
                 THEN("ERROR - Preregistration has ended. is printed") {
                     CHECK("ERROR - Preregistration has ended." ==

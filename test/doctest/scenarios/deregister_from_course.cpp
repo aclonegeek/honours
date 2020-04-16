@@ -33,7 +33,7 @@ public:
         there_is_an_existing_course(this->clerk, "123456, Witchcraft, 1");
         there_is_an_existing_student(this->clerk, "123456789, joe");
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(5));
+        wait_for_action_to_finish();
 
         the_student_is_logged_in_as(this->_joe, "123456789, joe");
     }
@@ -69,7 +69,7 @@ SCENARIO("A student deregisters from a course during the registration period") {
         GIVEN("The student has registered in 123456") {
             the_student_has_registered_in(joe, "123456");
 
-            std::this_thread::sleep_for(std::chrono::milliseconds(5));
+            wait_for_action_to_finish();
 
             CHECK(true == ctx.university().course(123456).value().has_student(
                               123456789));
@@ -80,7 +80,7 @@ SCENARIO("A student deregisters from a course during the registration period") {
                 WHEN("The student enters 123456") {
                     send(joe, "123456");
 
-                    std::this_thread::sleep_for(std::chrono::milliseconds(5));
+                    wait_for_action_to_finish();
 
                     THEN("Deregistered from course. is printed") {
                         CHECK("Deregistered from course." ==
@@ -113,7 +113,7 @@ SCENARIO("A student deregisters from a course that doesn't exist") {
             WHEN("The student enters 999999") {
                 send(joe, "999999");
 
-                std::this_thread::sleep_for(std::chrono::milliseconds(5));
+                wait_for_action_to_finish();
 
                 THEN("ERROR - Course does not exist. is printed") {
                     CHECK("ERROR - Course does not exist." ==
@@ -142,7 +142,7 @@ SCENARIO("A student deregisters from a course they aren't registered in") {
             WHEN("The student enters 123456") {
                 send(joe, "123456");
 
-                std::this_thread::sleep_for(std::chrono::milliseconds(5));
+                wait_for_action_to_finish();
 
                 THEN(
                     "ERROR - Student is not registered in course. is printed") {
@@ -173,7 +173,7 @@ SCENARIO("A student deregisters from a course before registration starts") {
         WHEN("The student enters 123456") {
             send(joe, "123456");
 
-            std::this_thread::sleep_for(std::chrono::milliseconds(5));
+            wait_for_action_to_finish();
 
             THEN("ERROR - Can only deregister from a course during "
                  "registration. is printed") {
@@ -202,7 +202,7 @@ SCENARIO("A student deregisters from a course after registration ends") {
         GIVEN("The student has registered in 123456") {
             the_student_has_registered_in(joe, "123456");
 
-            std::this_thread::sleep_for(std::chrono::milliseconds(5));
+            wait_for_action_to_finish();
 
             CHECK(true == ctx.university().course(123456).value().has_student(
                               123456789));
@@ -216,8 +216,7 @@ SCENARIO("A student deregisters from a course after registration ends") {
                     WHEN("The student enters 123456") {
                         send(joe, "123456");
 
-                        std::this_thread::sleep_for(
-                            std::chrono::milliseconds(5));
+                        wait_for_action_to_finish();
 
                         THEN("ERROR - Can only deregister from a course during "
                              "registration. is printed") {
@@ -251,7 +250,7 @@ SCENARIO("A student deregisters from a course after the term ends") {
         GIVEN("The student has registered in 123456") {
             the_student_has_registered_in(joe, "123456");
 
-            std::this_thread::sleep_for(std::chrono::milliseconds(5));
+            wait_for_action_to_finish();
 
             CHECK(true == ctx.university().course(123456).value().has_student(
                               123456789));
@@ -265,8 +264,7 @@ SCENARIO("A student deregisters from a course after the term ends") {
                     WHEN("The student enters 123456") {
                         send(joe, "123456");
 
-                        std::this_thread::sleep_for(
-                            std::chrono::milliseconds(5));
+                        wait_for_action_to_finish();
 
                         THEN("ERROR - Can only deregister from a course during "
                              "registration. is printed") {

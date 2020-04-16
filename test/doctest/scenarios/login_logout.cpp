@@ -58,7 +58,7 @@ SCENARIO("A clerk logs in with a valid password") {
         WHEN("The clerk enters admin") {
             send(clerk, "admin");
 
-            std::this_thread::sleep_for(std::chrono::milliseconds(5));
+            wait_for_action_to_finish();
 
             THEN("Welcome Clerk! is printed") {
                 CHECK("Welcome Clerk!" == clerk.previous_message());
@@ -77,7 +77,7 @@ SCENARIO("A clerk logs in with an invalid password") {
         WHEN("The clerk enters quack") {
             send(clerk, "quack");
 
-            std::this_thread::sleep_for(std::chrono::milliseconds(5));
+            wait_for_action_to_finish();
 
             THEN("ERROR - Invalid password. Try again. is printed") {
                 CHECK("ERROR - Invalid password. Try again." ==
@@ -96,7 +96,7 @@ SCENARIO("A student logs in with valid information") {
         the_clerk_is_logged_in(clerk);
         there_is_an_existing_student(clerk, "123456789, joe");
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(5));
+        wait_for_action_to_finish();
 
         GIVEN("The student enters student") {
             send(joe, "student");
@@ -104,7 +104,7 @@ SCENARIO("A student logs in with valid information") {
             WHEN("The student enters 123456789, joe") {
                 send(joe, "123456789, joe");
 
-                std::this_thread::sleep_for(std::chrono::milliseconds(5));
+                wait_for_action_to_finish();
 
                 THEN("Welcome Student! is printed") {
                     CHECK("Welcome Student!" == joe.previous_message());
@@ -123,7 +123,7 @@ SCENARIO("A student logs in with invalid information") {
         the_clerk_is_logged_in(clerk);
         there_is_an_existing_student(clerk, "123456789, joe");
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(5));
+        wait_for_action_to_finish();
 
         GIVEN("The student enters student") {
             send(joe, "student");
@@ -131,7 +131,7 @@ SCENARIO("A student logs in with invalid information") {
             WHEN("The student enters 123456788, joe") {
                 send(joe, "123456788, joe");
 
-                std::this_thread::sleep_for(std::chrono::milliseconds(5));
+                wait_for_action_to_finish();
 
                 THEN("ERROR - Student does not exist. is printed") {
                     CHECK("ERROR - Student does not exist." ==

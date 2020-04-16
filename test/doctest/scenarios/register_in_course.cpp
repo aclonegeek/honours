@@ -41,7 +41,7 @@ public:
         there_is_an_existing_student(this->clerk, "123456789, joe");
         there_is_an_existing_student(this->clerk, "123456788, murphy");
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(5));
+        wait_for_action_to_finish();
 
         the_student_is_logged_in_as(this->_joe, "123456789, joe");
     }
@@ -88,7 +88,7 @@ SCENARIO("A student registers in a course after registration starts and before r
             WHEN("The student enters 123456") {
                 send(joe, "123456");
 
-                std::this_thread::sleep_for(std::chrono::milliseconds(5));
+                wait_for_action_to_finish();
 
                 THEN("Registered for course. is printed") {
                     CHECK("Registered for course." == joe.previous_message());
@@ -119,7 +119,7 @@ SCENARIO("A student registers in a course that doesn't exist") {
             WHEN("The student enters 2") {
                 send(joe, "2");
 
-                std::this_thread::sleep_for(std::chrono::milliseconds(5));
+                wait_for_action_to_finish();
 
                 THEN("ERROR - Course does not exist. is printed") {
                     CHECK("ERROR - Course does not exist." ==
@@ -144,7 +144,7 @@ SCENARIO("A student registers in a course before registration starts") {
         WHEN("The student enters 123456") {
             send(joe, "123456");
 
-            std::this_thread::sleep_for(std::chrono::milliseconds(5));
+            wait_for_action_to_finish();
 
             THEN("ERROR - Can only register for a course during registration. "
                  "is printed") {
@@ -174,7 +174,7 @@ SCENARIO("A student registers in a course after registration ended") {
             WHEN("The student enters 123456") {
                 send(joe, "123456");
 
-                std::this_thread::sleep_for(std::chrono::milliseconds(5));
+                wait_for_action_to_finish();
 
                 THEN("ERROR - Can only register for a course during "
                      "registration. is printed") {
@@ -207,7 +207,7 @@ SCENARIO("A student registers in a course after the term ended") {
             WHEN("The student enters 123456") {
                 send(joe, "123456");
 
-                std::this_thread::sleep_for(std::chrono::milliseconds(5));
+                wait_for_action_to_finish();
 
                 THEN("ERROR - Can only register for a course during "
                      "registration. is printed") {
@@ -253,8 +253,7 @@ SCENARIO("A student registers in a course that reached its capsize during regist
                         WHEN("The student murphy enters 123456") {
                             send(murphy, "123456");
 
-                            std::this_thread::sleep_for(
-                                std::chrono::milliseconds(5));
+                            wait_for_action_to_finish();
 
                             THEN("ERROR - Course is full. is printed") {
                                 CHECK("ERROR - Course is full." ==

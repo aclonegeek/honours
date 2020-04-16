@@ -47,7 +47,7 @@ SCENARIO("A clerk creates a student before registration starts") {
         WHEN("The clerk enters 123456789, joe") {
             send(clerk, "123456789, joe");
 
-            std::this_thread::sleep_for(std::chrono::milliseconds(5));
+            wait_for_action_to_finish();
 
             THEN("Student created. is printed") {
                 CHECK("Student created." == clerk.previous_message());
@@ -74,7 +74,7 @@ SCENARIO("A clerk creates a duplicate student before registration starts") {
             WHEN("The clerk enters 123456789, joe") {
                 send(clerk, "123456789, joe");
 
-                std::this_thread::sleep_for(std::chrono::milliseconds(5));
+                wait_for_action_to_finish();
 
                 THEN("ERROR - Student already exists. is printed") {
                     CHECK("ERROR - Student already exists." ==
@@ -98,7 +98,7 @@ SCENARIO("A clerk creates a student after registration starts") {
             WHEN("The clerk enters 123456789, joe") {
                 send(clerk, "123456789, joe");
 
-                std::this_thread::sleep_for(std::chrono::milliseconds(5));
+                wait_for_action_to_finish();
 
                 THEN("ERROR - Preregistration has ended. is printed") {
                     CHECK("ERROR - Preregistration has ended." ==

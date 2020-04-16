@@ -55,7 +55,7 @@ public:
         there_is_an_existing_student(this->clerk, "333333333, S3");
         there_is_an_existing_student(this->clerk, "444444444, S4");
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(5));
+        wait_for_action_to_finish();
 
         the_student_is_logged_in_as(this->_s1, "111111111, S1");
         the_student_is_logged_in_as(this->_s2, "222222222, S2");

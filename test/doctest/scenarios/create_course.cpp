@@ -47,7 +47,7 @@ SCENARIO("A clerk creates a course before registration starts") {
         WHEN("The clerk enters 123456, Witchcraft, 1") {
             send(clerk, "123456, Witchcraft, 1");
 
-            std::this_thread::sleep_for(std::chrono::milliseconds(5));
+            wait_for_action_to_finish();
 
             THEN("Course created. is printed") {
                 CHECK("Course created." == clerk.previous_message());
@@ -73,7 +73,7 @@ SCENARIO("A clerk creates a duplicate course before registration starts") {
             WHEN("The clerk enters 123456, Witchcraft, 1") {
                 send(clerk, "123456, Witchcraft, 1");
 
-                std::this_thread::sleep_for(std::chrono::milliseconds(5));
+                wait_for_action_to_finish();
 
                 THEN("ERROR - Course already exists. is printed") {
                     CHECK("ERROR - Course already exists." ==
@@ -102,7 +102,7 @@ SCENARIO("A clerk creates a course after registration starts") {
             WHEN("The clerk enters 123456, Witchcraft, 1") {
                 send(clerk, "123456, Witchcraft, 1");
 
-                std::this_thread::sleep_for(std::chrono::milliseconds(5));
+                wait_for_action_to_finish();
 
                 THEN("ERROR - Pregistration has ended. is printed") {
                     CHECK("ERROR - Preregistration has ended." ==
@@ -131,7 +131,7 @@ SCENARIO("A clerk creates a course after the term ends") {
             WHEN("The clerk enters 123456, Witchcraft, 1") {
                 send(clerk, "123456, Witchcraft, 1");
 
-                std::this_thread::sleep_for(std::chrono::milliseconds(5));
+                wait_for_action_to_finish();
 
                 THEN("ERROR - Pregistration has ended. is printed") {
                     CHECK("ERROR - Preregistration has ended." ==
