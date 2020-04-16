@@ -28,8 +28,6 @@ bool TemporarySession::handle_input() {
     case State::DETERMINING_SESSION_TYPE:
         if (input == "clerk") {
             this->state = State::CLERK_LOGIN;
-            // TODO: Add an attirbute to Message that specifies if we want a
-            // newline printed or not for the corresponding Message.
             this->write_messages.push_back(Message("Password:"));
         } else if (input == "student") {
             this->state = State::STUDENT_LOGIN;

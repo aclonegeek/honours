@@ -38,9 +38,9 @@ void Client::read_header() {
         this->socket, asio::buffer(this->read_message.data(), HEADER_LENGTH),
         [this](std::error_code error_code, std::size_t /*length*/) {
             if (error_code || !this->read_message.decode_header()) {
-                // TODO: Log this.
-                std::cout << "message: " << this->read_message.data() << "\n";
-                std::cout << "read header fail\n";
+                std::cout << "ERROR - Read header fail.\n";
+                std::cout << "Message: " << this->read_message.data() << "\n";
+
                 this->socket.close();
                 return;
             }
