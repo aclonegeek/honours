@@ -49,3 +49,32 @@ private:
     University _university;
     Server server;
 };
+
+class ParallelScenarioContext {
+public:
+    ParallelScenarioContext()
+        : client_resolver(tcp::resolver(this->client_io_context)),
+          client_endpoints(this->client_resolver.resolve(host, port)),
+          _client(Client(this->client_io_context, this->client_endpoints)) {
+        this->client_thread =
+            std::thread([&] { this->client_io_context.run(); });
+
+        wait_for_clients_to_load();
+    }
+
+    ~ParallelScenarioContext() {
+        this->client_io_context.stop();
+        this->client_thread.join();
+    }
+
+    Client& client() { return this->_client; }
+
+private:
+    asio::io_context client_io_context;
+    tcp::resolver client_resolver;
+    const tcp::resolver::results_type client_endpoints;
+
+    std::thread client_thread;
+
+    Client _client;
+};
