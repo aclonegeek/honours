@@ -13,9 +13,9 @@ public:
 private:
     enum class State {
         WAITING_FOR_ACTION,
-        REGISTER_FOR_COURSE,
-        DEREGISTER_FROM_COURSE,
-        DROP_COURSE,
+        REGISTERING_FOR_COURSE,
+        DEREGISTERING_FROM_COURSE,
+        DROPPING_COURSE,
     };
 
     virtual bool handle_input() override;
