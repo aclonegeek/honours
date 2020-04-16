@@ -52,7 +52,7 @@ SCENARIO("A clerk deletes a course before registration starts") {
 
                 wait_for_action_to_finish();
 
-                THEN("Then Course deleted. is printed") {
+                THEN("Course deleted. is printed") {
                     CHECK("Course deleted." == clerk.previous_message());
 
                     AND_THEN("The course 12345 does not exist") {
