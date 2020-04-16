@@ -44,16 +44,16 @@ SCENARIO("A clerk creates a course before registration starts") {
     GIVEN("The clerk enters cac") {
         send(clerk, "cac");
 
-        WHEN("The clerk enters 12345, Witchcraft, 1") {
-            send(clerk, "12345, Witchcraft, 1");
+        WHEN("The clerk enters 123456, Witchcraft, 1") {
+            send(clerk, "123456, Witchcraft, 1");
 
             std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
             THEN("Course created. is printed") {
                 CHECK("Course created." == clerk.previous_message());
 
-                AND_THEN("The course 12345 exists") {
-                    CHECK(true == ctx.university().course(12345).has_value());
+                AND_THEN("The course 123456 exists") {
+                    CHECK(true == ctx.university().course(123456).has_value());
                 }
             }
         }
@@ -64,23 +64,24 @@ SCENARIO("A clerk creates a duplicate course before registration starts") {
     CreateCourseScenarioContext ctx;
     Client& clerk = ctx.clerk();
 
-    GIVEN("There is an existing course 12345, Witchcraft, 1") {
-        there_is_an_existing_course(clerk, "12345, Witchcraft, 1");
+    GIVEN("There is an existing course 123456, Witchcraft, 1") {
+        there_is_an_existing_course(clerk, "123456, Witchcraft, 1");
 
         GIVEN("The clerk enters cac") {
             send(clerk, "cac");
 
-            WHEN("The clerk enters 12345, Witchcraft, 1") {
-                send(clerk, "12345, Witchcraft, 1");
+            WHEN("The clerk enters 123456, Witchcraft, 1") {
+                send(clerk, "123456, Witchcraft, 1");
 
                 std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
-                THEN("Course already exists. is printed") {
-                    CHECK("Course already exists." == clerk.previous_message());
+                THEN("ERROR - Course already exists. is printed") {
+                    CHECK("ERROR - Course already exists." ==
+                          clerk.previous_message());
 
-                    AND_THEN("The course 12345 exists") {
+                    AND_THEN("The course 123456 exists") {
                         CHECK(true ==
-                              ctx.university().course(12345).has_value());
+                              ctx.university().course(123456).has_value());
                     }
                 }
             }
@@ -98,18 +99,18 @@ SCENARIO("A clerk creates a course after registration starts") {
         GIVEN("The clerk enters cac") {
             send(clerk, "cac");
 
-            WHEN("The clerk enters 12345, Witchcraft, 1") {
-                send(clerk, "12345, Witchcraft, 1");
+            WHEN("The clerk enters 123456, Witchcraft, 1") {
+                send(clerk, "123456, Witchcraft, 1");
 
                 std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
-                THEN("Pregistration has ended. is printed") {
-                    CHECK("Preregistration has ended." ==
+                THEN("ERROR - Pregistration has ended. is printed") {
+                    CHECK("ERROR - Preregistration has ended." ==
                           clerk.previous_message());
 
-                    AND_THEN("The course 12345 does not exist") {
+                    AND_THEN("The course 123456 does not exist") {
                         CHECK(false ==
-                              ctx.university().course(12345).has_value());
+                              ctx.university().course(123456).has_value());
                     }
                 }
             }
@@ -127,18 +128,18 @@ SCENARIO("A clerk creates a course after the term ends") {
         GIVEN("The clerk enters cac") {
             send(clerk, "cac");
 
-            WHEN("The clerk enters 12345, Witchcraft, 1") {
-                send(clerk, "12345, Witchcraft, 1");
+            WHEN("The clerk enters 123456, Witchcraft, 1") {
+                send(clerk, "123456, Witchcraft, 1");
 
                 std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
-                THEN("Pregistration has ended. is printed") {
-                    CHECK("Preregistration has ended." ==
+                THEN("ERROR - Pregistration has ended. is printed") {
+                    CHECK("ERROR - Preregistration has ended." ==
                           clerk.previous_message());
 
-                    AND_THEN("The course 12345 does not exist") {
+                    AND_THEN("The course 123456 does not exist") {
                         CHECK(false ==
-                              ctx.university().course(12345).has_value());
+                              ctx.university().course(123456).has_value());
                     }
                 }
             }

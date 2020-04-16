@@ -64,8 +64,8 @@ public:
 
         wait(WaitUntil::REGISTRATION_STARTS);
 
-        the_student_has_registered_in(this->_s1, "12345");
-        the_student_has_registered_in(this->_s2, "12345");
+        the_student_has_registered_in(this->_s1, "123456");
+        the_student_has_registered_in(this->_s2, "123456");
 
         std::this_thread::sleep_for(std::chrono::milliseconds(5));
     }
@@ -115,54 +115,54 @@ SCENARIO("EX2N - Two students attempt to simultaneously register in a course wit
     Client& s3 = ctx.s3();
     Client& s4 = ctx.s4();
 
-    GIVEN("S1 and S2 are registered in 12345") {
+    GIVEN("S1 and S2 are registered in 123456") {
         CHECK(true ==
-              ctx.university().course(12345).value().has_student(111111111));
+              ctx.university().course(123456).value().has_student(111111111));
         CHECK(true ==
-              ctx.university().course(12345).value().has_student(222222222));
+              ctx.university().course(123456).value().has_student(222222222));
 
-        GIVEN("S3 registers in 12345") {
-            the_student_has_registered_in(s3, "12345");
+        GIVEN("S3 registers in 123456") {
+            the_student_has_registered_in(s3, "123456");
 
-            GIVEN("S4 registers in 12345") {
-                the_student_has_registered_in(s4, "12345");
+            GIVEN("S4 registers in 123456") {
+                the_student_has_registered_in(s4, "123456");
 
-                GIVEN("S2 deregisters from 12345") {
-                    the_student_has_deregistered_from(s2, "12345");
+                GIVEN("S2 deregisters from 123456") {
+                    the_student_has_deregistered_from(s2, "123456");
 
                     WHEN("We wait for 1 day") {
                         wait(WaitUntil::CUSTOM, 1);
 
-                        THEN("S1 is registered in 12345") {
+                        THEN("S1 is registered in 123456") {
                             CHECK(true == ctx.university()
-                                              .course(12345)
+                                              .course(123456)
                                               .value()
                                               .has_student(111111111));
 
-                            AND_THEN("S2 is not registered in 12345") {
+                            AND_THEN("S2 is not registered in 123456") {
                                 CHECK(false == ctx.university()
-                                                   .course(12345)
+                                                   .course(123456)
                                                    .value()
                                                    .has_student(222222222));
 
                                 AND_THEN(
-                                    "S3 and/or S4 are registered in 12345") {
+                                    "S3 and/or S4 are registered in 123456") {
                                     CHECK((
                                         (true == ctx.university()
-                                                     .course(12345)
+                                                     .course(123456)
                                                      .value()
                                                      .has_student(333333333)) ||
                                         (true == ctx.university()
-                                                     .course(12345)
+                                                     .course(123456)
                                                      .value()
                                                      .has_student(444444444))));
 
                                     auto students = ctx.university()
-                                                        .course(12345)
+                                                        .course(123456)
                                                         .value()
                                                         .student_ids();
 
-                                    std::cout << "\nStudents in 12345: ";
+                                    std::cout << "\nStudents in 123456: ";
                                     for (const auto& s : students) {
                                         std::cout << s << ", ";
                                     }

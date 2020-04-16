@@ -49,7 +49,6 @@ bool ClerkSession::handle_input() {
     }
 
     this->write_options();
-    this->write();
 
     return true;
 }
@@ -74,129 +73,141 @@ void ClerkSession::write_options() {
         this->write_messages.push_back(Message("Enter Student ID:"));
         break;
     }
+
+    this->write();
 }
 
 void ClerkSession::create_course() {
     const auto tokens = util::split(this->read_message.body(), ',');
 
     if (tokens.size() != 3) {
-        this->write_messages.push_back(Message(
-            "Invalid input. Expected course ID, course title, and capsize."));
+        this->write_messages.push_back(
+            Message("ERROR - Invalid input. Expected course ID, course title, "
+                    "and capsize."));
         return;
     }
 
-    // TODO: Error handling.
-    const std::uint16_t id     = std::stoi(tokens[0]);
-    const std::string title    = tokens[1];
-    const std::uint8_t capsize = std::stoi(tokens[2]);
+    const std::uint32_t id = this->parse_course_id(tokens[0]);
+    if (id == 0) {
+        return;
+    }
+
+    const std::string title = tokens[1];
+
+    const std::uint8_t capsize = this->parse_course_capsize(tokens[2]);
+    if (capsize == 0) {
+        return;
+    }
 
     const ClerkResult result =
         this->university.create_course(id, title, capsize);
 
     switch (result) {
+    case ClerkResult::SUCCESS:
+        this->write_messages.push_back(Message("Course created."));
+        return;
     case ClerkResult::COURSE_EXISTS:
-        this->write_messages.push_back(Message("Course already exists."));
+        this->write_messages.push_back(
+            Message("ERROR - Course already exists."));
         return;
     case ClerkResult::PREREGISTRATION_ENDED:
-        this->write_messages.push_back(Message("Preregistration has ended."));
+        this->write_messages.push_back(
+            Message("ERROR - Preregistration has ended."));
         return;
     default:
         break;
     }
-
-    this->write_messages.push_back(Message("Course created."));
 }
 
 void ClerkSession::delete_course() {
-    int id;
-
-    try {
-        id = std::stoi(this->read_message.body());
-    } catch (const std::invalid_argument& ia) {
-        this->write_messages.push_back(
-            Message("ERROR - Course ID must be a number."));
+    std::uint32_t id = this->parse_course_id(this->read_message.body());
+    if (id == 0) {
         return;
     }
 
-    if (id <= 99'999 || id > 999'999) {
-        this->write_messages.push_back(
-            Message("ERROR - Course ID must be 6 digits."));
-        return;
-    }
-
-    ClerkResult result = this->university.delete_course(id);
+    const ClerkResult result = this->university.delete_course(id);
 
     switch (result) {
+    case ClerkResult::SUCCESS:
+        this->write_messages.push_back(Message("Course deleted."));
+        return;
     case ClerkResult::COURSE_DOES_NOT_EXIST:
-        this->write_messages.push_back(Message("Course does not exist."));
+        this->write_messages.push_back(
+            Message("ERROR - Course does not exist."));
         return;
     case ClerkResult::PREREGISTRATION_ENDED:
-        this->write_messages.push_back(Message("Preregistration has ended."));
+        this->write_messages.push_back(
+            Message("ERROR - Preregistration has ended."));
         return;
     default:
         break;
     }
-
-    this->write_messages.push_back(Message("Course deleted."));
 }
 
 void ClerkSession::create_student() {
     const auto tokens = util::split(this->read_message.body(), ',');
 
     if (tokens.size() != 2) {
-        this->write_messages.push_back(
-            Message("Invalid input. Expected student ID and name."));
+        this->write_messages.push_back(Message(
+            "ERROR - Invalid input. Expected student ID (9 digits) and name."));
         return;
     }
 
-    if (tokens[0].length() != 9) {
-        this->write_messages.push_back(
-            Message("Invalid student ID. It must be 9 digits."));
+    const std::uint32_t id = this->parse_student_id(tokens[0]);
+    if (id == 0) {
         return;
     }
 
-    const std::uint32_t id = std::stoi(tokens[0]);
     const std::string name = tokens[1];
 
     const ClerkResult result = this->university.register_student(id, name);
 
     switch (result) {
+    case ClerkResult::SUCCESS:
+        this->write_messages.push_back(Message("Student created."));
+        return;
     case ClerkResult::STUDENT_EXISTS:
-        this->write_messages.push_back(Message("Student already exists."));
+        this->write_messages.push_back(
+            Message("ERROR - Student already exists."));
         return;
     case ClerkResult::PREREGISTRATION_ENDED:
-        this->write_messages.push_back(Message("Preregistration has ended."));
+        this->write_messages.push_back(
+            Message("ERROR - Preregistration has ended."));
         return;
     default:
         break;
     }
-
-    this->write_messages.push_back(Message("Student created."));
 }
 
 void ClerkSession::delete_student() {
     if (this->read_message.body_length() != 9) {
         this->write_messages.push_back(
-            Message("Invalid student ID. It must be 9 digits."));
+            Message("ERROR - Invalid student ID. It must be 9 digits."));
         return;
     }
 
-    const std::uint32_t id = std::stoi(this->read_message.body());
+    const std::uint32_t id = this->parse_student_id(this->read_message.body());
+    if (id == 0) {
+        return;
+    }
 
     const ClerkResult result = this->university.delete_student(id);
 
     switch (result) {
+    case ClerkResult::SUCCESS:
+        this->write_messages.push_back(Message("Student deleted."));
+        return;
     case ClerkResult::STUDENT_DOES_NOT_EXIST:
-        this->write_messages.push_back(Message("Student does not exist."));
+        this->write_messages.push_back(
+            Message("ERROR - Student does not exist."));
         return;
     case ClerkResult::PREREGISTRATION_ENDED:
-        this->write_messages.push_back(Message("Preregistration has ended."));
+        this->write_messages.push_back(
+            Message("ERROR - Preregistration has ended."));
         return;
     default:
         break;
     }
-
-    this->write_messages.push_back(Message("Student deleted."));
 }
 
 void ClerkSession::set_state() {
@@ -211,6 +222,6 @@ void ClerkSession::set_state() {
     } else if (input == "das" || input == "DAS") {
         this->state = State::DELETING_STUDENT;
     } else {
-        this->write_messages.push_back(Message("Invalid command."));
+        this->write_messages.push_back(Message("ERROR - Invalid command."));
     }
 }

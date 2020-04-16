@@ -34,14 +34,14 @@ bool TemporarySession::handle_input() {
             this->write_messages.push_back(Message("Student ID, Name:"));
         } else {
             this->write_messages.push_back(
-                Message("Invalid input. Enter clerk or student."));
+                Message("ERROR - Invalid input. Enter clerk or student."));
         }
 
         break;
     case State::CLERK_LOGIN:
         if (input != "admin") {
             this->write_messages.push_back(
-                Message("Invalid password. Try again."));
+                Message("ERROR - Invalid password. Try again."));
             this->write_messages.push_back(Message("Password:"));
             break;
         }
@@ -55,8 +55,8 @@ bool TemporarySession::handle_input() {
         const auto tokens = util::split(this->read_message.body(), ',');
 
         if (tokens.size() != 2) {
-            this->write_messages.push_back(
-                Message("Invalid input. Expected student ID and name."));
+            this->write_messages.push_back(Message(
+                "ERROR - Invalid input. Expected student ID and name."));
             this->write_messages.push_back(Message("Student ID, Name:"));
             break;
         }
@@ -65,7 +65,8 @@ bool TemporarySession::handle_input() {
         const std::string name = tokens[1];
 
         if (!this->university.student(id)) {
-            this->write_messages.push_back(Message("Student does not exist."));
+            this->write_messages.push_back(
+                Message("ERROR - Student does not exist."));
             this->write_messages.push_back(Message("Student ID, Name:"));
             break;
         }

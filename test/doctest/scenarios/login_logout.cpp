@@ -79,8 +79,8 @@ SCENARIO("A clerk logs in with an invalid password") {
 
             std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
-            THEN("Invalid password. Try again. is printed") {
-                CHECK("Invalid password. Try again." ==
+            THEN("ERROR - Invalid password. Try again. is printed") {
+                CHECK("ERROR - Invalid password. Try again." ==
                       clerk.previous_message());
             }
         }
@@ -133,8 +133,9 @@ SCENARIO("A student logs in with invalid information") {
 
                 std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
-                THEN("Student does not exist. is printed") {
-                    CHECK("Student does not exist." == joe.previous_message());
+                THEN("ERROR - Student does not exist. is printed") {
+                    CHECK("ERROR - Student does not exist." ==
+                          joe.previous_message());
                 }
             }
         }

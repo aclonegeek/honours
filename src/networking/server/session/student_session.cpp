@@ -44,7 +44,6 @@ bool StudentSession::handle_input() {
     }
 
     this->write_options();
-    this->write();
 
     return true;
 }
@@ -62,10 +61,13 @@ void StudentSession::write_options() {
         this->write_messages.push_back(Message("Enter Course ID:"));
         break;
     }
+
+    this->write();
 }
 
 void StudentSession::register_for_course() {
-    const std::uint16_t course_id = std::stoi(this->read_message.body());
+    const std::uint32_t course_id =
+        this->parse_course_id(this->read_message.body());
 
     const StudentResult result =
         this->university.register_student_in_course(this->id, course_id);
@@ -75,16 +77,17 @@ void StudentSession::register_for_course() {
         this->write_messages.push_back(Message("Registered for course."));
         break;
     case StudentResult::COURSE_DOES_NOT_EXIST:
-        this->write_messages.push_back(Message("Course does not exist."));
+        this->write_messages.push_back(
+            Message("ERROR - Course does not exist."));
         break;
     case StudentResult::REGISTRATION_NOT_STARTED:
         [[fallthrough]];
     case StudentResult::REGISTRATION_ENDED:
-        this->write_messages.push_back(
-            Message("Can only register for a course during registration."));
+        this->write_messages.push_back(Message(
+            "ERROR - Can only register for a course during registration."));
         break;
     case StudentResult::COURSE_FULL:
-        this->write_messages.push_back(Message("Course is full."));
+        this->write_messages.push_back(Message("ERROR - Course is full."));
         break;
     default:
         // TODO: Do something here.
@@ -93,7 +96,8 @@ void StudentSession::register_for_course() {
 }
 
 void StudentSession::deregister_from_course() {
-    const std::uint16_t course_id = std::stoi(this->read_message.body());
+    const std::uint32_t course_id =
+        this->parse_course_id(this->read_message.body());
 
     const StudentResult result =
         this->university.deregister_student_from_course(this->id, course_id);
@@ -103,16 +107,17 @@ void StudentSession::deregister_from_course() {
         this->write_messages.push_back(Message("Deregistered from course."));
         break;
     case StudentResult::COURSE_DOES_NOT_EXIST:
-        this->write_messages.push_back(Message("Course does not exist."));
+        this->write_messages.push_back(
+            Message("ERROR - Course does not exist."));
         break;
     case StudentResult::STUDENT_NOT_REGISTERED:
         this->write_messages.push_back(
-            Message("Student is not registered in course."));
+            Message("ERROR - Student is not registered in course."));
         break;
     case StudentResult::REGISTRATION_NOT_STARTED:
     case StudentResult::REGISTRATION_ENDED:
-        this->write_messages.push_back(
-            Message("Can only deregister from a course during registration."));
+        this->write_messages.push_back(Message(
+            "ERROR - Can only deregister from a course during registration."));
         break;
     default:
         // TODO: Do something here.
@@ -121,7 +126,8 @@ void StudentSession::deregister_from_course() {
 }
 
 void StudentSession::drop_course() {
-    const std::uint16_t course_id = std::stoi(this->read_message.body());
+    const std::uint32_t course_id =
+        this->parse_course_id(this->read_message.body());
 
     const StudentResult result =
         this->university.drop_student_from_course(this->id, course_id);
@@ -131,11 +137,12 @@ void StudentSession::drop_course() {
         this->write_messages.push_back(Message("Dropped course."));
         break;
     case StudentResult::COURSE_DOES_NOT_EXIST:
-        this->write_messages.push_back(Message("Course does not exist."));
+        this->write_messages.push_back(
+            Message("ERROR - Course does not exist."));
         break;
     case StudentResult::STUDENT_NOT_REGISTERED:
         this->write_messages.push_back(
-            Message("Student is not registered in the course."));
+            Message("ERROR - Student is not registered in the course."));
         break;
     case StudentResult::REGISTRATION_NOT_STARTED:
         [[fallthrough]];
@@ -143,7 +150,7 @@ void StudentSession::drop_course() {
         [[fallthrough]];
     case StudentResult::REGISTRATION_NOT_ENDED:
         this->write_messages.push_back(
-            Message("Can only drop a course during the term."));
+            Message("ERROR - Can only drop a course during the term."));
         break;
     default:
         // TODO: Do something here.

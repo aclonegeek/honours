@@ -30,7 +30,7 @@ public:
 
     void background() {
         the_clerk_is_logged_in(this->clerk);
-        there_is_an_existing_course(this->clerk, "12345, Witchcraft, 1");
+        there_is_an_existing_course(this->clerk, "123456, Witchcraft, 1");
         there_is_an_existing_student(this->clerk, "123456789, joe");
 
         std::this_thread::sleep_for(std::chrono::milliseconds(5));
@@ -66,12 +66,12 @@ SCENARIO("A student drops a course during the term") {
     GIVEN("We wait until registration starts.") {
         wait(WaitUntil::REGISTRATION_STARTS);
 
-        GIVEN("The student has registered in 12345") {
-            the_student_has_registered_in(joe, "12345");
+        GIVEN("The student has registered in 123456") {
+            the_student_has_registered_in(joe, "123456");
 
             std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
-            CHECK(true == ctx.university().course(12345).value().has_student(
+            CHECK(true == ctx.university().course(123456).value().has_student(
                               123456789));
 
             GIVEN("We wait until the term starts") {
@@ -80,8 +80,8 @@ SCENARIO("A student drops a course during the term") {
                 GIVEN("The student enters dac") {
                     send(joe, "dac");
 
-                    WHEN("The student enters 12345") {
-                        send(joe, "12345");
+                    WHEN("The student enters 123456") {
+                        send(joe, "123456");
 
                         std::this_thread::sleep_for(
                             std::chrono::milliseconds(5));
@@ -90,9 +90,9 @@ SCENARIO("A student drops a course during the term") {
                             CHECK("Dropped course." == joe.previous_message());
 
                             AND_THEN("The student 123456789 is not registered "
-                                     "in the course 12345") {
+                                     "in the course 123456") {
                                 CHECK(false == ctx.university()
-                                                   .course(12345)
+                                                   .course(123456)
                                                    .value()
                                                    .has_student(123456789));
                             }
@@ -114,16 +114,18 @@ SCENARIO("A student drops from a course that doesn't exist") {
         GIVEN("The student enters dac") {
             send(joe, "dac");
 
-            WHEN("The student enters 2") {
-                send(joe, "2");
+            WHEN("The student enters 999999") {
+                send(joe, "999999");
 
                 std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
-                THEN("Course does not exist. is printed") {
-                    CHECK("Course does not exist." == joe.previous_message());
+                THEN("ERROR - Course does not exist. is printed") {
+                    CHECK("ERROR - Course does not exist." ==
+                          joe.previous_message());
 
-                    AND_THEN("The course 2 does not exist") {
-                        CHECK(false == ctx.university().course(2).has_value());
+                    AND_THEN("The course 999999 does not exist") {
+                        CHECK(false ==
+                              ctx.university().course(999999).has_value());
                     }
                 }
             }
@@ -138,31 +140,33 @@ SCENARIO("A student drops a course during registration") {
     GIVEN("We wait until registration starts.") {
         wait(WaitUntil::REGISTRATION_STARTS);
 
-        GIVEN("The student has registered in 12345") {
-            the_student_has_registered_in(joe, "12345");
+        GIVEN("The student has registered in 123456") {
+            the_student_has_registered_in(joe, "123456");
 
             std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
-            CHECK(true == ctx.university().course(12345).value().has_student(
+            CHECK(true == ctx.university().course(123456).value().has_student(
                               123456789));
 
             GIVEN("The student enters dac") {
                 send(joe, "dac");
 
-                WHEN("The student enters 12345") {
-                    send(joe, "12345");
+                WHEN("The student enters 123456") {
+                    send(joe, "123456");
 
                     std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
-                    THEN("Can only drop a course during the term. is printed") {
-                        CHECK("Can only drop a course during the term." ==
-                              joe.previous_message());
+                    THEN("ERROR - Can only drop a course during the term. is "
+                         "printed") {
+                        CHECK(
+                            "ERROR - Can only drop a course during the term." ==
+                            joe.previous_message());
 
                         AND_THEN(
                             "The student 123456789 is registered in the course "
-                            "12345") {
+                            "123456") {
                             CHECK(true == ctx.university()
-                                              .course(12345)
+                                              .course(123456)
                                               .value()
                                               .has_student(123456789));
                         }
@@ -180,20 +184,20 @@ SCENARIO("A student drops a course before registration has started") {
     GIVEN("The student enters dac") {
         send(joe, "dac");
 
-        WHEN("The student enters 12345") {
-            send(joe, "12345");
+        WHEN("The student enters 123456") {
+            send(joe, "123456");
 
             std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
-            THEN("Can only drop a course during the term. is printed") {
-                CHECK("Can only drop a course during the term." ==
+            THEN("ERROR - Can only drop a course during the term. is printed") {
+                CHECK("ERROR - Can only drop a course during the term." ==
                       joe.previous_message());
 
                 AND_THEN(
                     "The student 123456789 is not registered in the course "
-                    "12345") {
+                    "123456") {
                     CHECK(false ==
-                          ctx.university().course(12345).value().has_student(
+                          ctx.university().course(123456).value().has_student(
                               123456789));
                 }
             }
@@ -208,12 +212,12 @@ SCENARIO("A student drops a course after the term ends") {
     GIVEN("We wait until registration starts.") {
         wait(WaitUntil::REGISTRATION_STARTS);
 
-        GIVEN("The student has registered in 12345") {
-            the_student_has_registered_in(joe, "12345");
+        GIVEN("The student has registered in 123456") {
+            the_student_has_registered_in(joe, "123456");
 
             std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
-            CHECK(true == ctx.university().course(12345).value().has_student(
+            CHECK(true == ctx.university().course(123456).value().has_student(
                               123456789));
 
             GIVEN("We wait until the term ends") {
@@ -222,22 +226,22 @@ SCENARIO("A student drops a course after the term ends") {
                 GIVEN("The student enters dac") {
                     send(joe, "dac");
 
-                    WHEN("The student enters 12345") {
-                        send(joe, "12345");
+                    WHEN("The student enters 123456") {
+                        send(joe, "123456");
 
                         std::this_thread::sleep_for(
                             std::chrono::milliseconds(5));
 
-                        THEN("Can only drop a course during the term. is "
-                             "printed") {
-                            CHECK("Can only drop a course during the term." ==
-                                  joe.previous_message());
+                        THEN("ERROR - Can only drop a course during the term. "
+                             "is printed") {
+                            CHECK("ERROR - Can only drop a course during the "
+                                  "term." == joe.previous_message());
 
                             AND_THEN(
                                 "The student 123456789 is registered in the "
-                                "course 12345") {
+                                "course 123456") {
                                 CHECK(true == ctx.university()
-                                                  .course(12345)
+                                                  .course(123456)
                                                   .value()
                                                   .has_student(123456789));
                             }

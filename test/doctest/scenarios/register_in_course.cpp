@@ -37,7 +37,7 @@ public:
 
     void background() {
         the_clerk_is_logged_in(this->clerk);
-        there_is_an_existing_course(this->clerk, "12345, Witchcraft, 1");
+        there_is_an_existing_course(this->clerk, "123456, Witchcraft, 1");
         there_is_an_existing_student(this->clerk, "123456789, joe");
         there_is_an_existing_student(this->clerk, "123456788, murphy");
 
@@ -85,8 +85,8 @@ SCENARIO("A student registers in a course after registration starts and before r
         GIVEN("The student enters rfc") {
             send(joe, "rfc");
 
-            WHEN("The student enters 12345") {
-                send(joe, "12345");
+            WHEN("The student enters 123456") {
+                send(joe, "123456");
 
                 std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
@@ -94,10 +94,10 @@ SCENARIO("A student registers in a course after registration starts and before r
                     CHECK("Registered for course." == joe.previous_message());
 
                     AND_THEN("The student 123456789 is registered in the "
-                             "course 12345") {
+                             "course 123456") {
                         CHECK(
                             true ==
-                            ctx.university().course(12345).value().has_student(
+                            ctx.university().course(123456).value().has_student(
                                 123456789));
                     }
                 }
@@ -121,8 +121,9 @@ SCENARIO("A student registers in a course that doesn't exist") {
 
                 std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
-                THEN("Course does not exist. is printed") {
-                    CHECK("Course does not exist." == joe.previous_message());
+                THEN("ERROR - Course does not exist. is printed") {
+                    CHECK("ERROR - Course does not exist." ==
+                          joe.previous_message());
 
                     AND_THEN("The course does not exist") {
                         CHECK(false == ctx.university().course(2).has_value());
@@ -140,18 +141,19 @@ SCENARIO("A student registers in a course before registration starts") {
     GIVEN("The student enters rfc") {
         send(joe, "rfc");
 
-        WHEN("The student enters 12345") {
-            send(joe, "12345");
+        WHEN("The student enters 123456") {
+            send(joe, "123456");
 
             std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
-            THEN("Registration has not started. is printed") {
-                CHECK("Registration has not started." ==
-                      joe.previous_message());
+            THEN("ERROR - Can only register for a course during registration. "
+                 "is printed") {
+                CHECK("ERROR - Can only register for a course during "
+                      "registration." == joe.previous_message());
 
-                AND_THEN("The student 123456789 is not registered in 12345") {
+                AND_THEN("The student 123456789 is not registered in 123456") {
                     CHECK(false ==
-                          ctx.university().course(12345).value().has_student(
+                          ctx.university().course(123456).value().has_student(
                               123456789));
                 }
             }
@@ -169,19 +171,21 @@ SCENARIO("A student registers in a course after registration ended") {
         GIVEN("The student enters rfc") {
             send(joe, "rfc");
 
-            WHEN("The student enters 12345") {
-                send(joe, "12345");
+            WHEN("The student enters 123456") {
+                send(joe, "123456");
 
                 std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
-                THEN("Registration has ended. is printed") {
-                    CHECK("Registration has ended." == joe.previous_message());
+                THEN("ERROR - Can only register for a course during "
+                     "registration. is printed") {
+                    CHECK("ERROR - Can only register for a course during "
+                          "registration." == joe.previous_message());
 
                     AND_THEN(
-                        "The student 123456789 is not registered in 12345") {
+                        "The student 123456789 is not registered in 123456") {
                         CHECK(
                             false ==
-                            ctx.university().course(12345).value().has_student(
+                            ctx.university().course(123456).value().has_student(
                                 123456789));
                     }
                 }
@@ -200,20 +204,21 @@ SCENARIO("A student registers in a course after the term ended") {
         GIVEN("The student enters rfc") {
             send(joe, "rfc");
 
-            WHEN("The student enters 12345") {
-                send(joe, "12345");
+            WHEN("The student enters 123456") {
+                send(joe, "123456");
 
                 std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
-                THEN("Registration has ended. is printed") {
-                    CHECK("Registration has ended." ==
-                          joe.previous_message());
+                THEN("ERROR - Can only register for a course during "
+                     "registration. is printed") {
+                    CHECK("ERROR - Can only register for a course during "
+                          "registration." == joe.previous_message());
 
                     AND_THEN(
-                        "The student 123456789 is not registered in 12345") {
+                        "The student 123456789 is not registered in 123456") {
                         CHECK(
                             false ==
-                            ctx.university().course(12345).value().has_student(
+                            ctx.university().course(123456).value().has_student(
                                 123456789));
                     }
                 }
@@ -223,7 +228,7 @@ SCENARIO("A student registers in a course after the term ended") {
 }
 
 // clang-format off
-SCENARIO("A student registers in a course that reached its capsize before registration ends") {
+SCENARIO("A student registers in a course that reached its capsize during registration") {
     // clang-format on
     RegisterInCourseScenarioContext ctx;
     Client& joe    = ctx.joe();
@@ -232,48 +237,47 @@ SCENARIO("A student registers in a course that reached its capsize before regist
     GIVEN("We wait until registration starts.") {
         wait(WaitUntil::REGISTRATION_STARTS);
 
-        GIVEN("The student enters rfc") {
+        GIVEN("The student joe enters rfc") {
             send(joe, "rfc");
 
-            GIVEN("The student enters 12345") {
-                send(joe, "12345");
+            GIVEN("The student joe enters 123456") {
+                send(joe, "123456");
 
-                GIVEN("The student has logged in as 123456788, murphy") {
+                GIVEN("The student murphy has logged in as 123456788, murphy") {
                     the_student_is_logged_in_as(ctx.murphy(),
                                                 "123456788, murphy");
 
-                    GIVEN("The student enters rfc") {
+                    GIVEN("The student murphy enters rfc") {
                         send(murphy, "rfc");
 
-                        WHEN("The student enters 12345") {
-                            send(murphy, "12345");
+                        WHEN("The student murphy enters 123456") {
+                            send(murphy, "123456");
 
                             std::this_thread::sleep_for(
                                 std::chrono::milliseconds(5));
 
-                            THEN("Course is full. is printed") {
-                                CHECK("Course is full." ==
+                            THEN("ERROR - Course is full. is printed") {
+                                CHECK("ERROR - Course is full." ==
                                       murphy.previous_message());
 
                                 AND_THEN("The student 123456788 is not "
-                                         "registered in "
-                                         "12345") {
+                                         "registered in 123456") {
                                     CHECK(false == ctx.university()
-                                                       .course(12345)
+                                                       .course(123456)
                                                        .value()
                                                        .has_student(123456788));
 
                                     AND_THEN("The student 123456789 is "
-                                             "registered in 12345") {
+                                             "registered in 123456") {
                                         CHECK(true ==
                                               ctx.university()
-                                                  .course(12345)
+                                                  .course(123456)
                                                   .value()
                                                   .has_student(123456789));
 
-                                        AND_THEN("The course 12345 is full") {
+                                        AND_THEN("The course 123456 is full") {
                                             CHECK(true == ctx.university()
-                                                              .course(12345)
+                                                              .course(123456)
                                                               .value()
                                                               .is_full());
                                         }

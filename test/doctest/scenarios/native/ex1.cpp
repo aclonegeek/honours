@@ -64,7 +64,7 @@ public:
 
         wait(WaitUntil::REGISTRATION_STARTS);
 
-        the_student_has_registered_in(this->_s1, "12345");
+        the_student_has_registered_in(this->_s1, "123456");
     }
 
     Client& s1() { return this->_s1; }
@@ -112,42 +112,44 @@ SCENARIO("EX1N - Three students attempt to simultaneously register in a course w
     Client& s3 = ctx.s3();
     Client& s4 = ctx.s4();
 
-    GIVEN("S2 registers in 12345") {
-        the_student_has_registered_in(s2, "12345");
+    GIVEN("S2 registers in 123456") {
+        the_student_has_registered_in(s2, "123456");
 
-        GIVEN("S3 registers in 12345") {
-            the_student_has_registered_in(s3, "12345");
+        GIVEN("S3 registers in 123456") {
+            the_student_has_registered_in(s3, "123456");
 
-            GIVEN("S4 registers in 12345") {
-                the_student_has_registered_in(s4, "12345");
+            GIVEN("S4 registers in 123456") {
+                the_student_has_registered_in(s4, "123456");
 
                 WHEN("We wait for 1 day") {
                     wait(WaitUntil::CUSTOM, 1);
 
                     THEN("S1 and one of the other students has registered in "
-                         "12345") {
+                         "123456") {
                         CHECK(
                             true ==
-                            ctx.university().course(12345).value().has_student(
+                            ctx.university().course(123456).value().has_student(
                                 111111111));
 
-                        CHECK((
-                            (true ==
-                             ctx.university().course(12345).value().has_student(
-                                 222222222)) ||
-                            (true ==
-                             ctx.university().course(12345).value().has_student(
-                                 333333333)) ||
-                            (true ==
-                             ctx.university().course(12345).value().has_student(
-                                 444444444))));
+                        CHECK(((true == ctx.university()
+                                            .course(123456)
+                                            .value()
+                                            .has_student(222222222)) ||
+                               (true == ctx.university()
+                                            .course(123456)
+                                            .value()
+                                            .has_student(333333333)) ||
+                               (true == ctx.university()
+                                            .course(123456)
+                                            .value()
+                                            .has_student(444444444))));
 
                         auto students = ctx.university()
-                                            .course(12345)
+                                            .course(123456)
                                             .value()
                                             .student_ids();
 
-                        std::cout << "\nStudents in 12345: " << students[0]
+                        std::cout << "\nStudents in 123456: " << students[0]
                                   << ", " << students[1] << "\n";
                     }
                 }
