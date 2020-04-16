@@ -107,12 +107,19 @@ void ClerkSession::create_course() {
 }
 
 void ClerkSession::delete_course() {
-    std::uint16_t id;
+    int id;
 
     try {
         id = std::stoi(this->read_message.body());
     } catch (const std::invalid_argument& ia) {
-        this->write_messages.push_back(Message("Course ID must be a number."));
+        this->write_messages.push_back(
+            Message("ERROR - Course ID must be a number."));
+        return;
+    }
+
+    if (id <= 99'999 || id > 999'999) {
+        this->write_messages.push_back(
+            Message("ERROR - Course ID must be 6 digits."));
         return;
     }
 

@@ -88,6 +88,41 @@ SCENARIO("A clerk deletes a course that doesn't exist") {
     }
 }
 
+SCENARIO("A clerk deletes a course with invalid input") {
+    DeleteCourseScenarioContext ctx;
+    Client& clerk = ctx.clerk();
+
+    GIVEN("The clerk enters dac") {
+        send(clerk, "dac");
+
+        WHEN("The clerk enters quack") {
+            send(clerk, "quack");
+
+            wait_for_action_to_finish();
+
+            THEN("Then ERROR - Course ID must be a number. is printed") {
+                CHECK("ERROR - Course ID must be a number." ==
+                      clerk.previous_message());
+            }
+        }
+    }
+
+    GIVEN("The clerk enters dac") {
+        send(clerk, "dac");
+
+        WHEN("The clerk enters 123456789") {
+            send(clerk, "123456789");
+
+            wait_for_action_to_finish();
+
+            THEN("Then ERROR - Course ID must be 6 digits. is printed") {
+                CHECK("ERROR - Course ID must be 6 digits." ==
+                      clerk.previous_message());
+            }
+        }
+    }
+}
+
 SCENARIO("A clerk deletes a course after registration starts") {
     DeleteCourseScenarioContext ctx;
     Client& clerk = ctx.clerk();
