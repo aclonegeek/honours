@@ -45,7 +45,7 @@ SCENARIO("EX1P1.1 - The clerk creates the course and students") {
         the_clerk_is_logged_in(clerk);
 
         GIVEN("The clerk creates the course 123456, C1, 2") {
-            there_is_an_existing_course(clerk, "12345, C1, 2");
+            there_is_an_existing_course(clerk, "123456, C1, 2");
 
             GIVEN("The clerk creates the student 111111111, S1") {
                 there_is_an_existing_student(clerk, "111111111, S1");

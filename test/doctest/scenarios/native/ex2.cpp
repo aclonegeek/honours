@@ -49,7 +49,7 @@ public:
 
     void background() {
         the_clerk_is_logged_in(this->clerk);
-        there_is_an_existing_course(this->clerk, "12345, C2, 3");
+        there_is_an_existing_course(this->clerk, "123456, C2, 3");
         there_is_an_existing_student(this->clerk, "111111111, S1");
         there_is_an_existing_student(this->clerk, "222222222, S2");
         there_is_an_existing_student(this->clerk, "333333333, S3");
