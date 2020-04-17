@@ -40,6 +40,9 @@ public:
     const std::optional<Course> course(const std::uint32_t) const;
     const std::optional<Student> student(const std::uint32_t) const;
 
+    const std::unordered_map<std::uint32_t, Course>& courses();
+    const std::unordered_map<std::uint32_t, Student>& students();
+
 private:
     StateChangeTimerTask registration_timer;
     StateChangeTimerTask term_timer;
@@ -47,6 +50,6 @@ private:
 
     State state;
 
-    std::unordered_map<std::uint32_t, Course> courses;
-    std::unordered_map<std::uint32_t, Student> students;
+    std::unordered_map<std::uint32_t, Course> _courses;
+    std::unordered_map<std::uint32_t, Student> _students;
 };

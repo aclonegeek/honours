@@ -20,9 +20,16 @@ University::University()
                                       REGISTRATION_LENGTH + TERM_LENGTH))),
       state(State::PREREGISTRATION) {
     // For testing purposes.
-    this->courses.insert({111111, Course(111111, "Quack", 1)});
-    this->students.insert({112233445, Student(112233445, "joe")});
-    this->students.insert({111222334, Student(111222334, "murphy")});
+    this->_courses.insert({111111, Course(111111, "Quack", 1)});
+    this->_courses.insert({123321, Course(111111, "Fiddle Worth", 1)});
+    this->_courses.insert({777777, Course(111111, "Hoi Noi Boi", 1)});
+    this->_students.insert({112233445, Student(112233445, "joe")});
+    this->_students.insert({111222334, Student(111222334, "murphy")});
+
+    this->_courses.at(111111).register_student(this->_students.at(112233445));
+    this->_courses.at(111111).register_student(this->_students.at(111222334));
+
+    this->_courses.at(123321).register_student(this->_students.at(112233445));
 }
 
 ClerkResult University::create_course(const std::uint32_t id,
@@ -32,11 +39,11 @@ ClerkResult University::create_course(const std::uint32_t id,
         return ClerkResult::PREREGISTRATION_ENDED;
     }
 
-    if (this->courses.find(id) != this->courses.end()) {
+    if (this->_courses.find(id) != this->_courses.end()) {
         return ClerkResult::COURSE_EXISTS;
     }
 
-    this->courses.insert({id, Course(id, title, capsize)});
+    this->_courses.insert({id, Course(id, title, capsize)});
     return ClerkResult::SUCCESS;
 }
 
@@ -45,11 +52,11 @@ ClerkResult University::delete_course(const std::uint32_t id) {
         return ClerkResult::PREREGISTRATION_ENDED;
     }
 
-    if (this->courses.find(id) == this->courses.end()) {
+    if (this->_courses.find(id) == this->_courses.end()) {
         return ClerkResult::COURSE_DOES_NOT_EXIST;
     }
 
-    this->courses.erase(id);
+    this->_courses.erase(id);
     return ClerkResult::SUCCESS;
 }
 
@@ -59,11 +66,11 @@ ClerkResult University::register_student(const std::uint32_t id,
         return ClerkResult::PREREGISTRATION_ENDED;
     }
 
-    if (this->students.find(id) != this->students.end()) {
+    if (this->_students.find(id) != this->_students.end()) {
         return ClerkResult::STUDENT_EXISTS;
     }
 
-    this->students.insert({id, Student(id, name)});
+    this->_students.insert({id, Student(id, name)});
     return ClerkResult::SUCCESS;
 }
 
@@ -72,18 +79,18 @@ ClerkResult University::delete_student(const std::uint32_t id) {
         return ClerkResult::PREREGISTRATION_ENDED;
     }
 
-    if (this->students.find(id) == this->students.end()) {
+    if (this->_students.find(id) == this->_students.end()) {
         return ClerkResult::STUDENT_DOES_NOT_EXIST;
     }
 
-    this->students.erase(id);
+    this->_students.erase(id);
     return ClerkResult::SUCCESS;
 }
 
 StudentResult
 University::register_student_in_course(const std::uint32_t student_id,
                                        const std::uint32_t course_id) {
-    if (this->courses.find(course_id) == this->courses.end()) {
+    if (this->_courses.find(course_id) == this->_courses.end()) {
         return StudentResult::COURSE_DOES_NOT_EXIST;
     }
 
@@ -91,8 +98,8 @@ University::register_student_in_course(const std::uint32_t student_id,
     case State::PREREGISTRATION:
         return StudentResult::REGISTRATION_NOT_STARTED;
     case State::REGISTRATION:
-        return this->courses.at(course_id).register_student(
-            this->students.at(student_id));
+        return this->_courses.at(course_id).register_student(
+            this->_students.at(student_id));
     case State::TERM:
         [[fallthrough]];
     case State::END:
@@ -105,7 +112,7 @@ University::register_student_in_course(const std::uint32_t student_id,
 StudentResult
 University::deregister_student_from_course(const std::uint32_t student_id,
                                            const std::uint32_t course_id) {
-    if (this->courses.find(course_id) == this->courses.end()) {
+    if (this->_courses.find(course_id) == this->_courses.end()) {
         return StudentResult::COURSE_DOES_NOT_EXIST;
     }
 
@@ -113,7 +120,7 @@ University::deregister_student_from_course(const std::uint32_t student_id,
     case State::PREREGISTRATION:
         return StudentResult::REGISTRATION_NOT_STARTED;
     case State::REGISTRATION:
-        return this->courses.at(course_id).deregister_student(student_id);
+        return this->_courses.at(course_id).deregister_student(student_id);
     case State::TERM:
         [[fallthrough]];
     case State::END:
@@ -126,7 +133,7 @@ University::deregister_student_from_course(const std::uint32_t student_id,
 StudentResult
 University::drop_student_from_course(const std::uint32_t student_id,
                                      const std::uint32_t course_id) {
-    if (this->courses.find(course_id) == this->courses.end()) {
+    if (this->_courses.find(course_id) == this->_courses.end()) {
         return StudentResult::COURSE_DOES_NOT_EXIST;
     }
 
@@ -136,7 +143,7 @@ University::drop_student_from_course(const std::uint32_t student_id,
     case State::REGISTRATION:
         return StudentResult::REGISTRATION_NOT_ENDED;
     case State::TERM:
-        return this->courses.at(course_id).deregister_student(student_id);
+        return this->_courses.at(course_id).deregister_student(student_id);
     case State::END:
         return StudentResult::TERM_ENDED;
     }
@@ -145,7 +152,7 @@ University::drop_student_from_course(const std::uint32_t student_id,
 }
 
 const std::optional<Course> University::course(const std::uint32_t id) const {
-    if (auto course = this->courses.find(id); course != this->courses.end()) {
+    if (auto course = this->_courses.find(id); course != this->_courses.end()) {
         return course->second;
     }
 
@@ -153,10 +160,18 @@ const std::optional<Course> University::course(const std::uint32_t id) const {
 }
 
 const std::optional<Student> University::student(const std::uint32_t id) const {
-    if (auto student = this->students.find(id);
-        student != this->students.end()) {
+    if (auto student = this->_students.find(id);
+        student != this->_students.end()) {
         return student->second;
     }
 
     return {};
+}
+
+const std::unordered_map<std::uint32_t, Course>& University::courses() {
+    return this->_courses;
+}
+
+const std::unordered_map<std::uint32_t, Student>& University::students() {
+    return this->_students;
 }

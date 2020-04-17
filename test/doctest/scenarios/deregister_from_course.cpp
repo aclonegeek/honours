@@ -77,6 +77,8 @@ SCENARIO("A student deregisters from a course during the registration period") {
             GIVEN("The student enters dfc") {
                 send(joe, "dfc");
 
+                wait_for_action_to_finish();
+
                 WHEN("The student enters 123456") {
                     send(joe, "123456");
 
@@ -106,6 +108,8 @@ SCENARIO("A student deregisters from a course with invalid input") {
 
     GIVEN("The student enters dfc") {
         send(joe, "dfc");
+
+        wait_for_action_to_finish();
 
         WHEN("The student enters quack") {
             send(joe, "quack");
@@ -143,6 +147,8 @@ SCENARIO("A student deregisters from a course that doesn't exist") {
         GIVEN("The student enters dfc") {
             send(joe, "dfc");
 
+            wait_for_action_to_finish();
+
             WHEN("The student enters 999999") {
                 send(joe, "999999");
 
@@ -171,6 +177,8 @@ SCENARIO("A student deregisters from a course they aren't registered in") {
 
         GIVEN("The student enters dfc") {
             send(joe, "dfc");
+
+            wait_for_action_to_finish();
 
             WHEN("The student enters 123456") {
                 send(joe, "123456");
@@ -202,6 +210,8 @@ SCENARIO("A student deregisters from a course before registration starts") {
 
     GIVEN("The student enters dfc") {
         send(joe, "dfc");
+
+        wait_for_action_to_finish();
 
         WHEN("The student enters 123456") {
             send(joe, "123456");
@@ -245,6 +255,8 @@ SCENARIO("A student deregisters from a course after registration ends") {
 
                 GIVEN("The student enters dfc") {
                     send(joe, "dfc");
+
+                    wait_for_action_to_finish();
 
                     WHEN("The student enters 123456") {
                         send(joe, "123456");
@@ -293,6 +305,8 @@ SCENARIO("A student deregisters from a course after the term ends") {
 
                 GIVEN("The student enters dfc") {
                     send(joe, "dfc");
+
+                    wait_for_action_to_finish();
 
                     WHEN("The student enters 123456") {
                         send(joe, "123456");

@@ -80,6 +80,8 @@ SCENARIO("A student drops a course during the term") {
                 GIVEN("The student enters dac") {
                     send(joe, "dac");
 
+                    wait_for_action_to_finish();
+
                     WHEN("The student enters 123456") {
                         send(joe, "123456");
 
@@ -109,6 +111,8 @@ SCENARIO("A student drops from a course with invalid input") {
 
     GIVEN("The student enters dac") {
         send(joe, "dac");
+
+        wait_for_action_to_finish();
 
         WHEN("The student enters quack") {
             send(joe, "quack");
@@ -145,6 +149,8 @@ SCENARIO("A student drops from a course that doesn't exist") {
 
         GIVEN("The student enters dac") {
             send(joe, "dac");
+
+            wait_for_action_to_finish();
 
             WHEN("The student enters 999999") {
                 send(joe, "999999");
@@ -183,6 +189,8 @@ SCENARIO("A student drops a course during registration") {
             GIVEN("The student enters dac") {
                 send(joe, "dac");
 
+                wait_for_action_to_finish();
+
                 WHEN("The student enters 123456") {
                     send(joe, "123456");
 
@@ -215,6 +223,8 @@ SCENARIO("A student drops a course before registration has started") {
 
     GIVEN("The student enters dac") {
         send(joe, "dac");
+
+        wait_for_action_to_finish();
 
         WHEN("The student enters 123456") {
             send(joe, "123456");
@@ -257,6 +267,8 @@ SCENARIO("A student drops a course after the term ends") {
 
                 GIVEN("The student enters dac") {
                     send(joe, "dac");
+
+                    wait_for_action_to_finish();
 
                     WHEN("The student enters 123456") {
                         send(joe, "123456");

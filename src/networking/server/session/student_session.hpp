@@ -28,6 +28,9 @@ private:
     void deregister_from_course();
     void drop_course();
 
+    void list_unregistered_in_courses();
+    void list_registered_in_courses();
+
     State state;
     University& university;
 

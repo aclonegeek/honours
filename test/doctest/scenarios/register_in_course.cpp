@@ -85,6 +85,8 @@ SCENARIO("A student registers in a course after registration starts and before r
         GIVEN("The student enters rfc") {
             send(joe, "rfc");
 
+            wait_for_action_to_finish();
+
             WHEN("The student enters 123456") {
                 send(joe, "123456");
 
@@ -112,6 +114,8 @@ SCENARIO("A student registers in a course with invalid input") {
 
     GIVEN("The student enters rfc") {
         send(joe, "rfc");
+
+        wait_for_action_to_finish();
 
         WHEN("The student enters quack") {
             send(joe, "quack");
@@ -149,6 +153,8 @@ SCENARIO("A student registers in a course that doesn't exist") {
         GIVEN("The student enters rfc") {
             send(joe, "rfc");
 
+            wait_for_action_to_finish();
+
             WHEN("The student enters 654321") {
                 send(joe, "654321");
 
@@ -174,6 +180,8 @@ SCENARIO("A student registers in a course before registration starts") {
 
     GIVEN("The student enters rfc") {
         send(joe, "rfc");
+
+        wait_for_action_to_finish();
 
         WHEN("The student enters 123456") {
             send(joe, "123456");
@@ -204,6 +212,8 @@ SCENARIO("A student registers in a course after registration ended") {
 
         GIVEN("The student enters rfc") {
             send(joe, "rfc");
+
+            wait_for_action_to_finish();
 
             WHEN("The student enters 123456") {
                 send(joe, "123456");
@@ -237,6 +247,8 @@ SCENARIO("A student registers in a course after the term ended") {
 
         GIVEN("The student enters rfc") {
             send(joe, "rfc");
+
+            wait_for_action_to_finish();
 
             WHEN("The student enters 123456") {
                 send(joe, "123456");
@@ -274,6 +286,8 @@ SCENARIO("A student registers in a course that reached its capsize during regist
         GIVEN("The student joe enters rfc") {
             send(joe, "rfc");
 
+            wait_for_action_to_finish();
+
             GIVEN("The student joe enters 123456") {
                 send(joe, "123456");
 
@@ -283,6 +297,8 @@ SCENARIO("A student registers in a course that reached its capsize during regist
 
                     GIVEN("The student murphy enters rfc") {
                         send(murphy, "rfc");
+
+                        wait_for_action_to_finish();
 
                         WHEN("The student murphy enters 123456") {
                             send(murphy, "123456");

@@ -31,6 +31,9 @@ private:
     void create_student();
     void delete_student();
 
+    void list_courses();
+    void list_students();
+
     State state;
     University& university;
 };

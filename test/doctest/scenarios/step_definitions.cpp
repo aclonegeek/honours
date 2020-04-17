@@ -57,11 +57,13 @@ void there_is_an_existing_student(Client& client, const std::string& message) {
 
 void the_student_has_registered_in(Client& client, const std::string& message) {
     client.send(Message("rfc"));
+    wait_for_action_to_finish();
     client.send(Message(message));
 }
 
 void the_student_has_deregistered_from(Client& client,
                                        const std::string& message) {
     client.send(Message("dfc"));
+    wait_for_action_to_finish();
     client.send(Message(message));
 }

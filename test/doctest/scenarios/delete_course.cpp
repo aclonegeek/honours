@@ -47,6 +47,8 @@ SCENARIO("A clerk deletes a course before registration starts") {
         GIVEN("The clerk enters dac") {
             send(clerk, "dac");
 
+            wait_for_action_to_finish();
+
             WHEN("The clerk enters 123456") {
                 send(clerk, "123456");
 
@@ -72,6 +74,8 @@ SCENARIO("A clerk deletes a course that doesn't exist") {
     GIVEN("The clerk enters dac") {
         send(clerk, "dac");
 
+        wait_for_action_to_finish();
+
         WHEN("The clerk enters 123456") {
             send(clerk, "123456");
 
@@ -95,6 +99,8 @@ SCENARIO("A clerk deletes a course with invalid input") {
 
     GIVEN("The clerk enters dac") {
         send(clerk, "dac");
+
+        wait_for_action_to_finish();
 
         WHEN("The clerk enters quack") {
             send(clerk, "quack");
@@ -134,6 +140,8 @@ SCENARIO("A clerk deletes a course after registration starts") {
 
             GIVEN("The clerk enters dac") {
                 send(clerk, "dac");
+
+                wait_for_action_to_finish();
 
                 WHEN("The clerk enters 123456") {
                     send(clerk, "123456");

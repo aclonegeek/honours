@@ -54,10 +54,13 @@ void StudentSession::write_options() {
         this->write_messages.push_back(OPTIONS);
         break;
     case State::REGISTERING_FOR_COURSE:
-        [[fallthrough]];
+        this->list_unregistered_in_courses();
+        this->write_messages.push_back(Message("Enter Course ID:"));
+        break;
     case State::DEREGISTERING_FROM_COURSE:
         [[fallthrough]];
     case State::DROPPING_COURSE:
+        this->list_registered_in_courses();
         this->write_messages.push_back(Message("Enter Course ID:"));
         break;
     }
@@ -175,5 +178,33 @@ void StudentSession::set_state() {
         this->state = State::DROPPING_COURSE;
     } else {
         this->write_messages.push_back(Message("Invalid command."));
+    }
+}
+
+void StudentSession::list_unregistered_in_courses() {
+    this->write_messages.push_back(Message("Courses:"));
+
+    for (const auto& course : university.courses()) {
+        if (course.second.has_student(this->id)) {
+            continue;
+        }
+
+        const std::string course_info =
+            "\t" + std::to_string(course.first) + " - " + course.second.title();
+        this->write_messages.push_back(Message(course_info));
+    }
+}
+
+void StudentSession::list_registered_in_courses() {
+    this->write_messages.push_back(Message("Courses:"));
+
+    for (const auto& course : university.courses()) {
+        if (!course.second.has_student(this->id)) {
+            continue;
+        }
+
+        const std::string course_info =
+            "\t" + std::to_string(course.first) + " - " + course.second.title();
+        this->write_messages.push_back(Message(course_info));
     }
 }

@@ -20,10 +20,11 @@ public:
     const std::vector<std::uint32_t> student_ids() const;
 
     std::uint32_t id() const;
+    const std::string& title() const;
 
 private:
     const std::uint32_t _id;
-    const std::string title;
+    const std::string _title;
     const std::uint8_t capsize;
 
     std::unordered_map<std::uint32_t, Student&> _students;

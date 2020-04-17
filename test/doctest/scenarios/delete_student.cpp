@@ -47,6 +47,8 @@ SCENARIO("A clerk deletes a student before registration starts") {
         GIVEN("The clerk enters das") {
             send(clerk, "das");
 
+            wait_for_action_to_finish();
+
             WHEN("The clerk enters 123456789") {
                 send(clerk, "123456789");
 
@@ -72,6 +74,8 @@ SCENARIO("A clerk deletes a non-existant student before registration starts") {
     GIVEN("The clerk enters das") {
         send(clerk, "das");
 
+        wait_for_action_to_finish();
+
         WHEN("The clerk enters 123456789") {
             send(clerk, "123456789");
 
@@ -91,6 +95,8 @@ SCENARIO("A clerk deletes a student with invalid input") {
 
     GIVEN("The clerk enters das") {
         send(clerk, "das");
+
+        wait_for_action_to_finish();
 
         WHEN("The clerk enters quack") {
             send(clerk, "quack");
@@ -127,6 +133,8 @@ SCENARIO("A clerk deletes a student after registration starts") {
 
         GIVEN("The clerk enters das") {
             send(clerk, "das");
+
+            wait_for_action_to_finish();
 
             WHEN("The clerk enters 123456789") {
                 send(clerk, "123456789");

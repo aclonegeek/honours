@@ -3,7 +3,7 @@
 
 Course::Course(const std::uint32_t id, const std::string title,
                const std::uint8_t capsize)
-    : _id(id), title(title), capsize(capsize) {}
+    : _id(id), _title(title), capsize(capsize) {}
 
 StudentResult Course::register_student(Student& student) {
     if (this->_students.size() >= this->capsize) {
@@ -43,3 +43,5 @@ const std::vector<std::uint32_t> Course::student_ids() const {
 }
 
 std::uint32_t Course::id() const { return this->_id; }
+
+const std::string& Course::title() const { return this->_title; }

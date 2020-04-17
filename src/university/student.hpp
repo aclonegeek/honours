@@ -8,6 +8,7 @@ public:
     Student(const std::uint32_t, const std::string);
 
     std::uint32_t id() const;
+    const std::string& name() const;
 
 private:
     const std::uint32_t _id;

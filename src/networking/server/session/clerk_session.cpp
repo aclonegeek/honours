@@ -63,6 +63,7 @@ void ClerkSession::write_options() {
             Message("Enter Course Information: ID (6 digits), Title, Capsize"));
         break;
     case State::DELETING_COURSE:
+        this->list_courses();
         this->write_messages.push_back(Message("Enter Course ID:"));
         break;
     case State::CREATING_STUDENT:
@@ -70,6 +71,7 @@ void ClerkSession::write_options() {
             Message("Enter Student Information: ID (9 digits), Name"));
         break;
     case State::DELETING_STUDENT:
+        this->list_students();
         this->write_messages.push_back(Message("Enter Student ID:"));
         break;
     }
@@ -217,5 +219,25 @@ void ClerkSession::set_state() {
         this->state = State::DELETING_STUDENT;
     } else {
         this->write_messages.push_back(Message("ERROR - Invalid command."));
+    }
+}
+
+void ClerkSession::list_courses() {
+    this->write_messages.push_back(Message("Courses:"));
+
+    for (const auto& course : university.courses()) {
+        const std::string course_info =
+            "\t" + std::to_string(course.first) + " - " + course.second.title();
+        this->write_messages.push_back(Message(course_info));
+    }
+}
+
+void ClerkSession::list_students() {
+    this->write_messages.push_back(Message("Students:"));
+
+    for (const auto& student : university.students()) {
+        const std::string student_info = "\t" + std::to_string(student.first) +
+                                         " - " + student.second.name();
+        this->write_messages.push_back(Message(student_info));
     }
 }
