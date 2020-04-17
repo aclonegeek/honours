@@ -180,12 +180,6 @@ void ClerkSession::create_student() {
 }
 
 void ClerkSession::delete_student() {
-    if (this->read_message.body_length() != 9) {
-        this->write_messages.push_back(
-            Message("ERROR - Invalid student ID. It must be 9 digits."));
-        return;
-    }
-
     const std::uint32_t id = this->parse_student_id(this->read_message.body());
     if (id == 0) {
         return;

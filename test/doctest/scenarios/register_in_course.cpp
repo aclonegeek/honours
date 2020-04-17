@@ -106,6 +106,39 @@ SCENARIO("A student registers in a course after registration starts and before r
     }
 }
 
+SCENARIO("A student registers in a course with invalid input") {
+    RegisterInCourseScenarioContext ctx;
+    Client& joe = ctx.joe();
+
+    GIVEN("The student enters rfc") {
+        send(joe, "rfc");
+
+        WHEN("The student enters quack") {
+            send(joe, "quack");
+
+            wait_for_action_to_finish();
+
+            THEN("ERROR - Invalid input. Course ID must be a number. is "
+                 "printed") {
+                CHECK("ERROR - Invalid input. Course ID must be a number." ==
+                      joe.previous_message());
+            }
+        }
+
+        WHEN("The student enters 1234567") {
+            send(joe, "1234567");
+
+            wait_for_action_to_finish();
+
+            THEN("ERROR - Invalid input. Course ID must be 6 digits. is "
+                 "printed") {
+                CHECK("ERROR - Invalid input. Course ID must be 6 digits." ==
+                      joe.previous_message());
+            }
+        }
+    }
+}
+
 SCENARIO("A student registers in a course that doesn't exist") {
     RegisterInCourseScenarioContext ctx;
     Client& joe = ctx.joe();
@@ -116,8 +149,8 @@ SCENARIO("A student registers in a course that doesn't exist") {
         GIVEN("The student enters rfc") {
             send(joe, "rfc");
 
-            WHEN("The student enters 2") {
-                send(joe, "2");
+            WHEN("The student enters 654321") {
+                send(joe, "654321");
 
                 wait_for_action_to_finish();
 
@@ -126,7 +159,8 @@ SCENARIO("A student registers in a course that doesn't exist") {
                           joe.previous_message());
 
                     AND_THEN("The course does not exist") {
-                        CHECK(false == ctx.university().course(2).has_value());
+                        CHECK(false ==
+                              ctx.university().course(654321).has_value());
                     }
                 }
             }

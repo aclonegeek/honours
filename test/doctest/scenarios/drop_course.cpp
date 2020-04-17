@@ -103,6 +103,39 @@ SCENARIO("A student drops a course during the term") {
     }
 }
 
+SCENARIO("A student drops from a course with invalid input") {
+    DropCourseScenarioContext ctx;
+    Client& joe = ctx.joe();
+
+    GIVEN("The student enters dac") {
+        send(joe, "dac");
+
+        WHEN("The student enters quack") {
+            send(joe, "quack");
+
+            wait_for_action_to_finish();
+
+            THEN("ERROR - Invalid input. Course ID must be a number. is "
+                 "printed") {
+                CHECK("ERROR - Invalid input. Course ID must be a number." ==
+                      joe.previous_message());
+            }
+        }
+
+        WHEN("The student enters 42") {
+            send(joe, "42");
+
+            wait_for_action_to_finish();
+
+            THEN("ERROR - Invalid input. Course ID must be 6 digits. is "
+                 "printed") {
+                CHECK("ERROR - Invalid input. Course ID must be 6 digits." ==
+                      joe.previous_message());
+            }
+        }
+    }
+}
+
 SCENARIO("A student drops from a course that doesn't exist") {
     DropCourseScenarioContext ctx;
     Client& joe = ctx.joe();

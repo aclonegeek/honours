@@ -107,10 +107,6 @@ SCENARIO("A clerk deletes a course with invalid input") {
                       clerk.previous_message());
             }
         }
-    }
-
-    GIVEN("The clerk enters dac") {
-        send(clerk, "dac");
 
         WHEN("The clerk enters 123456789") {
             send(clerk, "123456789");

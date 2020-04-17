@@ -85,6 +85,39 @@ SCENARIO("A clerk deletes a non-existant student before registration starts") {
     }
 }
 
+SCENARIO("A clerk deletes a student with invalid input") {
+    DeleteStudentScenarioContext ctx;
+    Client& clerk = ctx.clerk();
+
+    GIVEN("The clerk enters das") {
+        send(clerk, "das");
+
+        WHEN("The clerk enters quack") {
+            send(clerk, "quack");
+
+            wait_for_action_to_finish();
+
+            THEN("ERROR - Invalid input. Student ID must be a number. is "
+                 "printed") {
+                CHECK("ERROR - Invalid input. Student ID must be a number." ==
+                      clerk.previous_message());
+            }
+        }
+
+        WHEN("The clerk enters 123") {
+            send(clerk, "123");
+
+            wait_for_action_to_finish();
+
+            THEN("ERROR - Invalid input. Student ID must be 9 digits. is "
+                 "printed") {
+                CHECK("ERROR - Invalid input. Student ID must be 9 digits." ==
+                      clerk.previous_message());
+            }
+        }
+    }
+}
+
 SCENARIO("A clerk deletes a student after registration starts") {
     DeleteStudentScenarioContext ctx;
     Client& clerk = ctx.clerk();

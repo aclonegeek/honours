@@ -85,6 +85,51 @@ SCENARIO("A clerk creates a duplicate student before registration starts") {
     }
 }
 
+SCENARIO("A clerk creates a student with invalid input") {
+    CreateStudentScenarioContext ctx;
+    Client& clerk = ctx.clerk();
+
+    GIVEN("The clerk enters cas") {
+        send(clerk, "cas");
+
+        WHEN("The clerk enters joe") {
+            send(clerk, "joe");
+
+            wait_for_action_to_finish();
+
+            THEN("ERROR - Invalid input. Expected student ID (9 digits) and name. is "
+                 "printed") {
+                CHECK("ERROR - Invalid input. Expected student ID (9 digits) and name." ==
+                      clerk.previous_message());
+            }
+        }
+
+        WHEN("The clerk enters quack, joe") {
+            send(clerk, "quack, joe");
+
+            wait_for_action_to_finish();
+
+            THEN("ERROR - Invalid input. Student ID must be a number. is "
+                 "printed") {
+                CHECK("ERROR - Invalid input. Student ID must be a number." ==
+                      clerk.previous_message());
+            }
+        }
+
+        WHEN("The clerk enters 123, joe") {
+            send(clerk, "123, joe");
+
+            wait_for_action_to_finish();
+
+            THEN("ERROR - Invalid input. Student ID must be 9 digits. is "
+                 "printed") {
+                CHECK("ERROR - Invalid input. Student ID must be 9 digits." ==
+                      clerk.previous_message());
+            }
+        }
+    }
+}
+
 SCENARIO("A clerk creates a student after registration starts") {
     CreateStudentScenarioContext ctx;
     Client& clerk = ctx.clerk();

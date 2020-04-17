@@ -100,6 +100,39 @@ SCENARIO("A student deregisters from a course during the registration period") {
     }
 }
 
+SCENARIO("A student deregisters from a course with invalid input") {
+    DeregisterFromCourseScenarioContext ctx;
+    Client& joe = ctx.joe();
+
+    GIVEN("The student enters dfc") {
+        send(joe, "dfc");
+
+        WHEN("The student enters quack") {
+            send(joe, "quack");
+
+            wait_for_action_to_finish();
+
+            THEN("ERROR - Invalid input. Course ID must be a number. is "
+                 "printed") {
+                CHECK("ERROR - Invalid input. Course ID must be a number." ==
+                      joe.previous_message());
+            }
+        }
+
+        WHEN("The student enters 123456789123") {
+            send(joe, "123456789123");
+
+            wait_for_action_to_finish();
+
+            THEN("ERROR - Invalid input. Course ID must be 6 digits. is "
+                 "printed") {
+                CHECK("ERROR - Invalid input. Course ID must be 6 digits." ==
+                      joe.previous_message());
+            }
+        }
+    }
+}
+
 SCENARIO("A student deregisters from a course that doesn't exist") {
     DeregisterFromCourseScenarioContext ctx;
     Client& joe = ctx.joe();

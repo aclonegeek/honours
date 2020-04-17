@@ -68,6 +68,9 @@ void StudentSession::write_options() {
 void StudentSession::register_for_course() {
     const std::uint32_t course_id =
         this->parse_course_id(this->read_message.body());
+    if (course_id == 0) {
+        return;
+    }
 
     const StudentResult result =
         this->university.register_student_in_course(this->id, course_id);
@@ -98,6 +101,9 @@ void StudentSession::register_for_course() {
 void StudentSession::deregister_from_course() {
     const std::uint32_t course_id =
         this->parse_course_id(this->read_message.body());
+    if (course_id == 0) {
+        return;
+    }
 
     const StudentResult result =
         this->university.deregister_student_from_course(this->id, course_id);
@@ -128,6 +134,9 @@ void StudentSession::deregister_from_course() {
 void StudentSession::drop_course() {
     const std::uint32_t course_id =
         this->parse_course_id(this->read_message.body());
+    if (course_id == 0) {
+        return;
+    }
 
     const StudentResult result =
         this->university.drop_student_from_course(this->id, course_id);

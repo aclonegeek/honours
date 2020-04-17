@@ -89,6 +89,63 @@ SCENARIO("A clerk creates a duplicate course before registration starts") {
     }
 }
 
+SCENARIO("A clerk creates a course with invalid input") {
+    CreateCourseScenarioContext ctx;
+    Client& clerk = ctx.clerk();
+
+    GIVEN("The clerk enters cac") {
+        send(clerk, "cac");
+
+        WHEN("The clerk enters quack, Witchcraft, 1") {
+            send(clerk, "quack, Witchcraft, 1");
+
+            wait_for_action_to_finish();
+
+            THEN("ERROR - Invalid input. Course ID must be a number. is "
+                 "printed") {
+                CHECK("ERROR - Invalid input. Course ID must be a number." ==
+                      clerk.previous_message());
+            }
+        }
+
+        WHEN("The clerk enters 2, Witchcraft, 1") {
+            send(clerk, "2, Witchcraft, 1");
+
+            wait_for_action_to_finish();
+
+            THEN("ERROR - Invalid input. Course ID must be 6 digits. is "
+                 "printed") {
+                CHECK("ERROR - Invalid input. Course ID must be 6 digits." ==
+                      clerk.previous_message());
+            }
+        }
+
+        WHEN("The clerk enters 123456, Witchcraft, quack") {
+            send(clerk, "123456, Witchcraft, quack");
+
+            wait_for_action_to_finish();
+
+            THEN("ERROR - Invalid input. Capsize must be a number. is "
+                 "printed") {
+                CHECK("ERROR - Invalid input. Capsize must be a number." ==
+                      clerk.previous_message());
+            }
+        }
+
+        WHEN("The clerk enters 123456, Witchcraft, 300") {
+            send(clerk, "123456, Witchcraft, 300");
+
+            wait_for_action_to_finish();
+
+            THEN("ERROR - Invalid input. Capsize must be between 1 and 255 "
+                 "(inclusive). is printed") {
+                CHECK("ERROR - Invalid input. Capsize must be between 1 and "
+                      "255 (inclusive)." == clerk.previous_message());
+            }
+        }
+    }
+}
+
 SCENARIO("A clerk creates a course after registration starts") {
     CreateCourseScenarioContext ctx;
     Client& clerk = ctx.clerk();
