@@ -1,4 +1,4 @@
-# Honours Project
+# COMP4905 - Honours Project
 
 # Table of Contents
 - [Honours Project](#honours-project)
@@ -57,7 +57,7 @@ To run a specific test suite or test suites, you can do the following:
 # List all the test suites by name.
 test_suite --lts
 # Run the corresponding test suite or suites based on a given filter.
-# For example, test_suite --ts=Login* will run the login_logout test suite.
+# For example, test_suite --ts="Logging in" will run the Logging in test suite.
 test_suite --ts=<filters>
 ```
 
@@ -67,6 +67,7 @@ To run a specific test case or test cases, you can do the following:
 test_suite --ltc
 # Run the corresponding test case or cases based on a given filter.
 # For example, test_case --tc="*logs in*" will run all tests for logging in.
+# Note: The *'s at the front and end of the filter are important - all test cases have the text "Scenario:" (minus the quotes) prepended to them, and we want to filter that out.
 test_suite --tc=<filters>
 ```
 
