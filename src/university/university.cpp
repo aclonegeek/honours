@@ -20,7 +20,7 @@ University::University()
                                       REGISTRATION_LENGTH + TERM_LENGTH))),
       state(State::PREREGISTRATION) {
     // For testing purposes.
-    this->courses.insert({11111, Course(11111, "Quack", 1)});
+    this->courses.insert({111111, Course(111111, "Quack", 1)});
     this->students.insert({112233445, Student(112233445, "joe")});
     this->students.insert({111222334, Student(111222334, "murphy")});
 }

@@ -5,7 +5,7 @@ set(SOURCE_FILES
 
   scenarios/step_definitions.cpp
 
-  scenarios/login_logout.cpp
+  scenarios/login.cpp
   scenarios/create_course.cpp
   scenarios/delete_course.cpp
   scenarios/create_student.cpp

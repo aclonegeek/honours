@@ -3,9 +3,9 @@
 #include "scenario_context.hpp"
 #include "step_definitions.hpp"
 
-class LoginLogoutScenarioContext final : public ScenarioContext {
+class LoginScenarioContext final : public ScenarioContext {
 public:
-    LoginLogoutScenarioContext()
+    LoginScenarioContext()
         : clerk_resolver(tcp::resolver(this->clerk_io_context)),
           joe_resolver(tcp::resolver(this->joe_io_context)),
           clerk_endpoints(this->clerk_resolver.resolve(host, port)),
@@ -18,7 +18,7 @@ public:
         wait_for_clients_to_load();
     }
 
-    ~LoginLogoutScenarioContext() {
+    ~LoginScenarioContext() {
         this->clerk_io_context.stop();
         this->joe_io_context.stop();
 
@@ -34,8 +34,10 @@ public:
 private:
     asio::io_context clerk_io_context;
     asio::io_context joe_io_context;
+
     tcp::resolver clerk_resolver;
     tcp::resolver joe_resolver;
+
     const tcp::resolver::results_type clerk_endpoints;
     const tcp::resolver::results_type joe_endpoints;
 
@@ -46,10 +48,10 @@ private:
     Client _joe;
 };
 
-TEST_SUITE_BEGIN("Logging in and out");
+TEST_SUITE_BEGIN("Logging in");
 
 SCENARIO("A clerk logs in with a valid password") {
-    LoginLogoutScenarioContext ctx;
+    LoginScenarioContext ctx;
     Client& clerk = ctx.clerk();
 
     GIVEN("The clerk enters clerk") {
@@ -68,7 +70,7 @@ SCENARIO("A clerk logs in with a valid password") {
 }
 
 SCENARIO("A clerk logs in with an invalid password") {
-    LoginLogoutScenarioContext ctx;
+    LoginScenarioContext ctx;
     Client& clerk = ctx.clerk();
 
     GIVEN("The clerk enters clerk") {
@@ -88,7 +90,7 @@ SCENARIO("A clerk logs in with an invalid password") {
 }
 
 SCENARIO("A student logs in with valid information") {
-    LoginLogoutScenarioContext ctx;
+    LoginScenarioContext ctx;
     Client& clerk = ctx.clerk();
     Client& joe   = ctx.joe();
 
@@ -115,7 +117,7 @@ SCENARIO("A student logs in with valid information") {
 }
 
 SCENARIO("A student logs in with invalid information") {
-    LoginLogoutScenarioContext ctx;
+    LoginScenarioContext ctx;
     Client& clerk = ctx.clerk();
     Client& joe   = ctx.joe();
 

@@ -79,6 +79,9 @@ void StudentSession::register_for_course() {
     case StudentResult::SUCCESS:
         this->write_messages.push_back(Message("Registered for course."));
         break;
+    case StudentResult::COURSE_FULL:
+        this->write_messages.push_back(Message("ERROR - Course is full."));
+        break;
     case StudentResult::COURSE_DOES_NOT_EXIST:
         this->write_messages.push_back(
             Message("ERROR - Course does not exist."));
@@ -89,11 +92,7 @@ void StudentSession::register_for_course() {
         this->write_messages.push_back(Message(
             "ERROR - Can only register for a course during registration."));
         break;
-    case StudentResult::COURSE_FULL:
-        this->write_messages.push_back(Message("ERROR - Course is full."));
-        break;
     default:
-        // TODO: Do something here.
         break;
     }
 }
@@ -126,7 +125,6 @@ void StudentSession::deregister_from_course() {
             "ERROR - Can only deregister from a course during registration."));
         break;
     default:
-        // TODO: Do something here.
         break;
     }
 }
@@ -155,14 +153,13 @@ void StudentSession::drop_course() {
         break;
     case StudentResult::REGISTRATION_NOT_STARTED:
         [[fallthrough]];
-    case StudentResult::TERM_ENDED:
-        [[fallthrough]];
     case StudentResult::REGISTRATION_NOT_ENDED:
+        [[fallthrough]];
+    case StudentResult::TERM_ENDED:
         this->write_messages.push_back(
             Message("ERROR - Can only drop a course during the term."));
         break;
     default:
-        // TODO: Do something here.
         break;
     }
 }
