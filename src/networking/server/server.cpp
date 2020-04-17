@@ -12,7 +12,7 @@ Server::Server(asio::io_context& io_context, const tcp::endpoint& endpoint,
 }
 
 void Server::accept() {
-    this->acceptor.async_accept([this](std::error_code error_code,
+    this->acceptor.async_accept([this](const std::error_code error_code,
                                        tcp::socket socket) {
         if (!error_code) {
             std::cout << "Client connected.\n";

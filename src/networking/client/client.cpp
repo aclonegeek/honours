@@ -23,12 +23,13 @@ void Client::close() {
 }
 
 void Client::connect(const tcp::resolver::results_type& endpoints) {
-    asio::async_connect(this->socket, endpoints,
-                        [this](std::error_code error_code, tcp::endpoint) {
-                            if (!error_code) {
-                                this->read_header();
-                            }
-                        });
+    asio::async_connect(
+        this->socket, endpoints,
+        [this](const std::error_code error_code, const tcp::endpoint) {
+            if (!error_code) {
+                this->read_header();
+            }
+        });
 }
 
 void Client::read_header() {
@@ -36,7 +37,7 @@ void Client::read_header() {
 
     asio::async_read(
         this->socket, asio::buffer(this->read_message.data(), HEADER_LENGTH),
-        [this](std::error_code error_code, std::size_t /*length*/) {
+        [this](const std::error_code error_code, const std::size_t /*length*/) {
             if (error_code || !this->read_message.decode_header()) {
                 std::cout << "ERROR - Read header fail.\n";
                 std::cout << "Message: " << this->read_message.data() << "\n";
@@ -58,7 +59,7 @@ void Client::read_body() {
         this->socket,
         asio::buffer(this->read_message.body(),
                      this->read_message.body_length()),
-        [this](std::error_code error_code, std::size_t /*length*/) {
+        [this](const std::error_code error_code, const std::size_t /*length*/) {
             if (error_code) {
                 this->socket.close();
                 return;
@@ -77,7 +78,7 @@ void Client::write() {
         this->socket,
         asio::buffer(this->write_messages.front().data(),
                      this->write_messages.front().length()),
-        [this](std::error_code error_code, std::size_t /*length*/) {
+        [this](const std::error_code error_code, const std::size_t /*length*/) {
             if (error_code) {
                 this->socket.close();
                 return;
