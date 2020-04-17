@@ -26,7 +26,7 @@
 ## Setup and Building
 - In a terminal, run:
 ``` shell
-git clone --recurse-submodules https://github.com/aclonegeek/honours.git
+git clone -b final-submission --single-branch --recurse-submodules https://github.com/aclonegeek/honours.git
 cd honours
 cmake -E make_directory build
 cmake -E chdir build cmake ..
