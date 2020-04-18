@@ -1,5 +1,18 @@
 # Documentation
 
+# Table of Contents
+- [Documentation](#documentation)
+- [Table of Contents](#table-of-contents)
+    - [Setup, Building, & Running](#setup-building--running)
+    - [Architecture](#architecture)
+        - [Server](#server)
+        - [Client](#client)
+        - [University](#university)
+    - [Tests](#tests)
+        - [Acceptance Test Suite](#acceptance-test-suite)
+        - [Native and Parallel](#native-and-parallel)
+
+
 ## Setup, Building, & Running
 
 See [README](README.md).
