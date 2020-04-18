@@ -45,9 +45,11 @@ cmake --build build
 ## Running
 The client and server executables can be located inside the `build` directory.
 
-To the run server: `run_server <port>`(e.g. `run_server 5001`)
+To the run server: `run_server <port>`(e.g. `run_server 5001`).
 
-To run the client: `run_client <host> <port>` (e.g. `run_client localhost 5001`)
+To run the client: `run_client <host> <port>` (e.g. `run_client localhost 5001`).
+
+The password for the clerk account is `admin`.
 
 ## Running Tests
 The test suite can be located inside the `build/test` directory.
