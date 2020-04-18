@@ -92,6 +92,8 @@ Run `test_suite --tc=*EX?N*` where ? is 1 or 2 depending on the native test that
 ### Running Parallel Tests
 The code for the native tests is located in `test/doctest/scenarios/parallel/`.
 
+These commands must be run from within the `build` directory.
+
 **Note**: If on Windows, append `-C Debug` or `-C Release` depending on the configuration built with to the following commands, right after `--verbose`.
 
 For ex1, run `ctest -R ex1.* -j6 --verbose`.
