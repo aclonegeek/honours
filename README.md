@@ -89,4 +89,5 @@ The code for the native tests is located in `test/doctest/scenarios/parallel/`.
 **Note**: If on Windows, append `-C Debug` to the following commands, right after `--verbose`.
 
 For ex1, run `ctest -R ex1.* -j6 --verbose`.
+
 For ex2, run `ctest -R ex2.* -j7 --verbose`.
