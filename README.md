@@ -1,10 +1,11 @@
 # COMP4905 - Honours Project
 
 # Table of Contents
-- [Honours Project](#honours-project)
+- [COMP4905 - Honours Project](#comp4905---honours-project)
 - [Table of Contents](#table-of-contents)
 - [Requirements](#requirements)
 - [Dependencies](#dependencies)
+- [Documentation](#documentation)
 - [Setup, Building, & Running](#setup-building--running)
     - [Setup and Building](#setup-and-building)
     - [Running](#running)
