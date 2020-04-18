@@ -9,9 +9,9 @@ enum class State;
 
 class StateChangeTimerTask {
 public:
-    StateChangeTimerTask(State& state, const State nextState,
+    StateChangeTimerTask(State& state, const State next_state,
                          const std::chrono::seconds duration)
-        : running(true), timer([&, nextState, duration]() {
+        : running(true), timer([&, next_state, duration]() {
               std::unique_lock lock(this->mutex);
               if (this->kill_timer.wait_for(
                       lock, duration, [this]() { return !this->running; })) {
@@ -20,7 +20,7 @@ public:
                   return;
               }
 
-              state = nextState;
+              state = next_state;
           }) {}
 
     ~StateChangeTimerTask() {
