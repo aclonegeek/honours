@@ -24,7 +24,7 @@
 
 # Documentation
 
-See (docs)[docs.md].
+See [docs](docs.md).
 
 # Setup, Building, & Running
 ## Setup and Building

@@ -2,7 +2,7 @@
 
 ## Setup, Building, & Running
 
-See (README)[README.md].
+See [README](README.md).
 
 ## Architecture
 
