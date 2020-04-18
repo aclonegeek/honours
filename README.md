@@ -40,7 +40,7 @@ cmake --build build
 
 **Note**: Downloading the repository as a zip will not pull in the third_party submodules.
 
-**Note**: If building with MSVC, it will place executables one directory deeper inside a Debug directory. `run_server` and `run_client` end up in `build/Debug` and `test_suite` ends up in `build/test/Debug/test_suite` (the directory will be Release if built in Release mode).
+**Note**: If building with MSVC, it will place executables one directory deeper inside a `Debug` or `Release` directory, depending on the configuration built with (the default is `Debug`). `run_server` and `run_client` end up in `build/Debug` and `test_suite` ends up in `build/test/Debug/test_suite` (the directory will be Release if built in Release mode).
 
 ## Running
 The client and server executables can be located inside the `build` directory.
@@ -86,7 +86,7 @@ Run `test_suite --tc=*EX?N*` where ? is 1 or 2 depending on the native test that
 ### Running Parallel Tests
 The code for the native tests is located in `test/doctest/scenarios/parallel/`.
 
-**Note**: If on Windows, append `-C Debug` to the following commands, right after `--verbose`.
+**Note**: If on Windows, append `-C Debug` or `-C Release` depending on the configuration built with to the following commands, right after `--verbose`.
 
 For ex1, run `ctest -R ex1.* -j6 --verbose`.
 
