@@ -9,9 +9,9 @@ enum class ClerkResult;
 enum class StudentResult;
 
 constexpr std::uint8_t DAY_LENGTH             = 1;  // seconds
-constexpr std::uint8_t PREREGISTRATION_LENGTH = 5;  // days
-constexpr std::uint8_t REGISTRATION_LENGTH    = 10; // days
-constexpr std::uint8_t TERM_LENGTH            = 10; // days
+constexpr std::uint8_t PREREGISTRATION_LENGTH = 5;  // DAY_LENGTHs
+constexpr std::uint8_t REGISTRATION_LENGTH    = 10; // DAY_LENGTHs
+constexpr std::uint8_t TERM_LENGTH            = 10; // DAY_LENGTHs
 
 enum class State {
     PREREGISTRATION,

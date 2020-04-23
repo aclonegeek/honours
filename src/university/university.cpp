@@ -20,16 +20,16 @@ University::University()
                                       REGISTRATION_LENGTH + TERM_LENGTH))),
       state(State::PREREGISTRATION) {
     // For testing purposes.
-    this->_courses.insert({111111, Course(111111, "Quack", 1)});
-    this->_courses.insert({123321, Course(111111, "Fiddle Worth", 1)});
-    this->_courses.insert({777777, Course(111111, "Hoi Noi Boi", 1)});
-    this->_students.insert({112233445, Student(112233445, "joe")});
-    this->_students.insert({111222334, Student(111222334, "murphy")});
+    // this->_courses.insert({111111, Course(111111, "Quack", 1)});
+    // this->_courses.insert({123321, Course(111111, "Fiddle Worth", 1)});
+    // this->_courses.insert({777777, Course(111111, "Hoi Noi Boi", 1)});
+    // this->_students.insert({112233445, Student(112233445, "joe")});
+    // this->_students.insert({111222334, Student(111222334, "murphy")});
 
-    this->_courses.at(111111).register_student(this->_students.at(112233445));
-    this->_courses.at(111111).register_student(this->_students.at(111222334));
+    // this->_courses.at(111111).register_student(this->_students.at(112233445));
+    // this->_courses.at(111111).register_student(this->_students.at(111222334));
 
-    this->_courses.at(123321).register_student(this->_students.at(112233445));
+    // this->_courses.at(123321).register_student(this->_students.at(112233445));
 }
 
 ClerkResult University::create_course(const std::uint32_t id,
